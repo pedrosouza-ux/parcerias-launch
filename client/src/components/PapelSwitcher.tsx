@@ -1,5 +1,5 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
  * Seletor de papel: simula login como Admin, Expert ou Lançador no protótipo.
  * Estilo: labels mono uppercase, botão com acento vermelho-selo.
  */

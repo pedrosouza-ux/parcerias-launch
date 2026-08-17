@@ -1,12 +1,13 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
- * Landing do protótipo: hero editorial com hero ilustrado,
- * apresentação do conceito (ROMA, triagem, 3 papéis) e seletor de acesso.
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
+ * Landing do protótipo: hero de palco escuro com mapa de rotas convergentes,
+ * apresentação do conceito (ROMA como destino, triagem, 3 papéis) e seletor de acesso.
+ * Sem conotação romântica: metáfora é rota/estratégia.
  */
 import { useLocation } from "wouter";
 import { Button } from "@/components/ui/button";
 import { Papel } from "@/lib/mockData";
-import { ShieldCheck, UserRound, Rocket, ArrowRight, CircleDot } from "lucide-react";
+import { ShieldCheck, UserRound, Rocket, ArrowRight } from "lucide-react";
 
 export default function Home() {
   const [, navegar] = useLocation();
@@ -16,7 +17,7 @@ export default function Home() {
       id: "admin" as Papel,
       nome: "Administrador",
       icone: <ShieldCheck className="size-5" />,
-      desc: "Visão global de Experts e Lançadores, triagem de aderência entre ROMA e audiência, e propostas de match.",
+      desc: "Visão global de Experts e Lançadores, triagem de aderência entre ROMA e audiência, e propostas de parceria.",
       demo: "Ana — Administradora",
     },
     {
@@ -38,31 +39,32 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background">
       {/* Header */}
-      <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-border">
+      <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-30">
         <div className="flex items-center gap-3">
-          <img src="/manus-storage/parcerias-logo_e0f61586.png" alt="Parcerias" className="size-10" />
+          <img src="/manus-storage/parcerias-logo-v2_7a82460d.png" alt="Parcerias" className="size-10" />
           <span className="font-display text-2xl font-semibold tracking-tight">Parcerias<span className="text-primary">.</span></span>
         </div>
-        <span className="label-ed hidden sm:block">Protótipo · Validação de fluxo</span>
+        <span className="label-ed hidden sm:block">Encontro Insider · Protótipo de validação</span>
       </header>
 
       {/* Hero */}
       <section className="px-5 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-2 gap-10 items-center">
         <div className="rise-in">
-          <p className="label-ed mb-4">Matching de Experts e Lançadores</p>
+          <p className="label-ed mb-4">Central de parcerias estratégicas</p>
           <h1 className="font-display text-4xl lg:text-5xl font-semibold leading-[1.05] tracking-tight">
-            Toda parceria começa com uma <span className="text-primary">ROMA</span> bem encontrada.
+            Todas as rotas convergem para a <span className="text-primary">ROMA</span>.
           </h1>
           <p className="text-lg text-muted-foreground mt-5 max-w-md">
-            Conectamos Experts e Lançadores pelo critério que importa: a aderência entre a
-            transformação do produto e a audiência de quem lança — com curadoria humana a cada passo.
+            A operação que encontra o caminho certo entre Experts e Lançadores: a
+            transformação do produto e a audiência de quem lança, cruzadas com
+            curadoria humana a cada passo.
           </p>
           <div className="flex flex-wrap gap-4 mt-8">
             <Button size="lg" className="gap-2 active:scale-[0.97] transition-transform duration-150" onClick={() => navegar("/painel/admin")}>
-              Entrar no painel
+              Entrar na central
               <ArrowRight className="size-4" />
             </Button>
-            <Button size="lg" variant="outline" className="gap-2 bg-card hover:bg-accent active:scale-[0.97] transition-all duration-150" onClick={() => {
+            <Button size="lg" variant="outline" className="gap-2 bg-card text-foreground hover:bg-accent active:scale-[0.97] transition-all duration-150" onClick={() => {
               document.getElementById("papeis")?.scrollIntoView({ behavior: "smooth" });
             }}>
               Ver como funciona
@@ -71,9 +73,9 @@ export default function Home() {
         </div>
         <div className="rise-in" style={{ animationDelay: "80ms" }}>
           <img
-            src="/manus-storage/parcerias-hero_8b4aa376.png"
-            alt="Ilustração do matching entre Expert e Lançador"
-            className="w-full rounded-lg border border-border shadow-sm"
+            src="/manus-storage/parcerias-hero-v2_524e06c6.png"
+            alt="Ilustração de rotas convergindo para um destino comum"
+            className="w-full rounded-lg border border-border shadow-lg"
           />
         </div>
       </section>
@@ -88,18 +90,18 @@ export default function Home() {
           {[
             {
               n: "01",
-              titulo: "Expert apresenta a ROMA",
+              titulo: "Expert traça a rota",
               texto: "Cada Expert cadastra seus projetos e define a ROMA — a transformação que o produto promete na vida do Avatar — com dores e ambições estruturadas.",
             },
             {
               n: "02",
-              titulo: "Admin avalia a aderência",
-              texto: "O administrador cruza a ROMA do Expert com a audiência, o nicho e o stage de cada Lançador, com um score de aderência sugerido pelo sistema.",
+              titulo: "Admin avalia a convergência",
+              texto: "O administrador cruza a ROMA do Expert com a audiência, o nicho e o stage de cada Lançador, com um índice de convergência sugerido pelo sistema.",
             },
             {
               n: "03",
-              titulo: "Lançador decide",
-              texto: "A proposta chega ao Lançador, que aceita ou recusa. Só então a parceria é formalizada e o Expert libera a condução do lançamento.",
+              titulo: "Lançador decide o caminho",
+              texto: "A proposta chega ao Lançador, que aceita ou recusa. Só então a parceria é formalizada e o lançamento segue na mesma trajetória.",
             },
           ].map((item, i) => (
             <div key={item.n} className="bg-card border border-border rounded-lg p-6 rise-in" style={{ animationDelay: `${i * 60}ms` }}>
@@ -122,14 +124,14 @@ export default function Home() {
             <button
               key={p.id}
               onClick={() => navegar(`/painel/${p.id}`)}
-              className="group text-left bg-card border border-border rounded-lg p-6 hover:border-primary/50 hover:shadow-sm transition-all duration-200 rise-in active:scale-[0.99]"
+              className="group text-left bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-200 rise-in active:scale-[0.99]"
               style={{ animationDelay: `${i * 60}ms` }}
             >
               <div className="flex items-center justify-between">
                 <div className="size-11 rounded-full bg-primary/10 text-primary flex items-center justify-center">
                   {p.icone}
                 </div>
-                <CircleDot className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
+                <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
               </div>
               <h3 className="font-display text-xl font-semibold mt-4">{p.nome}</h3>
               <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{p.desc}</p>
@@ -140,7 +142,7 @@ export default function Home() {
       </section>
 
       <footer className="px-5 lg:px-10 py-8 border-t border-border">
-        <p className="label-ed">Protótipo de validação · Dados simulados · Parcerias</p>
+        <p className="label-ed">Protótipo de validação · Dados simulados · Parcerias · Encontro Insider</p>
       </footer>
     </div>
   );

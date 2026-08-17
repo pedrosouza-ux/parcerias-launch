@@ -18,7 +18,7 @@ const navegacao: Record<Papel, NavItem[]> = {
   admin: [
     { id: "experts", label: "Experts", contagem: 4 },
     { id: "lancadores", label: "Lançadores", contagem: 4 },
-    { id: "triagem", label: "Triagem de Aderência", contagem: 1 },
+    { id: "triagem", label: "Triagem de Convergência", contagem: 1 },
     { id: "matches", label: "Propostas" },
   ],
   expert: [
@@ -64,13 +64,13 @@ export default function PainelLayout({
       <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar sticky top-0 h-screen">
         <div className="p-5 flex items-center gap-3">
           <img
-            src="/manus-storage/parcerias-logo_e0f61586.png"
+            src="/manus-storage/parcerias-logo-v2_7a82460d.png"
             alt="Parcerias"
             className="size-10"
           />
           <div className="flex flex-col leading-none">
             <span className="font-display text-xl font-semibold tracking-tight">Parcerias<span className="text-primary">.</span></span>
-            <span className="label-ed mt-1.5">Painel de Curadoria</span>
+            <span className="label-ed mt-1.5">Central de Parcerias</span>
           </div>
         </div>
         <div className="rule-double mx-5" />
@@ -116,7 +116,7 @@ export default function PainelLayout({
             {subtitulo && <p className="text-xs text-muted-foreground hidden sm:block">{subtitulo}</p>}
           </div>
           <div className="flex items-center gap-2 lg:hidden">
-            <img src="/manus-storage/parcerias-logo_e0f61586.png" alt="Parcerias" className="size-8" />
+            <img src="/manus-storage/parcerias-logo-v2_7a82460d.png" alt="Parcerias" className="size-8" />
           </div>
           <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />
         </header>

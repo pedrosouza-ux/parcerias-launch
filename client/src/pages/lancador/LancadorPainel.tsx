@@ -1,5 +1,5 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
  * Visão do LANÇADOR: vê os Experts propostos em triagem,
  * decide (aceitar/recusar) e acompanha as parcerias formadas.
  */

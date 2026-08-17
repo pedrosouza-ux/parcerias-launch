@@ -1,7 +1,7 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
- * Componentes compartilhados: foto de perfil, selo de aderência (carimbo),
- * estado de acesso bloqueado/liberado, linhas de dado estilo jornal.
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
+ * Componentes compartilhados: foto de perfil, indicador de convergência
+ * (linhas de rota rumo a Roma), estado de acesso, linhas de dado.
  */
 import { ReactNode } from "react";
 import { cn } from "@/lib/utils";
@@ -18,15 +18,20 @@ export function FotoPerfil({ src, alt, size = "md" }: { src: string; alt: string
   );
 }
 
-/** Selo de aderência — elemento assinatura: número-protagonista em estilo carimbo */
+/** Indicador de convergência — convergência de rotas rumo à Roma */
 export function SeloAderencia({ score, className }: { score: number; className?: string }) {
   const cor =
-    score >= 80 ? "text-primary" : score >= 60 ? "text-[oklch(0.6_0.12_65)]" : "text-muted-foreground";
+    score >= 80 ? "text-primary" : score >= 60 ? "text-[oklch(0.68_0.09_75)]" : "text-muted-foreground";
   return (
-    <div className={cn("flex flex-col items-center justify-center rounded-full border-2 border-dashed border-current w-16 h-16", cor, className)}
-      style={{ borderColor: "currentColor" }}>
-      <span className="font-display text-2xl font-bold leading-none">{score}</span>
-      <span className="label-ed mt-0.5" style={{ color: "currentColor" }}>Aderência</span>
+    <div className={cn("relative flex flex-col items-center justify-center w-16 h-16", cor, className)}>
+      {/* Linhas de rota convergindo em Y para o ponto-destino */}
+      <svg viewBox="0 0 64 64" className="absolute inset-0 w-full h-full" aria-hidden>
+        <line x1="8" y1="10" x2="28" y2="34" stroke="currentColor" strokeWidth="1.5" opacity="0.7" />
+        <line x1="56" y1="10" x2="36" y2="34" stroke="currentColor" strokeWidth="1.5" opacity="0.7" />
+        <circle cx="32" cy="40" r="4" fill="currentColor" opacity="0.9" />
+      </svg>
+      <span className="font-display text-xl font-bold leading-none mt-6">{score}</span>
+      <span className="label-ed mt-0.5" style={{ color: "currentColor" }}>Convergência</span>
     </div>
   );
 }

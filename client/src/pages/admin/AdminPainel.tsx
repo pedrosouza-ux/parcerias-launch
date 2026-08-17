@@ -1,5 +1,5 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
  * Visão do ADMINISTRADOR: visão global de Experts e Lançadores,
  * detalhe de ROMA/Avatar, triagem de aderência e propostas de match.
  * Estilo: regras hairline, labels mono uppercase, números-protagonistas.
@@ -53,7 +53,7 @@ export default function AdminPainel({ onTrocarPapel }: { onTrocarPapel: (p: "adm
       titulo={
         pagina === "experts" ? "Experts cadastrados" :
         pagina === "lancadores" ? "Lançadores cadastrados" :
-        pagina === "triagem" ? "Triagem de Aderência" : "Propostas de Parceria"
+        pagina === "triagem" ? "Triagem de Convergência" : "Propostas de Parceria"
       }
       subtitulo={
         pagina === "experts" ? "Visão global · ROMA e projetos de cada Expert" :

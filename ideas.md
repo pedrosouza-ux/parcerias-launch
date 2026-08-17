@@ -1,47 +1,34 @@
 # Parcerias — Matching de Experts e Lançadores
-## Brainstorm de Design
+## Brainstorm de Design — v2 (Direção "Estrada para Roma")
 
-## Três abordagens estilísticas
+## Contexto da revisão (feedback do usuário)
+A direção anterior ("Painel de Controle Editorial" com hero de dois perfis se conectando) transmitiu conotação de app de relacionamento (Tinder). O projeto é um sistema corporativo de **parcerias comerciais** para o **Encontro Insider** do ecossistema **Érico Rocha** (Fórmula de Lançamento, IGD). A nova identidade deve comunicar: negócio, jornada, estratégia, aspiração.
 
-### 1. "Painel de Controle Editorial" (Escolhida)
-Estética de painel interno premium com personalidade editorial: fundo claro quente, tipografia serifada de exibição forte, regras finas e terminologia própria do ecossistema (Roma, Avatar, Lançamento). Emocional: confiança, curadoria humana, sofisticação.
-**Probabilidade:** 0.06
+## Nova direção escolhida: "Estrada para Roma" (Insider Editorial)
 
-### 2. "Cartas de Baralho" (Match visual)
-Inspirado em cartas de pôquer/baralho — cada perfil como uma "carta" física com textura, cantos e tipografia de carta de jogo. Aderência desenhada como um match de cartas. Emocional: lúdico, tátil.
-**Probabilidade:** 0.04
-
-### 3. "Terminal Noturno de Bastidores"
-Dark mode com acento âmbar/neon, sensação de sala de controle/backstage de lançamento. Emocional: bastidor, urgência.
-**Probabilidade:** 0.03
-
-## Abordagem escolhida: "Painel de Controle Editorial"
-
-- **Design Movement:** Editorial/Editorial-brutalist suave — mistura de painéis administrativos suíços com revistas impressas premium. Referência: dashboards editoriais do FT/The Economist, mas em ferramenta interna.
+- **Design Movement:** Editorial corporativo aspiracional — mistura de relatórios estratégicos premium com estética de palco/keynote (referência: materiais do Insider/Érico Rocha: preto profundo, dourado/âmbar, tipografia impactante de palco).
+- **Metáfora central:** a ROMA como destino — todas as estradas (Experts + Lançadores) convergem para um ponto. O match não é "casal", é **convergência de caminhos**: linhas/estradas que se encontram em Roma.
 - **Core Principles:**
-  1. Regras finas (hairlines) organizam a informação — divisórias funcionam como pauta de revista, não decoração.
-  2. Números e métricas tratados como manchetes — "aderência 87%" é o protagonista visual de cada match.
-  3. Terminologia do ecossistema (Roma, Avatar, Lançamento) aparece como labels tipográficos, em caixa alta com tracking largo.
-  4. Um acento de cor único e quente (terracota/vermelho-selo) para ações e status — o resto é neutro quente.
-- **Color Philosophy:** Fundo marfim quente (#FAF7F2 aprox., oklch ~0.975) evoca papel de revista e confiança editorial; tinta quase-preta quente para texto; acento **vermelho-selo (terracota #C2493A aprox.)** — remete ao "carimbo" de aprovação/curadoria, cor de marca de lançamentos brasileiros (energia, ação). Nenhum azul corporativo, nenhum roxo.
-- **Layout Paradigm:** Sidebar esquerda fixa (navegação por papel) + conteúdo em "pautas editoriais": listas com regras hairline, coluna de dados forte à direita, cards assimétricos. Nada de grid centrado uniforme.
+  1. Metáfora de rota/estrada: cards são "etapas do caminho"; match = convergência de rotas no mapa.
+  2. Estética de palco/keynote: fundo escuro profundo (preto grafite), acento dourado-âmbar (cor do universo Insider), tipografia condensada forte.
+  3. Terminologia de estratégia: "ADIÊNCIA" → "Compatibilidade de rota", "match" → "Aderência", score como "Índice de convergência".
+  4. Nada de corações, selos românticos, pares homem/mulher, "×" entre pessoas — usar setas convergindo, nós de rota, linhas de trajetória.
+- **Color Philosophy:** Fundo preto grafite profundo (oklch ~0.18) evoca a sala escura do Insider/palco; acento **dourado-âmbar (oklch ~0.75 0.13 75)** remete ao troféu/celebração do 6em7 e ao premium da marca; texto em branco quente. Secundário: cinza grafite. Verde-sutil apenas para "aceita/aprovado" em tom discreto.
+- **Layout Paradigm:** Mesma estrutura de painel (sidebar + conteúdo) mas com tema escuro de cockpit/palco; listas com regras hairline douradas translúcidas; números-protagonistas em dourado.
 - **Signature Elements:**
-  1. "Selo de aderência" — círculo/roseta com número grande de score, estilo carimbo.
-  2. Labels em caixa alta com tracking largo ("ROMA", "AVATAR", "TRIAGEM") em fonte mono ou serifada small-caps.
-  3. Regra horizontal dupla (double rule) estilo jornal separando seções.
-- **Interaction Philosophy:** Decisões de curadoria com peso: botões de triagem (liberar acesso / propor match) têm estado claro e micro-feedback de "carimbo". Troca de papel (Admin/Expert/Lançador) via seletor no topo da sidebar, simulando login.
-- **Animation:** Entradas com fade+rise sutil (≤250ms, ease-out), stagger de 40ms em listas; hover em linhas com deslocamento de fundo marfim→canela claro; sem animações chamativas em decisões críticas.
-- **Typography System:** Display: "Fraunces" (serif quente e característica) para títulos e números-protagonistas; Body: "Archivo" (sans neutra); Dados/labels: "Archivo" 600 uppercase tracking-wide ou mono "IBM Plex Mono" para scores. Hierarquia: H1 Fraunces 600, H2 Fraunces 500, labels mono uppercase 11-12px.
-- **Brand Essence:** Painel de curadoria de parcerias para o mundo dos lançamentos — conecta Experts e Lançadores com o rigor de uma redação. Adjetivos: criterioso, quente, editorial.
-- **Brand Voice:** Direto, vernáculo do ecossistema. Ex.: "Triagem em dia — 12 Romas aguardando avaliação." / "Liberar acesso? Este Expert atende à Roma do Lançador."
-- **Wordmark & Logo:** Wordmark "Parcerias" em Fraunces com "P." precedendo; símbolo: duas setas circulares formando um "match" como um selo/carimbo, em terracota.
-- **Signature Brand Color:** Vermelho-selo (terracota) — oklch(0.55 0.15 25) aprox.
+  1. "Ponto Roma": ícone de destino (pin/roseta de rota, não de amor) onde as linhas convergem.
+  2. Linhas de rota: traço fino dourado conectando Expert → Roma ← Lançador (convergência em "Y").
+  3. Labels mono uppercase ("ROMA", "AVATAR", "TRIAGEM") mantidos, agora em dourado translúcido.
+- **Interaction Philosophy:** Mesmas decisões de curadoria, mas feedback visual de "rota traçada" em vez de "carimbo romântico".
+- **Animation:** Mantidas fade+rise; adicionar traçado de linha de rota SVG discreto em convergências.
+- **Typography System:** Mantidas Fraunces (display, títulos de palco) + Archivo (body) + IBM Plex Mono (labels/scores).
+- **Brand Essence:** Central de operações de parcerias estratégicas do ecossistema — onde Experts e Lançadores encontram a rota certa até Roma. Adjetivos: estratégico, premium, decisivo.
+- **Brand Voice:** Vocabulário de campo de batalha/negócio. Ex.: "Rotas convergindo para Roma." / "Expert e Lançador na mesma trajetória."
+- **Wordmark & Logo:** Wordmark "Parcerias" em Fraunces + símbolo de **linhas convergindo em um ponto-destino** (Y de convergência), dourado, sem texto.
 
-## Estrutura de telas (baseada no doc de requisitos)
-- Landing/seletor de papel (Admin · Expert · Lançador) para o protótipo
-- Admin: visão global (tab Experts / tab Lançadores), detalhe do Expert com ROMA, triagem com score de aderência sugerido + decisão manual, propostas de match pendentes
-- Expert: meus projetos (com ROMA), Lançadores (bloqueados até liberação do admin — estado "Acesso liberado" vs "Aguardando triagem"), propostas recebidas
-- Lançador: perfis de Experts propostos, aceitar/recusar parceria, parceria ativa
+## Estrutura de telas (mantida)
+Landing + /painel/admin, /painel/expert, /painel/lancador com seletor de papel.
 
 ## Style Decisions
-(nada ainda)
+- Hero: ilustração de estradas/rotas convergindo em um ponto (Roma), mapa estilizado, tom escuro — sem casais.
+- Logo v2: símbolo de convergência (duas linhas entrando em um nó circular), dourado sobre transparente.

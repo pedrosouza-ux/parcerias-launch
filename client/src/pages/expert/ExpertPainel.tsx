@@ -1,5 +1,5 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
+ * Parcerias — "Estrada para Roma" (ideas.md v2)
  * Visão do EXPERT: acesso limitado — vê os próprios projetos e ROMA,
  * e os Lançadores apenas quando o administrador libera o acesso.
  */
