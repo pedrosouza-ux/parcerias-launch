@@ -1,7 +1,5 @@
 /**
- * Parcerias — Painel de Controle Editorial (ideas.md)
- * Layout do painel: sidebar esquerda fixa (navegação por papel),
- * wordmark Fraunces com logo selo, labels mono uppercase, regras hairline.
+ * Parcerias FL Insider — sidebar neutra, alto contraste e hierarquia operacional.
  */
 import { ReactNode } from "react";
 import { Papel } from "@/lib/mockData";
@@ -63,21 +61,21 @@ export default function PainelLayout({
   return (
     <div className="min-h-screen flex bg-background">
       {/* Sidebar */}
-      <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar sticky top-0 h-screen">
-        <div className="p-5 flex items-center justify-center">
-          <LogoInsider />
+      <aside className="sidebar-shell hidden lg:flex w-64 shrink-0 flex-col sticky top-0 h-screen">
+        <div className="sidebar-brand p-6 pb-5 flex items-center">
+          <LogoInsider className="sidebar-logo" />
         </div>
-        <div className="rule-double mx-5" />
-        <nav className="flex-1 px-3 py-4 space-y-0.5">
+        <div className="sidebar-divider mx-5" />
+        <nav className="flex-1 px-3 py-5 space-y-1">
           {nav.map((item, i) => (
             <button
               key={item.id}
               onClick={() => onNavegar(item.id)}
               className={cn(
-                "w-full flex items-center justify-between px-3 py-2.5 rounded-md text-sm transition-all duration-150 active:scale-[0.98]",
+                "sidebar-nav-item w-full flex items-center justify-between px-3 py-2.5 text-sm transition-all duration-150 active:scale-[0.98]",
                 paginaAtiva === item.id
-                  ? "bg-sidebar-accent text-sidebar-accent-foreground font-semibold"
-                  : "text-sidebar-foreground/80 hover:bg-sidebar-accent/60",
+                  ? "sidebar-nav-active font-semibold"
+                  : "sidebar-nav-idle",
               )}
               style={paginaAtiva === item.id ? { animationDelay: `${i * 40}ms` } : undefined}
             >
@@ -85,8 +83,8 @@ export default function PainelLayout({
               {item.contagem !== undefined && (
                 <span
                   className={cn(
-                    "font-mono text-xs font-semibold px-1.5 py-0.5 rounded-sm",
-                    paginaAtiva === item.id ? "bg-primary text-primary-foreground" : "bg-muted text-muted-foreground",
+                    "sidebar-count font-mono text-xs font-semibold px-1.5 py-0.5",
+                    paginaAtiva === item.id ? "sidebar-count-active" : "sidebar-count-idle",
                   )}
                 >
                   {item.contagem}
@@ -95,10 +93,10 @@ export default function PainelLayout({
             </button>
           ))}
         </nav>
-        <div className="rule-double mx-5" />
-        <div className="p-4">
-          <p className="label-ed mb-1">Sessão</p>
-          <p className="text-sm font-medium">{nomeUsuario}</p>
+        <div className="sidebar-divider mx-5" />
+        <div className="sidebar-session m-3 mt-4 p-3.5">
+          <p className="sidebar-session-label mb-1.5">Sessão ativa</p>
+          <p className="sidebar-session-name">{nomeUsuario}</p>
         </div>
       </aside>
 

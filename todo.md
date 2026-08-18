@@ -32,4 +32,8 @@
 
 - [x] Definir o diagrama BPMN do fluxo validado de parcerias e seus responsáveis
 - [x] Integrar o visualizador BPMN.io ao painel administrativo
-- [ ] Validar o diagrama no sistema e publicar a atualização
+- [x] Validar o diagrama no sistema e publicar a atualização
+
+- [x] Corrigir contraste do logo, navegação e sessão na barra lateral
+- [x] Refinar o estado ativo para reduzir o peso visual do azul
+- [ ] Validar a barra lateral em modo claro e escuro e publicar a correção
