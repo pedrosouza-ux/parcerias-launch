@@ -107,12 +107,20 @@ export async function upsertUser(user: InsertUser): Promise<void> {
       values.lastSignedIn = user.lastSignedIn;
       updateSet.lastSignedIn = user.lastSignedIn;
     }
+    const normalizedEmail = typeof user.email === "string" ? user.email.trim().toLowerCase() : null;
     if (user.role !== undefined) {
       values.role = user.role;
       updateSet.role = user.role;
     } else if (user.openId === ENV.ownerOpenId) {
       values.role = 'admin';
       updateSet.role = 'admin';
+    } else if (normalizedEmail) {
+      const [grant] = await db.select().from(adminAccessGrants).where(and(
+        eq(adminAccessGrants.email, normalizedEmail),
+        eq(adminAccessGrants.status, "active"),
+      )).limit(1);
+      values.role = grant ? "admin" : "user";
+      updateSet.role = grant ? "admin" : "user";
     }
 
     if (!values.lastSignedIn) {
@@ -140,8 +148,53 @@ export async function getUserByOpenId(openId: string) {
   }
 
   const result = await db.select().from(users).where(eq(users.openId, openId)).limit(1);
+  const user = result[0];
+  if (!user) return undefined;
 
-  return result.length > 0 ? result[0] : undefined;
+  const normalizedEmail = user.email?.trim().toLowerCase();
+  const [grant] = normalizedEmail ? await db.select().from(adminAccessGrants).where(and(
+    eq(adminAccessGrants.email, normalizedEmail),
+    eq(adminAccessGrants.status, "active"),
+  )).limit(1) : [];
+  const role: "admin" | "user" = user.openId === ENV.ownerOpenId || grant ? "admin" : "user";
+
+  if (user.role !== role) {
+    await db.update(users).set({ role }).where(eq(users.id, user.id));
+  }
+  if (grant && grant.userId !== user.id) {
+    await db.update(adminAccessGrants).set({ userId: user.id, activatedAt: grant.activatedAt ?? new Date() }).where(eq(adminAccessGrants.id, grant.id));
+  }
+
+  return { ...user, role };
+}
+
+export type ValidationParticipantRole = "expert" | "lancador";
+
+export const validationOpenIdByRole: Record<ValidationParticipantRole, string> = {
+  expert: "demo-expert-validacao-01",
+  lancador: "demo-lancador-validacao-01",
+};
+
+export function isValidationExpertOpenId(openId: string | null | undefined) {
+  return openId === validationOpenIdByRole.expert;
+}
+
+export function canDeclareValidationInterest(project: { status: string; ownerOpenId: string | null | undefined }) {
+  return project.status === "eligible" && isValidationExpertOpenId(project.ownerOpenId);
+}
+
+/** Resolve o participante fictício reservado exclusivamente para a validação administrativa. */
+export async function getValidationParticipantUserId(role: ValidationParticipantRole) {
+  const user = await getUserByOpenId(validationOpenIdByRole[role]);
+  if (!user) throw new Error(`Participante demonstrativo de ${role} não encontrado.`);
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const [registration] = await db.select().from(registrations).where(eq(registrations.userId, user.id)).limit(1);
+  if (!registration || registration.status !== "approved") {
+    throw new Error(`O cadastro demonstrativo de ${role} precisa estar aprovado para operar.`);
+  }
+  await ensureOperationalProfile(registration);
+  return user.id;
 }
 
 export async function getRegistrationByUserId(userId: number) {
@@ -424,6 +477,42 @@ export async function listEligibleProjects() {
     .orderBy(desc(projects.updatedAt));
 }
 
+/** Catálogo isolado para o ambiente de validação: somente o projeto do Expert fictício. */
+export async function listValidationEligibleProjects() {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const expertUserId = await getValidationParticipantUserId("expert");
+
+  const rows = await db
+    .select({
+      project: {
+        id: projects.id,
+        name: projects.name,
+        niche: projects.niche,
+        subniche: projects.subniche,
+        specialties: projects.specialties,
+        maturity: projects.maturity,
+        avatarDescription: projects.avatarDescription,
+        pains: projects.pains,
+        ambition: projects.ambition,
+        roma: projects.roma,
+        mechanism: projects.mechanism,
+        offerFormat: projects.offerFormat,
+        priceRange: projects.priceRange,
+        mainChannel: projects.mainChannel,
+      },
+      ownerOpenId: users.openId,
+    })
+    .from(projects)
+    .innerJoin(expertProfiles, eq(projects.expertProfileId, expertProfiles.id))
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(and(eq(projects.status, "eligible"), eq(expertProfiles.userId, expertUserId)))
+    .orderBy(desc(projects.updatedAt));
+  return rows
+    .filter(row => isValidationExpertOpenId(row.ownerOpenId))
+    .map(({ project }) => ({ project }));
+}
+
 export async function listProjectsForAdmin() {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
@@ -492,6 +581,26 @@ export async function declareProjectInterest(input: { userId: number; projectId:
     .where(and(eq(projectInterests.projectId, input.projectId), eq(projectInterests.launcherProfileId, launcher.id)))
     .limit(1);
   return interest ?? null;
+}
+
+/** Declara interesse somente se o projeto fizer parte do conjunto demonstrativo. */
+export async function declareValidationProjectInterest(input: { userId: number; projectId: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const expertUserId = await getValidationParticipantUserId("expert");
+  const [project] = await db
+    .select({ id: projects.id, ownerOpenId: users.openId })
+    .from(projects)
+    .innerJoin(expertProfiles, eq(projects.expertProfileId, expertProfiles.id))
+    .innerJoin(users, eq(expertProfiles.userId, users.id))
+    .where(and(
+      eq(projects.id, input.projectId),
+      eq(projects.status, "eligible"),
+      eq(expertProfiles.userId, expertUserId),
+    ))
+    .limit(1);
+  if (!project || !canDeclareValidationInterest({ status: "eligible", ownerOpenId: project.ownerOpenId })) return null;
+  return declareProjectInterest(input);
 }
 
 export async function listLauncherInterests(userId: number) {
@@ -659,4 +768,38 @@ export async function revokeAdminAccessGrant(input: { grantId: number; revokedBy
 
   const [updated] = await db.select().from(adminAccessGrants).where(eq(adminAccessGrants.id, input.grantId)).limit(1);
   return updated ?? null;
+}
+
+/** Retorna apenas interesses do par fictício, para não expor dados reais à operação de validação. */
+export async function listValidationLauncherInterests() {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const expertUserId = await getValidationParticipantUserId("expert");
+  const launcherUserId = await getValidationParticipantUserId("lancador");
+  return db
+    .select({ interest: projectInterests, project: projects, meeting: meetings })
+    .from(projectInterests)
+    .innerJoin(projects, eq(projectInterests.projectId, projects.id))
+    .innerJoin(expertProfiles, eq(projects.expertProfileId, expertProfiles.id))
+    .innerJoin(launcherProfiles, eq(projectInterests.launcherProfileId, launcherProfiles.id))
+    .leftJoin(meetings, eq(meetings.interestId, projectInterests.id))
+    .where(and(eq(expertProfiles.userId, expertUserId), eq(launcherProfiles.userId, launcherUserId)))
+    .orderBy(desc(projectInterests.createdAt));
+}
+
+export async function listValidationExpertInterests() {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+  const expertUserId = await getValidationParticipantUserId("expert");
+  const launcherUserId = await getValidationParticipantUserId("lancador");
+  return db
+    .select({ interest: projectInterests, project: projects, launcher: launcherProfiles, registration: registrations, meeting: meetings })
+    .from(projectInterests)
+    .innerJoin(projects, eq(projectInterests.projectId, projects.id))
+    .innerJoin(expertProfiles, eq(projects.expertProfileId, expertProfiles.id))
+    .innerJoin(launcherProfiles, eq(projectInterests.launcherProfileId, launcherProfiles.id))
+    .innerJoin(registrations, eq(launcherProfiles.registrationId, registrations.id))
+    .leftJoin(meetings, eq(meetings.interestId, projectInterests.id))
+    .where(and(eq(expertProfiles.userId, expertUserId), eq(launcherProfiles.userId, launcherUserId)))
+    .orderBy(desc(projectInterests.createdAt));
 }

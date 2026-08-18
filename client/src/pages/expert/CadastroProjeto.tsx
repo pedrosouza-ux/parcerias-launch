@@ -29,7 +29,7 @@ const maturidadeParaBanco = { "Em estruturação": "structuring", "Validado para
 const maturidadeDaBase = { structuring: "Em estruturação", validated: "Validado para lançamento", launched: "Já lançado" } as const;
 const separar = (valor: string) => valor.split(",").map(item => item.trim()).filter(Boolean);
 
-export default function CadastroProjeto() {
+export default function CadastroProjeto({ modoOperacaoAdmin = false }: { modoOperacaoAdmin?: boolean }) {
   const [etapa, setEtapa] = useState<Etapa>(() => {
     const etapaNaUrl = Number(new URLSearchParams(window.location.search).get("etapa"));
     return etapaNaUrl >= 1 && etapaNaUrl <= 4 ? etapaNaUrl as Etapa : 1;
@@ -37,7 +37,9 @@ export default function CadastroProjeto() {
   const [dados, setDados] = useState<DadosProjeto>(inicial);
   const [enviado, setEnviado] = useState(false);
   const carregado = useRef<number | null>(null);
-  const projeto = trpc.projects.mine.useQuery(undefined, { retry: false, refetchOnWindowFocus: false });
+  const projetoProprio = trpc.projects.mine.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: !modoOperacaoAdmin });
+  const projetoValidacao = trpc.projects.validationMine.useQuery(undefined, { retry: false, refetchOnWindowFocus: false, enabled: modoOperacaoAdmin });
+  const projeto = modoOperacaoAdmin ? projetoValidacao : projetoProprio;
   const utils = trpc.useUtils();
 
   useEffect(() => {
@@ -71,11 +73,19 @@ export default function CadastroProjeto() {
     onSuccess: async () => { await utils.projects.mine.invalidate(); toast.success("Rascunho salvo com segurança"); },
     onError: erro => toast.error("Não foi possível salvar o rascunho", { description: erro.message }),
   });
+  const salvarRascunhoValidacao = trpc.projects.validationSaveDraft.useMutation({
+    onSuccess: async () => { await utils.projects.validationMine.invalidate(); toast.success("Rascunho demonstrativo salvo com segurança"); },
+    onError: erro => toast.error("Não foi possível salvar o rascunho demonstrativo", { description: erro.message }),
+  });
   const enviarProjeto = trpc.projects.submit.useMutation({
     onSuccess: async () => { await utils.projects.mine.invalidate(); setEnviado(true); toast.success("Cadastro enviado para validação"); },
     onError: erro => toast.error("Revise os campos obrigatórios", { description: erro.message }),
   });
-  const salvar = () => salvarRascunho.mutate(dadosParciais());
+  const enviarProjetoValidacao = trpc.projects.validationSubmit.useMutation({
+    onSuccess: async () => { await utils.projects.validationMine.invalidate(); setEnviado(true); toast.success("Projeto demonstrativo enviado para validação"); },
+    onError: erro => toast.error("Revise os campos obrigatórios", { description: erro.message }),
+  });
+  const salvar = () => (modoOperacaoAdmin ? salvarRascunhoValidacao : salvarRascunho).mutate(dadosParciais());
   const enviar = () => {
     if (!dados.veracidade || !dados.curadoria || !dados.exposicao) {
       toast.error("Confirme as três declarações antes de enviar");
@@ -83,11 +93,11 @@ export default function CadastroProjeto() {
     }
     const maturidade = maturidadeParaBanco[dados.maturidade as keyof typeof maturidadeParaBanco];
     if (!maturidade) { toast.error("Informe a maturidade do projeto antes de enviar"); setEtapa(1); return; }
-    enviarProjeto.mutate({ ...dadosParciais(), maturity: maturidade, informationConfirmed: true, curationAuthorized: true, exposureAcknowledged: true });
+    (modoOperacaoAdmin ? enviarProjetoValidacao : enviarProjeto).mutate({ ...dadosParciais(), maturity: maturidade, informationConfirmed: true, curationAuthorized: true, exposureAcknowledged: true });
   };
 
   if (projeto.isLoading) return <section className="max-w-4xl py-8 text-sm text-muted-foreground">Carregando seu cadastro de projeto…</section>;
-  if (enviado) return <section className="rise-in max-w-3xl mx-auto py-8"><div className="bg-card border border-border rounded-xl overflow-hidden"><div className="p-8 sm:p-10"><div className="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center"><FileCheck2 className="size-6" /></div><p className="label-ed text-primary mt-7">Cadastro enviado</p><h2 className="font-display text-3xl sm:text-4xl font-semibold mt-3">Seu projeto entrou na fila de curadoria.</h2><p className="text-muted-foreground leading-relaxed mt-4 max-w-xl">A operação fará uma leitura qualitativa de Nicho, Avatar, ROMA e maturidade. O projeto só aparece para Lançadores quando for considerado elegível para o catálogo.</p><div className="mt-7 flex flex-wrap items-center gap-3"><BadgeStatus status="Enviado" /><span className="text-sm text-muted-foreground">Próximo estado: Em validação</span></div></div><div className="border-t border-border bg-secondary/45 px-8 sm:px-10 py-5 text-sm text-muted-foreground">Os dados foram armazenados com acesso restrito à operação. Você pode acompanhar a decisão no seu painel.</div></div></section>;
+  if (enviado) return <section className="rise-in max-w-3xl mx-auto py-8"><div className="bg-card border border-border rounded-xl overflow-hidden"><div className="p-8 sm:p-10"><div className="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center"><FileCheck2 className="size-6" /></div><p className="label-ed text-primary mt-7">Cadastro enviado</p><h2 className="font-display text-3xl sm:text-4xl font-semibold mt-3">Seu projeto entrou na fila de curadoria.</h2><p className="text-muted-foreground leading-relaxed mt-4 max-w-xl">A operação fará uma leitura qualitativa de Nicho, Avatar, ROMA e maturidade. O projeto só aparece para Lançadores quando for considerado elegível para o catálogo.</p><div className="mt-7 flex flex-wrap items-center gap-3"><BadgeStatus status="Enviado" /><span className="text-sm text-muted-foreground">Próximo estado: Em validação</span></div>{modoOperacaoAdmin && <button type="button" onClick={() => setEnviado(false)} className="mt-6 min-h-11 rounded-md border border-border bg-card px-4 text-sm font-medium hover:bg-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring">Editar a versão demonstrativa</button>}</div><div className="border-t border-border bg-secondary/45 px-8 sm:px-10 py-5 text-sm text-muted-foreground">Os dados foram armazenados com acesso restrito à operação. Você pode acompanhar a decisão no seu painel.</div></div></section>;
 
   return <section className="rise-in max-w-4xl">
     <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-4 mb-7"><div><div className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-wider text-primary"><Sparkles className="size-3.5" />Cadastro operacional</div><h2 className="font-display text-3xl font-semibold mt-2">Cadastre seu projeto</h2><p className="text-sm text-muted-foreground mt-2 max-w-2xl">Você terá cerca de 10 minutos. Salve como rascunho se precisar reunir informações antes de enviar para a curadoria.</p></div><BadgeStatus status="Rascunho" /></div>

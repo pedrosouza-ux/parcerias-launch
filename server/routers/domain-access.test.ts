@@ -34,6 +34,14 @@ describe("proteções dos fluxos operacionais", () => {
     await expect(caller.interests.schedule({ interestId: 1, scheduledFor: new Date(Date.now() + 60_000), location: "Mesa 1" })).rejects.toMatchObject({ code: "FORBIDDEN" });
   });
 
+  it("reserva os procedimentos de operação demonstrativa para Administradores", async () => {
+    const caller = appRouter.createCaller(contextFor("user"));
+    await expect(caller.projects.validationMine()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.projects.validationCatalog()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.interests.validationMineAsLauncher()).rejects.toMatchObject({ code: "FORBIDDEN" });
+    await expect(caller.interests.validationDeclare({ projectId: 1 })).rejects.toMatchObject({ code: "FORBIDDEN" });
+  });
+
   it("exige sessão autenticada antes de declarar interesse em um projeto", async () => {
     const caller = appRouter.createCaller(contextFor(null));
     await expect(caller.interests.declare({ projectId: 1 })).rejects.toMatchObject({ code: "UNAUTHORIZED" });
@@ -42,5 +50,10 @@ describe("proteções dos fluxos operacionais", () => {
   it("recusa triagem sem os critérios obrigatórios de conferência", async () => {
     const caller = appRouter.createCaller(contextFor("admin"));
     await expect(caller.projects.review({ projectId: 1, decision: "eligible", observation: "Análise concluída", nicheReviewed: true, avatarReviewed: false, romaReviewed: true, maturityReviewed: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
+  });
+
+  it("recusa pelo roteador um interesse administrativo fora do catálogo demonstrativo", async () => {
+    const caller = appRouter.createCaller(contextFor("admin"));
+    await expect(caller.interests.validationDeclare({ projectId: 999_999_999 })).rejects.toMatchObject({ code: "NOT_FOUND" });
   });
 });

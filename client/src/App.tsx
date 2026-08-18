@@ -10,11 +10,12 @@ import AdminPainel from "./pages/admin/AdminPainel";
 import CadastroParticipacao from "./pages/CadastroParticipacao";
 import ExpertPainel from "./pages/expert/ExpertPainel";
 import LancadorPainel from "./pages/lancador/LancadorPainel";
-import { isModoVisualizacaoAdmin } from "./lib/painelPreview";
+import { isModoOperacaoAdmin, isModoVisualizacaoAdmin } from "./lib/painelPreview";
 function Router() {
-  const preview = isModoVisualizacaoAdmin(window.location.pathname, window.location.search);
+  const modoVisualizacao = isModoVisualizacaoAdmin(window.location.pathname, window.location.search);
+  const modoOperacaoAdmin = isModoOperacaoAdmin(window.location.pathname, window.location.search);
   const navegarComoAdmin = (papel: "admin" | "expert" | "lancador") => {
-    window.location.href = papel === "admin" ? "/painel/admin" : `/painel/${papel}?visualizacao=admin`;
+    window.location.href = papel === "admin" ? "/painel/admin" : `/painel/${papel}?operacao=admin`;
   };
 
   // make sure to consider if you need authentication for certain routes
@@ -26,10 +27,10 @@ function Router() {
         {() => <AccessGate requiredRole="admin"><AdminPainel onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/painel/expert"}>
-        {() => <AccessGate requiredRole="expert" allowAdminPreview={preview}><ExpertPainel modoVisualizacao={preview} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
+        {() => <AccessGate requiredRole="expert" allowAdminPreview={modoVisualizacao || modoOperacaoAdmin}><ExpertPainel modoVisualizacao={modoVisualizacao} modoOperacaoAdmin={modoOperacaoAdmin} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/painel/lancador"}>
-        {() => <AccessGate requiredRole="lancador" allowAdminPreview={preview}><LancadorPainel modoVisualizacao={preview} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
+        {() => <AccessGate requiredRole="lancador" allowAdminPreview={modoVisualizacao || modoOperacaoAdmin}><LancadorPainel modoVisualizacao={modoVisualizacao} modoOperacaoAdmin={modoOperacaoAdmin} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

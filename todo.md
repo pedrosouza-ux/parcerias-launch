@@ -96,8 +96,22 @@
 - [x] Atualizar Arthur Lobo como dono do processo e Administrador ativo
 - [x] Criar dois registros demonstrativos identificados para validar a triagem administrativa
 - [x] Distinguir visualmente dados de validação no painel administrativo
-- [ ] Validar e publicar o cenário administrativo de teste
+- [x] Validar e publicar o cenário administrativo de teste
 - [x] Adicionar identificação visual por registro para dados fictícios no painel administrativo
 - [x] Validar visualmente o cenário administrativo de teste após destacar individualmente os registros demonstrativos
 - [x] Aplicar a etiqueta visual de validação também na agenda administrativa e nas listas de Experts/Lançadores do painel Admin
 - [x] Revalidar visualmente o cenário administrativo completo após a identificação individual aparecer de forma consistente em todas as áreas relevantes
+- [x] Habilitar um modo operacional de validação para o Administrador testar os fluxos de Expert e Lançador
+- [x] Garantir que o modo operacional administrativo utilize somente registros demonstrativos identificados
+- [ ] Validar as ações habilitadas e publicar a atualização de teste
+- [x] Aprovar e provisionar o Lançador demonstrativo para habilitar imediatamente a operação dos dois perfis
+- [x] Restringir o catálogo e os interesses do modo de validação aos projetos demonstrativos identificados
+- [x] Cobrir com testes o isolamento que impede o modo de validação de ler ou alterar registros reais
+- [x] Aprovar e provisionar o Lançador demonstrativo para habilitar imediatamente a operação dos dois perfis
+- [x] Restringir o catálogo e os interesses do modo de validação aos projetos demonstrativos identificados
+- [x] Cobrir com testes o isolamento que impede o modo de validação de ler ou alterar registros reais
+- [x] Adicionar testes de integração que comprovem que o catálogo demonstrativo exclui projetos reais
+- [x] Garantir em teste que interesses demonstrativos rejeitam projetos fora do conjunto fictício
+- [x] Confirmar em teste que interesses e reuniões reais não são expostos no modo operacional administrativo
+- [x] Adicionar teste ponta a ponta de rejeição de projeto elegível real pela declaração demonstrativa de interesse
+- [x] Criar e remover automaticamente uma fixture elegível não demonstrativa para testar a rejeição ponta a ponta

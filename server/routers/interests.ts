@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createAuditLog, declareProjectInterest, listExpertInterests, listInterestsForAdmin, listLauncherInterests, scheduleMeeting } from "../db";
+import { createAuditLog, declareProjectInterest, declareValidationProjectInterest, getValidationParticipantUserId, listExpertInterests, listInterestsForAdmin, listLauncherInterests, listValidationExpertInterests, listValidationLauncherInterests, scheduleMeeting } from "../db";
 import { adminProcedure, protectedProcedure, router } from "../_core/trpc";
 import { requireApprovedParticipation } from "./access";
 
@@ -21,14 +21,35 @@ export const interestsRouter = router({
     return interest;
   }),
 
+  validationDeclare: adminProcedure.input(interestInput).mutation(async ({ ctx, input }) => {
+    const userId = await getValidationParticipantUserId("lancador");
+    await requireApprovedParticipation(userId, "lancador");
+    const interest = await declareValidationProjectInterest({ userId, projectId: input.projectId });
+    if (!interest) throw new TRPCError({ code: "NOT_FOUND", message: "Projeto demonstrativo elegível não encontrado." });
+    await createAuditLog({ actorUserId: ctx.user.id, action: "validation.interest.declared", entityType: "interest", entityId: String(interest.id), metadata: { projectId: input.projectId, validation: true } });
+    return interest;
+  }),
+
   mineAsLauncher: protectedProcedure.query(async ({ ctx }) => {
     await requireApprovedParticipation(ctx.user.id, "lancador");
     return listLauncherInterests(ctx.user.id);
   }),
 
+  validationMineAsLauncher: adminProcedure.query(async () => {
+    const userId = await getValidationParticipantUserId("lancador");
+    await requireApprovedParticipation(userId, "lancador");
+    return listValidationLauncherInterests();
+  }),
+
   mineAsExpert: protectedProcedure.query(async ({ ctx }) => {
     await requireApprovedParticipation(ctx.user.id, "expert");
     return listExpertInterests(ctx.user.id);
+  }),
+
+  validationMineAsExpert: adminProcedure.query(async () => {
+    const userId = await getValidationParticipantUserId("expert");
+    await requireApprovedParticipation(userId, "expert");
+    return listValidationExpertInterests();
   }),
 
   forAdmin: adminProcedure.query(() => listInterestsForAdmin()),

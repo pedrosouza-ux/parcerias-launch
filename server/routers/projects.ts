@@ -1,6 +1,6 @@
 import { TRPCError } from "@trpc/server";
 import { z } from "zod";
-import { createAuditLog, getProjectByExpertUserId, listEligibleProjects, listProjectsForAdmin, reviewProject, saveProjectDraft } from "../db";
+import { createAuditLog, getProjectByExpertUserId, getValidationParticipantUserId, listEligibleProjects, listProjectsForAdmin, listValidationEligibleProjects, reviewProject, saveProjectDraft } from "../db";
 import { adminProcedure, protectedProcedure, router } from "../_core/trpc";
 import { requireApprovedParticipation } from "./access";
 
@@ -64,10 +64,24 @@ export const projectsRouter = router({
     return getProjectByExpertUserId(ctx.user.id);
   }),
 
+  validationMine: adminProcedure.query(async () => {
+    const userId = await getValidationParticipantUserId("expert");
+    await requireApprovedParticipation(userId, "expert");
+    return getProjectByExpertUserId(userId);
+  }),
+
   saveDraft: protectedProcedure.input(projectDraftFields).mutation(async ({ ctx, input }) => {
     await requireApprovedParticipation(ctx.user.id, "expert");
     const saved = await saveProjectDraft({ userId: ctx.user.id, fields: input, submit: false });
     await createAuditLog({ actorUserId: ctx.user.id, action: "project.draft_saved", entityType: "project", entityId: String(saved?.project?.id ?? "new") });
+    return saved;
+  }),
+
+  validationSaveDraft: adminProcedure.input(projectDraftFields).mutation(async ({ ctx, input }) => {
+    const userId = await getValidationParticipantUserId("expert");
+    await requireApprovedParticipation(userId, "expert");
+    const saved = await saveProjectDraft({ userId, fields: input, submit: false });
+    await createAuditLog({ actorUserId: ctx.user.id, action: "validation.project.draft_saved", entityType: "project", entityId: String(saved?.project?.id ?? "new"), metadata: { validation: true } });
     return saved;
   }),
 
@@ -81,9 +95,26 @@ export const projectsRouter = router({
     return saved;
   }),
 
+  validationSubmit: adminProcedure.input(projectFields).mutation(async ({ ctx, input }) => {
+    if (input.maturity === "launched" && !input.evidence) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "Informe uma evidência para projetos já lançados." });
+    }
+    const userId = await getValidationParticipantUserId("expert");
+    await requireApprovedParticipation(userId, "expert");
+    const saved = await saveProjectDraft({ userId, fields: input, submit: true });
+    await createAuditLog({ actorUserId: ctx.user.id, action: "validation.project.submitted", entityType: "project", entityId: String(saved?.project?.id ?? "new"), metadata: { validation: true } });
+    return saved;
+  }),
+
   catalog: protectedProcedure.query(async ({ ctx }) => {
     await requireApprovedParticipation(ctx.user.id, "lancador");
     return listEligibleProjects();
+  }),
+
+  validationCatalog: adminProcedure.query(async () => {
+    const userId = await getValidationParticipantUserId("lancador");
+    await requireApprovedParticipation(userId, "lancador");
+    return listValidationEligibleProjects();
   }),
 
   forAdmin: adminProcedure.query(() => listProjectsForAdmin()),
