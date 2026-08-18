@@ -14,7 +14,7 @@ export function Label({ children, className }: { children: ReactNode; className?
 }
 
 export function LinhaDado({ rotulo, valor }: { rotulo: string; valor: ReactNode }) {
-  return <div className="flex items-baseline justify-between gap-4 py-2 border-b border-border/60 last:border-b-0"><Label>{rotulo}</Label><span className="text-sm font-medium text-right">{valor}</span></div>;
+  return <div className="flex flex-col gap-1 py-2 border-b border-border/60 last:border-b-0 sm:flex-row sm:items-baseline sm:justify-between sm:gap-4"><Label>{rotulo}</Label><span className="w-full text-sm font-medium text-left sm:w-auto sm:text-right">{valor}</span></div>;
 }
 
 export function InstagramHandle({ handle }: { handle: string }) {

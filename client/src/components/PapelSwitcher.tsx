@@ -30,7 +30,7 @@ export default function PapelSwitcher({ papel, onTrocar, nomeUsuario }: PapelSwi
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="outline" className="gap-2 h-9 bg-card border-border font-medium hover:bg-accent active:scale-[0.97] transition-all duration-150">
+        <Button variant="outline" className="gap-2 h-10 bg-card border-border font-medium hover:bg-accent active:scale-[0.97] transition-all duration-150">
           {atual.icone}
           <span>{atual.nome}</span>
           <ChevronDown className="size-3.5 opacity-60" />

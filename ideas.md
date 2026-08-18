@@ -44,3 +44,8 @@ Sistema oficial FL Insider de curadoria de parcerias entre Experts e Lançadores
 - Trocar Fraunces → Alexandria; Archivo/IBM Plex Mono → Roboto.
 - Trocar dourado-âmbar → #3A5399/#718AB5; dourado #AA953A apenas em pontuações (ex.: score alto ≥80).
 - Favicon: IN_BRANCO_ISOTIPO.png não disponível no sandbox — usar LOGO_INSIDER_BRANCO.svg convertido ou INSIDER_BRANCO.png como favicon.
+
+## Style Decisions — auditoria de responsividade e marca
+- A landing passa a expor a metáfora institucional de **rotas convergentes para a ROMA** em linhas #718AB5/#3A5399 e um nó de convergência; o elemento é decorativo e não interfere na leitura nem nos controles.
+- Alexandria assume peso de protagonista nos títulos de entrada; Roboto permanece responsável por corpo e microcopy operacional.
+- Os dois modos explicitamente aprovados para o produto são preservados: o modo claro continua com superfícies de leitura controladas e o modo escuro concentra a materialidade azul-marinho institucional. A troca permanece acessível e persistente.

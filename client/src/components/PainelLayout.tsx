@@ -61,6 +61,7 @@ export default function PainelLayout({
   const nav = navegacao[papel];
   return (
     <div className="min-h-screen flex bg-background">
+      <a className="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
       {/* Sidebar */}
       <aside className="sidebar-shell hidden lg:flex w-64 shrink-0 flex-col sticky top-0 h-screen">
         <div className="sidebar-brand p-6 pb-5 flex items-center">
@@ -103,29 +104,31 @@ export default function PainelLayout({
 
       {/* Conteúdo */}
       <div className="flex-1 flex flex-col min-w-0">
-        <header className="sticky top-0 z-20 bg-background/90 backdrop-blur-md border-b border-border px-5 lg:px-8 h-16 flex items-center justify-between gap-4">
-          <div className="flex flex-col">
+        <header className="sticky top-0 z-20 min-h-16 bg-background/90 backdrop-blur-md border-b border-border px-4 sm:px-5 lg:px-8 py-2 flex items-center justify-between gap-3 sm:gap-4">
+          <div className="flex min-w-0 flex-col">
             <h1 className="font-display text-lg lg:text-xl font-semibold leading-tight">{titulo}</h1>
             {subtitulo && <p className="text-xs text-muted-foreground hidden sm:block">{subtitulo}</p>}
           </div>
-          <div className="flex items-center gap-2 lg:hidden">
+          <div className="panel-mobile-wordmark shrink-0 items-center gap-2 lg:hidden" aria-hidden="true">
             <LogoInsider compact />
           </div>
-          <div className="flex items-center gap-2">
+          <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
             <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />
           </div>
         </header>
 
         {/* Navegação mobile */}
-        <nav className="lg:hidden sticky top-16 z-10 bg-background border-b border-border overflow-x-auto">
+        <nav className="lg:hidden sticky top-16 z-10 bg-background border-b border-border overflow-x-auto" aria-label="Navegação do painel">
           <div className="flex px-4 gap-1 py-2 min-w-max">
             {nav.map((item) => (
               <button
                 key={item.id}
+                type="button"
                 onClick={() => onNavegar(item.id)}
+                aria-current={paginaAtiva === item.id ? "page" : undefined}
                 className={cn(
-                  "px-3 py-1.5 rounded-md text-sm whitespace-nowrap transition-colors",
+                  "min-h-11 px-3.5 py-2 rounded-md text-sm whitespace-nowrap transition-colors",
                   paginaAtiva === item.id
                     ? "bg-primary text-primary-foreground font-semibold"
                     : "text-muted-foreground hover:bg-accent",
@@ -138,7 +141,7 @@ export default function PainelLayout({
           </div>
         </nav>
 
-        <main className="flex-1 px-5 lg:px-8 py-6 lg:py-8 max-w-6xl w-full">{children}</main>
+        <main id="conteudo-principal" tabIndex={-1} className="flex-1 px-5 lg:px-8 py-6 lg:py-8 max-w-6xl w-full">{children}</main>
 
         <footer className="px-5 lg:px-8 py-5 border-t border-border">
           <p className="label-ed">

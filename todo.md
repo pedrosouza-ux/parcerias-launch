@@ -48,4 +48,9 @@
 
 - [x] Alinhar rótulos, textos auxiliares e controles nas colunas do formulário
 - [x] Exibir a logo branca sobre base azul-marinho na barra lateral do modo claro
-- [ ] Validar as correções visualmente e publicar a atualização
+- [x] Validar as correções visualmente e publicar a atualização
+
+- [x] Auditar responsividade das telas principais em viewport móvel
+- [x] Revisar navegação por teclado, foco visível e semântica dos controles
+- [x] Corrigir os pontos de maior impacto na experiência móvel e acessível
+- [x] Validar as correções em desktop e mobile, salvar checkpoint e publicar a atualização
