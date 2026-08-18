@@ -64,7 +64,7 @@ export default function PainelLayout({
       {/* Sidebar */}
       <aside className="sidebar-shell hidden lg:flex w-64 shrink-0 flex-col sticky top-0 h-screen">
         <div className="sidebar-brand p-6 pb-5 flex items-center">
-          <LogoInsider className="sidebar-logo" />
+          <LogoInsider className="sidebar-logo" variante="branca" />
         </div>
         <div className="sidebar-divider mx-5" />
         <nav className="flex-1 px-3 py-5 space-y-1">

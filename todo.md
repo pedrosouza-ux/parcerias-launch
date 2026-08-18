@@ -44,4 +44,8 @@
 
 - [x] Definir etapas, campos obrigatórios e exemplos do cadastro de projeto de Expert
 - [x] Criar telas navegáveis de cadastro, revisão e envio para validação do negócio
-- [ ] Documentar os campos propostos, validar visualmente e publicar o protótipo
+- [x] Documentar os campos propostos, validar visualmente e publicar o protótipo
+
+- [x] Alinhar rótulos, textos auxiliares e controles nas colunas do formulário
+- [x] Exibir a logo branca sobre base azul-marinho na barra lateral do modo claro
+- [ ] Validar as correções visualmente e publicar a atualização
