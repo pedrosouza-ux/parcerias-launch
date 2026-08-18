@@ -1,0 +1,45 @@
+import { TRPCError } from "@trpc/server";
+import { z } from "zod";
+import { createAuditLog, declareProjectInterest, listExpertInterests, listInterestsForAdmin, listLauncherInterests, scheduleMeeting } from "../db";
+import { adminProcedure, protectedProcedure, router } from "../_core/trpc";
+import { requireApprovedParticipation } from "./access";
+
+const interestInput = z.object({ projectId: z.number().int().positive() });
+const meetingInput = z.object({
+  interestId: z.number().int().positive(),
+  scheduledFor: z.date(),
+  location: z.string().trim().min(2).max(180),
+  operationalNote: z.string().trim().max(2000).optional(),
+});
+
+export const interestsRouter = router({
+  declare: protectedProcedure.input(interestInput).mutation(async ({ ctx, input }) => {
+    await requireApprovedParticipation(ctx.user.id, "lancador");
+    const interest = await declareProjectInterest({ userId: ctx.user.id, projectId: input.projectId });
+    if (!interest) throw new TRPCError({ code: "NOT_FOUND", message: "Projeto elegível não encontrado." });
+    await createAuditLog({ actorUserId: ctx.user.id, action: "interest.declared", entityType: "interest", entityId: String(interest.id), metadata: { projectId: input.projectId } });
+    return interest;
+  }),
+
+  mineAsLauncher: protectedProcedure.query(async ({ ctx }) => {
+    await requireApprovedParticipation(ctx.user.id, "lancador");
+    return listLauncherInterests(ctx.user.id);
+  }),
+
+  mineAsExpert: protectedProcedure.query(async ({ ctx }) => {
+    await requireApprovedParticipation(ctx.user.id, "expert");
+    return listExpertInterests(ctx.user.id);
+  }),
+
+  forAdmin: adminProcedure.query(() => listInterestsForAdmin()),
+
+  schedule: adminProcedure.input(meetingInput).mutation(async ({ ctx, input }) => {
+    if (input.scheduledFor.getTime() < Date.now()) {
+      throw new TRPCError({ code: "BAD_REQUEST", message: "A reunião precisa ser agendada para uma data futura." });
+    }
+    const meeting = await scheduleMeeting({ ...input, scheduledByUserId: ctx.user.id });
+    if (!meeting) throw new TRPCError({ code: "NOT_FOUND", message: "Interesse não encontrado." });
+    await createAuditLog({ actorUserId: ctx.user.id, action: "meeting.scheduled", entityType: "meeting", entityId: String(meeting.id), metadata: { interestId: input.interestId } });
+    return meeting;
+  }),
+});

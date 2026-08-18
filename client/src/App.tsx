@@ -3,24 +3,32 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import NotFound from "@/pages/NotFound";
 import { Route, Switch } from "wouter";
 import ErrorBoundary from "./components/ErrorBoundary";
+import { AccessGate } from "./components/AccessGate";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import Home from "./pages/Home";
 import AdminPainel from "./pages/admin/AdminPainel";
+import CadastroParticipacao from "./pages/CadastroParticipacao";
 import ExpertPainel from "./pages/expert/ExpertPainel";
 import LancadorPainel from "./pages/lancador/LancadorPainel";
-
 function Router() {
+  const preview = new URLSearchParams(window.location.search).get("visualizacao") === "admin";
+  const navegarComoAdmin = (papel: "admin" | "expert" | "lancador") => {
+    window.location.href = papel === "admin" ? "/painel/admin" : `/painel/${papel}?visualizacao=admin`;
+  };
+
+  // make sure to consider if you need authentication for certain routes
   return (
     <Switch>
       <Route path={"/"} component={Home} />
+      <Route path={"/cadastro"} component={CadastroParticipacao} />
       <Route path={"/painel/admin"}>
-        {() => <AdminPainel onTrocarPapel={(p) => (window.location.href = `/painel/${p}`)} />}
+        {() => <AccessGate requiredRole="admin"><AdminPainel onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/painel/expert"}>
-        {() => <ExpertPainel onTrocarPapel={(p) => (window.location.href = `/painel/${p}`)} />}
+        {() => <AccessGate requiredRole="expert" allowAdminPreview={preview}><ExpertPainel modoVisualizacao={preview} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/painel/lancador"}>
-        {() => <LancadorPainel onTrocarPapel={(p) => (window.location.href = `/painel/${p}`)} />}
+        {() => <AccessGate requiredRole="lancador" allowAdminPreview={preview}><LancadorPainel modoVisualizacao={preview} onTrocarPapel={navegarComoAdmin} /></AccessGate>}
       </Route>
       <Route path={"/404"} component={NotFound} />
       {/* Final fallback route */}

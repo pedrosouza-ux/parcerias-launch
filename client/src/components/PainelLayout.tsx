@@ -16,9 +16,10 @@ interface NavItem {
 
 const navegacao: Record<Papel, NavItem[]> = {
   admin: [
-    { id: "experts", label: "Experts", contagem: 4 },
-    { id: "lancadores", label: "Lançadores", contagem: 4 },
-    { id: "triagem", label: "Triagem manual", contagem: 1 },
+    { id: "inscricoes", label: "Inscrições" },
+    { id: "experts", label: "Experts" },
+    { id: "lancadores", label: "Lançadores" },
+    { id: "triagem", label: "Triagem manual" },
     { id: "agenda", label: "Reuniões" },
     { id: "fluxo", label: "Fluxo BPMN" },
   ],
@@ -46,6 +47,8 @@ interface PainelLayoutProps {
   children: ReactNode;
   titulo: string;
   subtitulo?: string;
+  modoVisualizacao?: boolean;
+  mostrarTrocaPapel?: boolean;
 }
 
 export default function PainelLayout({
@@ -57,6 +60,8 @@ export default function PainelLayout({
   children,
   titulo,
   subtitulo,
+  modoVisualizacao = false,
+  mostrarTrocaPapel = papel === "admin" || modoVisualizacao,
 }: PainelLayoutProps) {
   const nav = navegacao[papel];
   return (
@@ -106,7 +111,10 @@ export default function PainelLayout({
       <div className="flex-1 flex flex-col min-w-0">
         <header className="sticky top-0 z-20 min-h-16 bg-background/90 backdrop-blur-md border-b border-border px-4 sm:px-5 lg:px-8 py-2 flex items-center justify-between gap-3 sm:gap-4">
           <div className="flex min-w-0 flex-col">
-            <h1 className="font-display text-lg lg:text-xl font-semibold leading-tight">{titulo}</h1>
+            <div className="flex flex-wrap items-center gap-2">
+              <h1 className="font-display text-lg lg:text-xl font-semibold leading-tight">{titulo}</h1>
+              {modoVisualizacao && <span className="rounded-full border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] font-semibold uppercase tracking-[0.12em] text-primary">Somente leitura</span>}
+            </div>
             {subtitulo && <p className="text-xs text-muted-foreground hidden sm:block">{subtitulo}</p>}
           </div>
           <div className="panel-mobile-wordmark shrink-0 items-center gap-2 lg:hidden" aria-hidden="true">
@@ -114,7 +122,7 @@ export default function PainelLayout({
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
-            <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />
+            {mostrarTrocaPapel && <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />}
           </div>
         </header>
 
@@ -144,9 +152,7 @@ export default function PainelLayout({
         <main id="conteudo-principal" tabIndex={-1} className="flex-1 px-5 lg:px-8 py-6 lg:py-8 max-w-6xl w-full">{children}</main>
 
         <footer className="px-5 lg:px-8 py-5 border-t border-border">
-          <p className="label-ed">
-            Protótipo · Dados simulados para validação de fluxo · Parcerias
-          </p>
+          <p className="label-ed">FL Insider · Rodada de Parcerias</p>
         </footer>
       </div>
     </div>
