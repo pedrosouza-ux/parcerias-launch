@@ -92,3 +92,12 @@
 - [x] Validar que somente Administradores podem gerir outros Administradores
 - [x] Adicionar testes de autorização para bloquear inclusão e revogação por usuário não-admin
 - [x] Validar explicitamente adminAccess.add e adminAccess.revoke com usuário autenticado sem papel admin
+
+- [x] Atualizar Arthur Lobo como dono do processo e Administrador ativo
+- [x] Criar dois registros demonstrativos identificados para validar a triagem administrativa
+- [x] Distinguir visualmente dados de validação no painel administrativo
+- [ ] Validar e publicar o cenário administrativo de teste
+- [x] Adicionar identificação visual por registro para dados fictícios no painel administrativo
+- [x] Validar visualmente o cenário administrativo de teste após destacar individualmente os registros demonstrativos
+- [x] Aplicar a etiqueta visual de validação também na agenda administrativa e nas listas de Experts/Lançadores do painel Admin
+- [x] Revalidar visualmente o cenário administrativo completo após a identificação individual aparecer de forma consistente em todas as áreas relevantes

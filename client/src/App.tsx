@@ -10,8 +10,9 @@ import AdminPainel from "./pages/admin/AdminPainel";
 import CadastroParticipacao from "./pages/CadastroParticipacao";
 import ExpertPainel from "./pages/expert/ExpertPainel";
 import LancadorPainel from "./pages/lancador/LancadorPainel";
+import { isModoVisualizacaoAdmin } from "./lib/painelPreview";
 function Router() {
-  const preview = new URLSearchParams(window.location.search).get("visualizacao") === "admin";
+  const preview = isModoVisualizacaoAdmin(window.location.pathname, window.location.search);
   const navegarComoAdmin = (papel: "admin" | "expert" | "lancador") => {
     window.location.href = papel === "admin" ? "/painel/admin" : `/painel/${papel}?visualizacao=admin`;
   };
