@@ -18,17 +18,16 @@ const navegacao: Record<Papel, NavItem[]> = {
   admin: [
     { id: "experts", label: "Experts", contagem: 4 },
     { id: "lancadores", label: "Lançadores", contagem: 4 },
-    { id: "triagem", label: "Triagem de Convergência", contagem: 1 },
-    { id: "matches", label: "Propostas" },
+    { id: "triagem", label: "Triagem manual", contagem: 1 },
+    { id: "agenda", label: "Reuniões" },
   ],
   expert: [
-    { id: "meus-projetos", label: "Meus Projetos & ROMA" },
-    { id: "lancadores", label: "Lançadores" },
-    { id: "propostas", label: "Minhas Propostas" },
+    { id: "meu-projeto", label: "Meu projeto" },
+    { id: "reunioes", label: "Minhas reuniões" },
   ],
   lancador: [
-    { id: "experts", label: "Experts Sugeridos" },
-    { id: "parcerias", label: "Minhas Parcerias" },
+    { id: "projetos", label: "Projetos disponíveis" },
+    { id: "reunioes", label: "Minhas reuniões" },
   ],
 };
 

@@ -1,149 +1,24 @@
-/**
- * Parcerias — "Estrada para Roma" (ideas.md v2)
- * Landing do protótipo: hero de palco escuro com mapa de rotas convergentes,
- * apresentação do conceito (ROMA como destino, triagem, 3 papéis) e seletor de acesso.
- * Sem conotação romântica: metáfora é rota/estratégia.
- */
-import { useLocation } from "wouter";
+/** Landing FL Insider v4 — catálogo curado e Rodada de Parcerias. */
+import { ArrowRight, CalendarClock, CheckCircle2, ClipboardCheck, LockKeyhole, Search, ShieldCheck, Sparkles, UserRound, UsersRound } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { Papel } from "@/lib/mockData";
-import { ShieldCheck, UserRound, Rocket, ArrowRight } from "lucide-react";
+
+const irPara = (destino: string) => window.location.assign(destino);
 
 export default function Home() {
-  const [, navegar] = useLocation();
-
-  const papeis = [
-    {
-      id: "admin" as Papel,
-      nome: "Administrador",
-      icone: <ShieldCheck className="size-5" />,
-      desc: "Visão global de Experts e Lançadores, triagem de aderência entre ROMA e audiência, e propostas de parceria.",
-      demo: "Ana — Administradora",
-    },
-    {
-      id: "expert" as Papel,
-      nome: "Expert",
-      icone: <UserRound className="size-5" />,
-      desc: "Acesso limitado: gerencia os próprios projetos e ROMA, e vê os Lançadores compatíveis após liberação do admin.",
-      demo: "Marina Valle — Expert",
-    },
-    {
-      id: "lancador" as Papel,
-      nome: "Lançador",
-      icone: <Rocket className="size-5" />,
-      desc: "Recebe as propostas de parceria aprovadas na triagem e decide aceitar ou recusar cada Expert sugerido.",
-      demo: "Juliana Ferreira — Lançadora",
-    },
-  ];
-
-  return (
-    <div className="min-h-screen bg-background">
-      {/* Header */}
-      <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-30">
-        <div className="flex items-center gap-3">
-          <img src="/manus-storage/LOGO_INSIDER_BRANCO_98928175.svg" alt="FL Insider" className="h-9 w-auto" />
-          <span className="font-display text-lg font-semibold tracking-tight text-insider-ice">· Parcerias</span>
-        </div>
-        <span className="label-ed hidden sm:block">Encontro Insider · Protótipo de validação</span>
-      </header>
-
-      {/* Hero */}
-      <section className="px-5 lg:px-10 py-12 lg:py-16 grid lg:grid-cols-2 gap-10 items-center">
-        <div className="rise-in">
-          <p className="label-ed mb-4">Central de parcerias estratégicas</p>
-          <h1 className="font-display text-4xl lg:text-5xl font-semibold leading-[1.05] tracking-tight">
-            Todas as rotas convergem para a <span className="text-primary">ROMA</span>.
-          </h1>
-          <p className="text-lg text-muted-foreground mt-5 max-w-md">
-            A operação que encontra o caminho certo entre Experts e Lançadores: a
-            transformação do produto e a audiência de quem lança, cruzadas com
-            curadoria humana a cada passo.
-          </p>
-          <div className="flex flex-wrap gap-4 mt-8">
-            <Button size="lg" className="gap-2 active:scale-[0.97] transition-transform duration-150" onClick={() => navegar("/painel/admin")}>
-              Entrar na central
-              <ArrowRight className="size-4" />
-            </Button>
-            <Button size="lg" variant="outline" className="gap-2 bg-card text-foreground hover:bg-accent active:scale-[0.97] transition-all duration-150" onClick={() => {
-              document.getElementById("papeis")?.scrollIntoView({ behavior: "smooth" });
-            }}>
-              Ver como funciona
-            </Button>
-          </div>
-        </div>
-        <div className="rise-in" style={{ animationDelay: "80ms" }}>
-          <img
-            src="/manus-storage/parcerias-hero-insider_7cd5c396.png"
-            alt="Ilustração institucional de rotas convergindo para um destino comum"
-            className="w-full rounded-md border border-border shadow-lg"
-          />
-        </div>
-      </section>
-
-      <div className="px-5 lg:px-10"><div className="rule-double" /></div>
-
-      {/* Como funciona */}
-      <section className="px-5 lg:px-10 py-12 lg:py-16">
-        <p className="label-ed mb-3">Fluxo de curadoria</p>
-        <h2 className="font-display text-3xl font-semibold">Como a triagem funciona</h2>
-        <div className="grid sm:grid-cols-3 gap-6 mt-8">
-          {[
-            {
-              n: "01",
-              titulo: "Expert traça a rota",
-              texto: "Cada Expert cadastra seus projetos e define a ROMA — a transformação que o produto promete na vida do Avatar — com dores e ambições estruturadas.",
-            },
-            {
-              n: "02",
-              titulo: "Admin avalia a convergência",
-              texto: "O administrador cruza a ROMA do Expert com a audiência, o nicho e o stage de cada Lançador, com um índice de convergência sugerido pelo sistema.",
-            },
-            {
-              n: "03",
-              titulo: "Lançador decide o caminho",
-              texto: "A proposta chega ao Lançador, que aceita ou recusa. Só então a parceria é formalizada e o lançamento segue na mesma trajetória.",
-            },
-          ].map((item, i) => (
-            <div key={item.n} className="bg-card border border-border rounded-lg p-6 rise-in" style={{ animationDelay: `${i * 60}ms` }}>
-              <span className="font-display text-3xl font-bold text-primary/70">{item.n}</span>
-              <h3 className="font-display text-lg font-semibold mt-3">{item.titulo}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{item.texto}</p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      <div className="px-5 lg:px-10"><div className="rule-double" /></div>
-
-      {/* Seletor de papéis */}
-      <section id="papeis" className="px-5 lg:px-10 py-12 lg:py-16">
-        <p className="label-ed mb-3">Explore o protótipo</p>
-        <h2 className="font-display text-3xl font-semibold">Entre como qualquer um dos três papéis</h2>
-        <div className="grid sm:grid-cols-3 gap-6 mt-8">
-          {papeis.map((p, i) => (
-            <button
-              key={p.id}
-              onClick={() => navegar(`/painel/${p.id}`)}
-              className="group text-left bg-card border border-border rounded-lg p-6 hover:border-primary/50 transition-all duration-200 rise-in active:scale-[0.99]"
-              style={{ animationDelay: `${i * 60}ms` }}
-            >
-              <div className="flex items-center justify-between">
-                <div className="size-11 rounded-full bg-primary/10 text-primary flex items-center justify-center">
-                  {p.icone}
-                </div>
-                <ArrowRight className="size-4 text-muted-foreground group-hover:text-primary transition-colors" />
-              </div>
-              <h3 className="font-display text-xl font-semibold mt-4">{p.nome}</h3>
-              <p className="text-sm text-muted-foreground mt-2 leading-relaxed">{p.desc}</p>
-              <p className="label-ed mt-4 text-primary">Demo · {p.demo}</p>
-            </button>
-          ))}
-        </div>
-      </section>
-
-      <footer className="px-5 lg:px-10 py-8 border-t border-border">
-        <p className="label-ed">Protótipo de validação · Dados simulados · Parcerias · Encontro Insider</p>
-      </footer>
-    </div>
-  );
+  return <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
+    <header className="border-b border-border bg-background/90 backdrop-blur-md sticky top-0 z-30"><div className="container h-18 min-h-16 flex items-center justify-between gap-4"><img src="/manus-storage/LOGO_INSIDER_BRANCO_98928175.svg" alt="FL Insider" className="w-32 sm:w-36 h-auto" /><div className="flex items-center gap-3"><span className="hidden md:inline label-ed">Sistema de Parcerias</span><Button size="sm" variant="outline" className="bg-card hover:bg-accent" onClick={() => irPara("/painel/lancador")}>Acessar protótipo</Button></div></div></header>
+    <main>
+      <section className="relative border-b border-border"><div className="container pt-16 pb-16 lg:pt-24 lg:pb-24"><div className="max-w-4xl"><div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-sm bg-primary/10 text-primary text-xs font-semibold uppercase tracking-wider"><Sparkles className="size-3.5" />Encontro Insider · Rodada de Parcerias</div><h1 className="font-display text-4xl sm:text-5xl lg:text-7xl font-semibold tracking-tight mt-6 leading-[1.05]">Projetos validados.<br /><span className="text-insider-soft">Conversas que avançam.</span></h1><p className="max-w-2xl text-base sm:text-lg text-muted-foreground mt-7 leading-relaxed">A central que organiza Experts, Lançadores e projetos preparados para a Rodada de Parcerias. A operação valida; o Lançador explora o catálogo; a conversa acontece no evento.</p><div className="mt-9 flex flex-col sm:flex-row gap-3"><Button size="lg" className="gap-2" onClick={() => irPara("/painel/lancador")}>Explorar projetos <ArrowRight className="size-4" /></Button><Button size="lg" variant="outline" className="bg-card hover:bg-accent" onClick={() => irPara("/painel/admin")}>Ver central administrativa</Button></div></div></div><div className="absolute right-[-6%] top-0 h-full w-[42%] hidden xl:block opacity-80 pointer-events-none"><div className="h-full border-l border-primary/20 bg-[radial-gradient(circle_at_40%_35%,rgba(113,138,181,0.25),transparent_34%),radial-gradient(circle_at_70%_65%,rgba(58,83,153,0.22),transparent_30%)]" /></div></section>
+      <section className="container py-12 lg:py-16"><div className="grid lg:grid-cols-[0.7fr_1.3fr] gap-10 lg:gap-16"><div><p className="label-ed text-primary">Modelo de operação</p><h2 className="font-display text-3xl font-semibold mt-3">Não é um sistema de match.</h2><p className="text-muted-foreground mt-4 leading-relaxed">A plataforma não determina parceria, nem substitui a conversa de negócio. Ela dá clareza para que cada Lançador conheça todos os projetos que passaram pela curadoria da operação.</p></div><div className="grid sm:grid-cols-2 gap-px bg-border border border-border rounded-lg overflow-hidden">{[
+        [ClipboardCheck, "1. Cadastro validado", "Expert registra um projeto; Lançador confirma dados e LEOA."], [ShieldCheck, "2. Triagem manual", "A equipe avalia Nicho, Avatar, ROMA e maturidade."], [Search, "3. Catálogo curado", "Projetos elegíveis ficam disponíveis para todos os Lançadores."], [CalendarClock, "4. Conversa presencial", "O interesse segue para a agenda da Rodada de Parcerias."],
+      ].map(([Icon, titulo, texto]) => { const Componente = Icon as typeof ClipboardCheck; return <article key={titulo as string} className="bg-card p-6"><Componente className="size-5 text-primary" /><h3 className="font-display font-semibold text-lg mt-5">{titulo as string}</h3><p className="text-sm text-muted-foreground mt-2 leading-relaxed">{texto as string}</p></article>; })}</div></div></section>
+      <section className="border-y border-border bg-secondary/35"><div className="container py-12 lg:py-16"><div className="flex flex-col lg:flex-row lg:items-end justify-between gap-6"><div><p className="label-ed text-primary">Cada papel, uma responsabilidade</p><h2 className="font-display text-3xl font-semibold mt-3">Um fluxo claro para a operação do evento.</h2></div><p className="max-w-md text-sm text-muted-foreground">Os dados ficam disponíveis apenas para quem precisa tomar a próxima decisão no processo.</p></div><div className="grid md:grid-cols-3 gap-4 mt-9">{[
+        [ShieldCheck, "Administrador", "Valida cadastros, registra a triagem qualitativa e organiza a agenda presencial.", "Abrir administração", "/painel/admin"],
+        [UserRound, "Expert", "Mantém um único projeto, sua ROMA e acompanha somente os horários de reunião confirmados.", "Ver visão do Expert", "/painel/expert"],
+        [UsersRound, "Lançador", "Navega por todos os projetos elegíveis, compara ROMA, Nicho e Avatar e declara interesse.", "Explorar catálogo", "/painel/lancador"],
+      ].map(([Icon, titulo, texto, cta, rota]) => { const Componente = Icon as typeof ShieldCheck; return <article key={titulo as string} className="bg-card border border-border rounded-lg p-6 flex flex-col"><Componente className="size-6 text-primary" /><h3 className="font-display text-xl font-semibold mt-5">{titulo as string}</h3><p className="text-sm text-muted-foreground mt-2 leading-relaxed">{texto as string}</p><Button variant="ghost" className="justify-start px-0 mt-5 hover:bg-transparent hover:text-primary gap-2" onClick={() => irPara(rota as string)}>{cta as string}<ArrowRight className="size-4" /></Button></article>; })}</div></div></section>
+      <section className="container py-12 lg:py-16"><div className="max-w-3xl border-l-2 border-primary pl-6"><p className="label-ed text-primary">Limites do sistema</p><h2 className="font-display text-3xl font-semibold mt-3">O encontro começa aqui. A parceria é construída pelas partes.</h2><p className="text-muted-foreground mt-4 leading-relaxed">A plataforma organiza o catálogo e a reunião. Ela não calcula compatibilidade automática, não sugere parceiros e não formaliza contratos ou negociações comerciais.</p><div className="flex flex-wrap gap-x-6 gap-y-2 mt-6 text-sm text-muted-foreground"><span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-primary" />Triagem humana</span><span className="inline-flex items-center gap-2"><CheckCircle2 className="size-4 text-primary" />Decisão do Lançador</span><span className="inline-flex items-center gap-2"><LockKeyhole className="size-4 text-primary" />Privacidade até a reunião</span></div></div></section>
+    </main>
+    <footer className="border-t border-border"><div className="container py-6 flex flex-col sm:flex-row gap-2 justify-between text-xs text-muted-foreground"><span>FL Insider · Sistema de Parcerias</span><span>Protótipo com dados simulados para validação de fluxo</span></div></footer>
+  </div>;
 }

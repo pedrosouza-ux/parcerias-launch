@@ -1,71 +1,12 @@
-/**
- * Parcerias — Identidade oficial FL Insider (ideas.md v3)
- * Componentes compartilhados: foto de perfil, indicador de convergência
- * (linhas de rota rumo a Roma), estado de acesso, linhas de dado.
- */
+/** Componentes compartilhados — FL Insider v4: catálogo curado e reunião presencial. */
 import { ReactNode } from "react";
+import { CheckCircle2, CircleAlert, Clock3, CalendarClock, Instagram } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { Lock, Unlock, Instagram } from "lucide-react";
+import { Triagem } from "@/lib/mockData";
 
 export function FotoPerfil({ src, alt, size = "md" }: { src: string; alt: string; size?: "sm" | "md" | "lg" }) {
   const dim = size === "lg" ? "size-20" : size === "sm" ? "size-9" : "size-12";
-  return (
-    <img
-      src={src}
-      alt={alt}
-      className={cn(dim, "rounded-full border-2 border-card shadow-sm object-cover shrink-0")}
-    />
-  );
-}
-
-/** Indicador de convergência — convergência de rotas rumo à Roma */
-export function SeloAderencia({ score, className }: { score: number; className?: string }) {
-  const cor =
-    score >= 80 ? "text-primary" : score >= 60 ? "text-insider-soft" : "text-muted-foreground";
-  return (
-    <div className={cn("relative flex flex-col items-center justify-center w-16 h-16", cor, className)}>
-      {/* Linhas de rota convergindo em Y para o ponto-destino */}
-      <svg viewBox="0 0 64 64" className="absolute inset-0 w-full h-full" aria-hidden>
-        <line x1="8" y1="10" x2="28" y2="34" stroke="currentColor" strokeWidth="1.5" opacity="0.7" />
-        <line x1="56" y1="10" x2="36" y2="34" stroke="currentColor" strokeWidth="1.5" opacity="0.7" />
-        <circle cx="32" cy="40" r="4" fill="currentColor" opacity="0.9" />
-      </svg>
-      <span className="font-display text-xl font-bold leading-none mt-6">{score}</span>
-      <span className="label-ed mt-0.5" style={{ color: "currentColor" }}>Convergência</span>
-    </div>
-  );
-}
-
-/** Estado de acesso do Expert aos Lançadores */
-export function EstadoAcesso({ liberado, liberadoPorAdmin, liberadoEm }: {
-  liberado: boolean;
-  liberadoPorAdmin?: string;
-  liberadoEm?: string;
-}) {
-  return (
-    <div
-      className={cn(
-        "flex items-center gap-2 rounded-md border px-3 py-2 text-sm",
-        liberado ? "border-primary/40 bg-primary/5" : "border-border bg-muted/60",
-      )}
-    >
-      {liberado ? <Unlock className="size-4 text-primary" /> : <Lock className="size-4 text-muted-foreground" />}
-      <div className="flex flex-col">
-        <span className={cn("font-semibold", liberado ? "text-primary" : "text-muted-foreground")}>
-          {liberado ? "Acesso liberado" : "Aguardando triagem"}
-        </span>
-        {liberado ? (
-          <span className="text-xs text-muted-foreground">
-            Liberado por {liberadoPorAdmin} em {liberadoEm}
-          </span>
-        ) : (
-          <span className="text-xs text-muted-foreground">
-            O Expert não vê os Lançadores até a triagem do administrador
-          </span>
-        )}
-      </div>
-    </div>
-  );
+  return <img src={src} alt={alt} className={cn(dim, "rounded-full border-2 border-card shadow-sm object-cover shrink-0")} />;
 }
 
 export function Label({ children, className }: { children: ReactNode; className?: string }) {
@@ -73,51 +14,30 @@ export function Label({ children, className }: { children: ReactNode; className?
 }
 
 export function LinhaDado({ rotulo, valor }: { rotulo: string; valor: ReactNode }) {
-  return (
-    <div className="flex items-baseline justify-between gap-4 py-2 border-b border-border/60 last:border-b-0">
-      <Label>{rotulo}</Label>
-      <span className="text-sm font-medium text-right">{valor}</span>
-    </div>
-  );
+  return <div className="flex items-baseline justify-between gap-4 py-2 border-b border-border/60 last:border-b-0"><Label>{rotulo}</Label><span className="text-sm font-medium text-right">{valor}</span></div>;
 }
 
 export function InstagramHandle({ handle }: { handle: string }) {
-  return (
-    <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground">
-      <Instagram className="size-3.5" />
-      {handle}
-    </span>
-  );
+  return <span className="inline-flex items-center gap-1.5 text-sm text-muted-foreground"><Instagram className="size-3.5" />{handle}</span>;
 }
 
 export function BadgeStatus({ status }: { status: string }) {
   const estilos: Record<string, string> = {
-    "Em preparação": "bg-muted text-muted-foreground",
-    "Em andamento": "bg-accent text-accent-foreground",
-    "Concluído": "bg-primary/10 text-primary",
-    "Começando": "bg-muted text-muted-foreground",
-    "Em crescimento": "bg-accent text-accent-foreground",
-    "Experiente": "bg-primary/10 text-primary",
-    "aceita": "bg-primary/10 text-primary",
-    "recusada": "bg-muted text-muted-foreground",
-    "triagem": "bg-accent text-accent-foreground",
-    "proposta_enviada": "bg-primary/10 text-primary",
+    "Aprovado": "bg-primary/15 text-primary", "Em validação": "bg-accent text-accent-foreground", "Enviado": "bg-accent text-accent-foreground", "Reprovado": "bg-muted text-muted-foreground", "Rascunho": "bg-muted text-muted-foreground",
+    "Elegível para catálogo": "bg-primary/15 text-primary", "Em triagem": "bg-accent text-accent-foreground", "Não elegível": "bg-muted text-muted-foreground", "Em estruturação": "bg-muted text-muted-foreground", "Validado para lançamento": "bg-primary/15 text-primary", "Já lançado": "bg-primary/15 text-primary",
+    "Interesse declarado": "bg-accent text-accent-foreground", "Reunião solicitada": "bg-accent text-accent-foreground", "Reunião confirmada": "bg-primary/15 text-primary", "Encerrado": "bg-muted text-muted-foreground", "Começando": "bg-muted text-muted-foreground", "Em crescimento": "bg-accent text-accent-foreground", "Experiente": "bg-primary/15 text-primary",
   };
-  const labels: Record<string, string> = {
-    "Em preparação": "Em preparação",
-    "Em andamento": "Em andamento",
-    "Concluído": "Concluído",
-    "Começando": "Começando",
-    "Em crescimento": "Em crescimento",
-    "Experiente": "Experiente",
-    "aceita": "Parceria aceita",
-    "recusada": "Recusada",
-    "triagem": "Em triagem",
-    "proposta_enviada": "Proposta enviada",
-  };
-  return (
-    <span className={cn("inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-semibold", estilos[status] ?? "bg-muted text-muted-foreground")}>
-      {labels[status] ?? status}
-    </span>
-  );
+  return <span className={cn("inline-flex items-center rounded-sm px-2 py-0.5 text-xs font-semibold", estilos[status] ?? "bg-muted text-muted-foreground")}>{status}</span>;
+}
+
+export function ChecklistTriagem({ triagem }: { triagem: Triagem }) {
+  const criterios = [["Nicho", triagem.nicho], ["Avatar", triagem.avatar], ["ROMA", triagem.roma], ["Maturidade", triagem.maturidade]] as const;
+  return <div className="grid grid-cols-2 gap-2">{criterios.map(([nome, aprovado]) => <span key={nome} className={cn("flex items-center gap-1.5 text-xs rounded-sm px-2 py-1.5", aprovado ? "bg-primary/10 text-primary" : "bg-muted text-muted-foreground")}>
+    {aprovado ? <CheckCircle2 className="size-3.5" /> : <CircleAlert className="size-3.5" />}{nome}
+  </span>)}</div>;
+}
+
+export function IconeStatusReuniao({ status }: { status: string }) {
+  if (status === "Reunião confirmada") return <CalendarClock className="size-4 text-primary" />;
+  return <Clock3 className="size-4 text-muted-foreground" />;
 }

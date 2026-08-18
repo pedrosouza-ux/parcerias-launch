@@ -1,234 +1,33 @@
-/**
- * Parcerias — "Estrada para Roma" (ideas.md v2)
- * Visão do LANÇADOR: vê os Experts propostos em triagem,
- * decide (aceitar/recusar) e acompanha as parcerias formadas.
- */
-import { useState } from "react";
-import { experts, lancadores, matches, Match, getProjeto } from "@/lib/mockData";
+/** Painel Lançador — FL Insider v4: catálogo de projetos e pedidos de reunião. */
+import { useMemo, useState } from "react";
+import { experts, interesses, Interesse, projetosElegiveis, StatusInteresse } from "@/lib/mockData";
 import PainelLayout from "@/components/PainelLayout";
-import {
-  FotoPerfil,
-  SeloAderencia,
-  Label,
-  LinhaDado,
-  InstagramHandle,
-  BadgeStatus,
-} from "@/components/Compartilhados";
+import { BadgeStatus, Label } from "@/components/Compartilhados";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { CalendarClock, CheckCircle2, Filter, MapPin, Search, Sparkles } from "lucide-react";
 import { toast } from "sonner";
-import { Handshake, UserRound, Check, X, MessageCircle } from "lucide-react";
-import { cn } from "@/lib/utils";
 
-const MEU_LANCADOR_ID = "lan-1"; // Juliana Ferreira no protótipo
-
-const usuarios = {
-  admin: "Ana — Administradora",
-  expert: "Marina Valle — Expert",
-  lancador: "Juliana Ferreira — Lançadora",
-};
+const MEU_LANCADOR_ID = "lan-1";
+const usuarios = { admin: "Ana — Administradora", expert: "Marina Valle — Expert", lancador: "Juliana Ferreira — Lançadora" };
 
 export default function LancadorPainel({ onTrocarPapel }: { onTrocarPapel: (p: "admin" | "expert" | "lancador") => void }) {
-  const [pagina, setPagina] = useState("experts");
+  const [pagina, setPagina] = useState("projetos");
+  const [busca, setBusca] = useState("");
+  const [nicho, setNicho] = useState("Todos");
   const [detalhe, setDetalhe] = useState<string | null>(null);
-  const [matchesLocais, setMatchesLocais] = useState<Match[]>(matches);
-  const eu = lancadores.find((l) => l.id === MEU_LANCADOR_ID)!;
-
-  const propostas = matchesLocais.filter((m) => m.lancadorId === eu.id && (m.status === "proposta_enviada" || m.status === "triagem"));
-  const aceitas = matchesLocais.filter((m) => m.lancadorId === eu.id && m.status === "aceita");
-  const recusadas = matchesLocais.filter((m) => m.lancadorId === eu.id && m.status === "recusada");
-
-  const decidir = (matchId: string, aceita: boolean) => {
-    setMatchesLocais((prev) =>
-      prev.map((m) =>
-        m.id === matchId
-          ? { ...m, status: aceita ? "aceita" : "recusada", atualizadoEm: "14/08/2026" }
-          : m,
-      ),
-    );
-    const m = matchesLocais.find((x) => x.id === matchId);
-    const e = m ? experts.find((x) => x.id === m.expertId) : null;
-    toast.success(aceita ? "Parceria aceita!" : "Proposta recusada", {
-      description: aceita
-        ? `${e?.nome} foi notificado e a parceria entra em andamento.`
-        : "O administrador foi notificado da sua decisão.",
-    });
-  };
-
-  return (
-    <PainelLayout
-      papel="lancador"
-      onTrocarPapel={onTrocarPapel}
-      nomeUsuario={usuarios.lancador}
-      paginaAtiva={pagina}
-      onNavegar={setPagina}
-      titulo={pagina === "experts" ? "Experts Sugeridos" : "Minhas Parcerias"}
-      subtitulo={
-        pagina === "experts" ? "Propostas aprovadas na triagem — a decisão final é sua" : "Parcerias formadas e em andamento"
-      }
-    >
-      {pagina === "experts" && (
-        <section className="space-y-4 rise-in">
-          {propostas.length === 0 && (
-            <div className="bg-card border border-border rounded-lg p-8 text-center">
-              <h3 className="font-display font-semibold">Nenhuma proposta pendente</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Quando um Expert com ROMA aderente à sua audiência for aprovado na triagem, a proposta aparece aqui.
-              </p>
-            </div>
-          )}
-          {propostas.map((m, i) => {
-            const e = experts.find((x) => x.id === m.expertId);
-            if (!e) return null;
-            const p = getProjeto(e.id, m.projetoId);
-            return (
-              <article key={m.id} className="bg-card border border-border rounded-lg overflow-hidden" style={{ animationDelay: `${i * 40}ms` }}>
-                <div className="p-5 flex flex-col sm:flex-row sm:items-center gap-4">
-                  <SeloAderencia score={m.score} />
-                  <FotoPerfil src={e.fotoUrl} alt={e.nome} />
-                  <div className="flex-1 min-w-0">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="font-display text-lg font-semibold">{e.nome}</h3>
-                      <BadgeStatus status="proposta_enviada" />
-                    </div>
-                    <p className="text-sm text-muted-foreground">{e.cargo}</p>
-                    <p className="text-sm mt-1">
-                      <strong className="text-primary">ROMA:</strong> {p?.roma}
-                    </p>
-                    <p className="text-sm text-muted-foreground mt-1 line-clamp-2">{m.justificativa}</p>
-                  </div>
-                  <div className="flex gap-2 shrink-0">
-                    <Button size="sm" className="gap-1.5 active:scale-[0.97] transition-transform duration-150" onClick={() => decidir(m.id, true)}>
-                      <Check className="size-3.5" />
-                      Aceitar
-                    </Button>
-                    <Button size="sm" variant="outline" className="gap-1.5 bg-card hover:bg-accent active:scale-[0.97] transition-all duration-150" onClick={() => decidir(m.id, false)}>
-                      <X className="size-3.5" />
-                      Recusar
-                    </Button>
-                  </div>
-                </div>
-                <div className="px-5 pb-4 flex gap-2">
-                  <Button size="sm" variant="ghost" className="gap-1.5 text-muted-foreground hover:text-foreground" onClick={() => setDetalhe(m.expertId)}>
-                    <UserRound className="size-3.5" />
-                    Ver perfil completo do Expert
-                  </Button>
-                </div>
-              </article>
-            );
-          })}
-        </section>
-      )}
-
-      {pagina === "parcerias" && (
-        <section className="space-y-6 rise-in">
-          {aceitas.length === 0 && recusadas.length === 0 ? (
-            <div className="bg-card border border-border rounded-lg p-8 text-center">
-              <h3 className="font-display font-semibold">Nenhuma parceria formada ainda</h3>
-              <p className="text-sm text-muted-foreground mt-1">
-                Aceite uma proposta na aba "Experts Sugeridos" para formalizar a parceria.
-              </p>
-            </div>
-          ) : (
-            <>
-              {aceitas.map((m, i) => {
-                const e = experts.find((x) => x.id === m.expertId);
-                if (!e) return null;
-                const p = getProjeto(e.id, m.projetoId);
-                return (
-                  <article key={m.id} className="bg-card border border-primary/40 rounded-lg p-5" style={{ animationDelay: `${i * 40}ms` }}>
-                    <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                      <FotoPerfil src={e.fotoUrl} alt={e.nome} size="lg" />
-                      <div className="flex-1">
-                        <div className="flex flex-wrap items-center gap-2">
-                          <h3 className="font-display text-lg font-semibold">{e.nome}</h3>
-                          <BadgeStatus status="aceita" />
-                        </div>
-                        <p className="text-sm text-muted-foreground">{e.cargo} · {e.instagram}</p>
-                        <p className="text-sm mt-1.5">
-                          Projeto: <strong>{p?.nome}</strong> — <span className="text-primary font-medium">{p?.roma}</span>
-                        </p>
-                      </div>
-                      <Button size="sm" variant="outline" className="gap-1.5 bg-card hover:bg-accent active:scale-[0.97] transition-all duration-150">
-                        <MessageCircle className="size-3.5" />
-                        Conversar sobre o lançamento
-                      </Button>
-                    </div>
-                  </article>
-                );
-              })}
-              {recusadas.length > 0 && (
-                <>
-                  <Label className="block mt-4">Decisões anteriores</Label>
-                  {recusadas.map((m) => {
-                    const e = experts.find((x) => x.id === m.expertId);
-                    if (!e) return null;
-                    return (
-                      <div key={m.id} className="flex items-center gap-3 text-sm text-muted-foreground bg-muted/50 rounded-md px-4 py-3">
-                        <X className="size-4 shrink-0" />
-                        <span>
-                          Proposta de <strong className="text-foreground">{e.nome}</strong> recusada em {m.atualizadoEm}
-                        </span>
-                      </div>
-                    );
-                  })}
-                </>
-              )}
-            </>
-          )}
-        </section>
-      )}
-
-      <Dialog open={!!detalhe} onOpenChange={() => setDetalhe(null)}>
-        <DialogContent className="max-w-lg max-h-[85vh] overflow-y-auto">
-          {detalhe && (() => {
-            const e = experts.find((x) => x.id === detalhe);
-            if (!e) return null;
-            return (
-              <>
-                <DialogHeader>
-                  <DialogTitle className="font-display text-xl">{e.nome}</DialogTitle>
-                  <DialogDescription>{e.cargo}</DialogDescription>
-                </DialogHeader>
-                <div className="flex items-center gap-4">
-                  <FotoPerfil src={e.fotoUrl} alt={e.nome} size="lg" />
-                  <div className="flex-1">
-                    <InstagramHandle handle={e.instagram} />
-                    <p className="text-sm text-muted-foreground mt-1">{e.nivel}</p>
-                  </div>
-                </div>
-                <p className="text-sm">{e.bio}</p>
-                <div className="rule-double" />
-                {e.projetos.map((p) => (
-                  <div key={p.id} className="mt-3 bg-secondary/60 rounded-md p-4 space-y-2">
-                    <div className="flex items-center justify-between">
-                      <span className="font-display font-semibold">{p.nome}</span>
-                      <BadgeStatus status={p.status} />
-                    </div>
-                    <p className="text-sm"><strong className="text-primary">ROMA:</strong> {p.roma}</p>
-                    <LinhaDado rotulo="Avatar" valor={<span className="text-right block">{p.avatar.quem}</span>} />
-                    <LinhaDado rotulo="Ambição do Avatar" valor={p.avatar.ambicao} />
-                    <LinhaDado rotulo="Nicho" valor={p.nicho} />
-                  </div>
-                ))}
-                <Button
-                  className="w-full gap-2 mt-4 active:scale-[0.98] transition-transform duration-150"
-                  onClick={() => {
-                    const match = matchesLocais.find((x) => x.expertId === e.id && x.lancadorId === eu.id);
-                    if (match) {
-                      decidir(match.id, true);
-                      setDetalhe(null);
-                    }
-                  }}
-                >
-                  <Handshake className="size-4" />
-                  Aceitar parceria com este Expert
-                </Button>
-              </>
-            );
-          })()}
-        </DialogContent>
-      </Dialog>
-    </PainelLayout>
-  );
+  const [interessesLocais, setInteressesLocais] = useState<Interesse[]>(interesses);
+  const nichos = ["Todos", ...Array.from(new Set(projetosElegiveis.map((expert) => expert.projeto.nicho)))];
+  const projetos = useMemo(() => projetosElegiveis.filter((expert) => (nicho === "Todos" || expert.projeto.nicho === nicho) && `${expert.projeto.nome} ${expert.projeto.nicho} ${expert.projeto.roma}`.toLowerCase().includes(busca.toLowerCase())), [busca, nicho]);
+  const minhasReunioes = interessesLocais.filter((interesse) => interesse.lancadorId === MEU_LANCADOR_ID);
+  const interesseDoProjeto = (projectId: string) => interessesLocais.find((interesse) => interesse.projetoId === projectId && interesse.lancadorId === MEU_LANCADOR_ID);
+  const declararInteresse = (expertId: string, projetoId: string) => { if (interesseDoProjeto(projetoId)) return; setInteressesLocais((atual) => [...atual, { id: `int-${Date.now()}`, expertId, lancadorId: MEU_LANCADOR_ID, projetoId, status: "Interesse declarado", criadoEm: "18/08/2026" }]); setDetalhe(null); toast.success("Interesse registrado", { description: "A operação recebeu seu pedido e irá orientar o próximo passo da Rodada de Parcerias." }); };
+  const statusProjeto = (projectId: string): StatusInteresse | null => interesseDoProjeto(projectId)?.status ?? null;
+  return <PainelLayout papel="lancador" onTrocarPapel={onTrocarPapel} nomeUsuario={usuarios.lancador} paginaAtiva={pagina} onNavegar={setPagina}
+    titulo={pagina === "projetos" ? "Projetos disponíveis" : "Minhas reuniões"}
+    subtitulo={pagina === "projetos" ? "Explore todos os projetos validados e escolha onde há potencial de parceria" : "Acompanhe seus interesses e os horários definidos pela operação"}>
+    {pagina === "projetos" && <section className="space-y-5 rise-in"><div className="bg-accent/50 border border-border rounded-lg p-5 flex gap-3"><Sparkles className="size-5 text-primary shrink-0" /><p className="text-sm">Este é um catálogo curado. Todos os projetos exibidos foram validados pela operação em <strong>Nicho, Avatar, ROMA e maturidade</strong>. A escolha de onde avançar é sua.</p></div><div className="flex flex-col md:flex-row gap-3"><label className="relative flex-1"><Search className="size-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2" /><input value={busca} onChange={(event) => setBusca(event.target.value)} placeholder="Buscar por projeto, nicho ou ROMA" className="w-full h-10 pl-9 pr-3 bg-card border border-border rounded-md text-sm outline-none focus:ring-2 focus:ring-ring" /></label><label className="relative"><Filter className="size-4 text-muted-foreground absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" /><select value={nicho} onChange={(event) => setNicho(event.target.value)} className="h-10 pl-9 pr-8 bg-card border border-border rounded-md text-sm appearance-none outline-none focus:ring-2 focus:ring-ring">{nichos.map((item) => <option key={item}>{item}</option>)}</select></label></div><p className="label-ed">{projetos.length} projetos elegíveis</p><div className="grid xl:grid-cols-2 gap-4">{projetos.map((expert, index) => { const projeto = expert.projeto; const status = statusProjeto(projeto.id); return <article key={expert.id} className="bg-card border border-border rounded-lg p-5 flex flex-col" style={{ animationDelay: `${index * 45}ms` }}><div className="flex justify-between gap-4"><div><Label>{projeto.nicho}</Label><h3 className="font-display text-xl font-semibold mt-2">{projeto.nome}</h3><p className="text-sm text-muted-foreground mt-1">por {expert.nome}</p></div>{status && <BadgeStatus status={status} />}</div><div className="mt-5 pt-4 border-t border-border"><Label>ROMA</Label><p className="text-base mt-1.5 font-medium">{projeto.roma}</p></div><div className="mt-4"><Label>Avatar</Label><p className="text-sm text-muted-foreground mt-1.5 line-clamp-2">{projeto.avatar.quem}</p></div><div className="mt-auto pt-5 flex gap-2"><Button variant="outline" className="flex-1 bg-card hover:bg-accent" onClick={() => setDetalhe(expert.id)}>Ver projeto</Button><Button className="flex-1" disabled={!!status} onClick={() => declararInteresse(expert.id, projeto.id)}>{status ? "Interesse registrado" : "Tenho interesse"}</Button></div></article>; })}</div></section>}
+    {pagina === "reunioes" && <section className="space-y-4 rise-in">{minhasReunioes.length === 0 ? <div className="bg-card border border-border rounded-lg p-8 text-center"><CalendarClock className="size-7 mx-auto text-primary mb-2" /><h3 className="font-display font-semibold">Você ainda não indicou interesse</h3><p className="text-sm text-muted-foreground mt-1">Explore os projetos disponíveis para iniciar uma conversa na Rodada de Parcerias.</p></div> : minhasReunioes.map((interesse) => { const expert = experts.find((item) => item.id === interesse.expertId); if (!expert) return null; return <article key={interesse.id} className="bg-card border border-border rounded-lg p-5 flex gap-4"><div className="size-11 shrink-0 rounded-md bg-primary/10 flex items-center justify-center"><CalendarClock className="size-5 text-primary" /></div><div className="flex-1"><div className="flex flex-wrap items-center gap-2"><h3 className="font-display font-semibold">{expert.projeto.nome}</h3><BadgeStatus status={interesse.status} /></div><p className="text-sm text-muted-foreground mt-1">Projeto de {expert.nome}</p>{interesse.agenda ? <p className="text-sm mt-2 flex items-center gap-1.5"><MapPin className="size-3.5 text-primary" />{interesse.agenda.data} às {interesse.agenda.horario} · {interesse.agenda.local}</p> : <p className="text-sm text-muted-foreground mt-2">Seu interesse foi encaminhado para a organização da Rodada.</p>}</div></article>; })}</section>}
+    <Dialog open={!!detalhe} onOpenChange={() => setDetalhe(null)}><DialogContent className="max-w-xl max-h-[85vh] overflow-y-auto">{detalhe && (() => { const expert = experts.find((item) => item.id === detalhe); if (!expert) return null; const projeto = expert.projeto; const status = statusProjeto(projeto.id); return <><DialogHeader><DialogTitle className="font-display text-xl">{projeto.nome}</DialogTitle><DialogDescription>{projeto.nicho} · Projeto de {expert.nome}</DialogDescription></DialogHeader><div><Label>ROMA</Label><p className="font-display text-xl mt-2">{projeto.roma}</p></div><div className="rule-double" /><div><Label>Avatar</Label><p className="text-sm mt-2">{projeto.avatar.quem}</p><div className="mt-3 space-y-1.5">{projeto.avatar.dores.map((dor) => <p key={dor} className="text-sm text-muted-foreground pl-3 border-l-2 border-primary/40">Dor: {dor}</p>)}</div><p className="text-sm mt-3"><strong>Ambição:</strong> {projeto.avatar.ambicao}</p></div><div><Label>Especialidades</Label><p className="text-sm mt-2">{projeto.especialidades.join(" · ")}</p></div><Button className="w-full mt-2 gap-2" disabled={!!status} onClick={() => declararInteresse(expert.id, projeto.id)}>{status ? <><CheckCircle2 className="size-4" />Interesse já registrado</> : "Tenho interesse neste projeto"}</Button></>; })()}</DialogContent></Dialog>
+  </PainelLayout>;
 }

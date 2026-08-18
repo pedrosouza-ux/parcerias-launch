@@ -1,7 +1,5 @@
 /**
- * Parcerias — "Estrada para Roma" (ideas.md v2)
- * Seletor de papel: simula login como Admin, Expert ou Lançador no protótipo.
- * Estilo: labels mono uppercase, botão com acento vermelho-selo.
+ * Parcerias FL Insider v4 — seletor de perfil do protótipo.
  */
 import { Papel } from "@/lib/mockData";
 import { Button } from "@/components/ui/button";
@@ -16,9 +14,9 @@ import { ShieldCheck, UserRound, Rocket, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 const papeis: { id: Papel; nome: string; icone: React.ReactNode; desc: string }[] = [
-  { id: "admin", nome: "Administrador", icone: <ShieldCheck className="size-4" />, desc: "Triagem e visão global" },
-  { id: "expert", nome: "Expert", icone: <UserRound className="size-4" />, desc: "Projetos, ROMA e Lançadores" },
-  { id: "lancador", nome: "Lançador", icone: <Rocket className="size-4" />, desc: "Propostas de parceria" },
+  { id: "admin", nome: "Administrador", icone: <ShieldCheck className="size-4" />, desc: "Validação, triagem e agenda" },
+  { id: "expert", nome: "Expert", icone: <UserRound className="size-4" />, desc: "Projeto próprio e reuniões" },
+  { id: "lancador", nome: "Lançador", icone: <Rocket className="size-4" />, desc: "Catálogo e interesses" },
 ];
 
 interface PapelSwitcherProps {
