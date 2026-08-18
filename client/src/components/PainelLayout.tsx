@@ -24,6 +24,7 @@ const navegacao: Record<Papel, NavItem[]> = {
   ],
   expert: [
     { id: "meu-projeto", label: "Meu projeto" },
+    { id: "cadastro", label: "Cadastro do projeto" },
     { id: "reunioes", label: "Minhas reuniões" },
   ],
   lancador: [

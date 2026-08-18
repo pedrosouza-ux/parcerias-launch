@@ -40,4 +40,8 @@
 
 - [x] Aplicar a variante correta do logo para fundos claros e escuros
 - [x] Remover o divisor vertical residual da landing e dos painéis
-- [ ] Validar as correções nos dois temas e publicar a atualização
+- [x] Validar as correções nos dois temas e publicar a atualização
+
+- [x] Definir etapas, campos obrigatórios e exemplos do cadastro de projeto de Expert
+- [x] Criar telas navegáveis de cadastro, revisão e envio para validação do negócio
+- [ ] Documentar os campos propostos, validar visualmente e publicar o protótipo
