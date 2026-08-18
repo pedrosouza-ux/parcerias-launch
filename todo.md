@@ -36,4 +36,8 @@
 
 - [x] Corrigir contraste do logo, navegação e sessão na barra lateral
 - [x] Refinar o estado ativo para reduzir o peso visual do azul
-- [ ] Validar a barra lateral em modo claro e escuro e publicar a correção
+- [x] Validar a barra lateral em modo claro e escuro e publicar a correção
+
+- [x] Aplicar a variante correta do logo para fundos claros e escuros
+- [x] Remover o divisor vertical residual da landing e dos painéis
+- [ ] Validar as correções nos dois temas e publicar a atualização
