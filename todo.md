@@ -103,7 +103,7 @@
 - [x] Revalidar visualmente o cenário administrativo completo após a identificação individual aparecer de forma consistente em todas as áreas relevantes
 - [x] Habilitar um modo operacional de validação para o Administrador testar os fluxos de Expert e Lançador
 - [x] Garantir que o modo operacional administrativo utilize somente registros demonstrativos identificados
-- [ ] Validar as ações habilitadas e publicar a atualização de teste
+- [x] Validar as ações habilitadas e publicar a atualização de teste
 - [x] Aprovar e provisionar o Lançador demonstrativo para habilitar imediatamente a operação dos dois perfis
 - [x] Restringir o catálogo e os interesses do modo de validação aos projetos demonstrativos identificados
 - [x] Cobrir com testes o isolamento que impede o modo de validação de ler ou alterar registros reais
@@ -115,3 +115,5 @@
 - [x] Confirmar em teste que interesses e reuniões reais não são expostos no modo operacional administrativo
 - [x] Adicionar teste ponta a ponta de rejeição de projeto elegível real pela declaração demonstrativa de interesse
 - [x] Criar e remover automaticamente uma fixture elegível não demonstrativa para testar a rejeição ponta a ponta
+- [x] Executar o fluxo demonstrativo de Expert e Lançador com persistência e registrar os resultados
+- [x] Adicionar teste de integração do fluxo feliz para edição de projeto e declaração de interesse demonstrativos

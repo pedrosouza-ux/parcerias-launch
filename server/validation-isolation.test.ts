@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
 import { eq } from "drizzle-orm";
-import { expertProfiles, projects, registrations, users } from "../drizzle/schema";
-import { canDeclareValidationInterest, declareValidationProjectInterest, getDb, getValidationParticipantUserId, isValidationExpertOpenId, listValidationEligibleProjects, listValidationExpertInterests, listValidationLauncherInterests, validationOpenIdByRole } from "../server/db";
+import { expertProfiles, projectInterests, projects, registrations, users } from "../drizzle/schema";
+import { canDeclareValidationInterest, declareValidationProjectInterest, getDb, getProjectByExpertUserId, getValidationParticipantUserId, isValidationExpertOpenId, listValidationEligibleProjects, listValidationExpertInterests, listValidationLauncherInterests, saveProjectDraft, validationOpenIdByRole } from "../server/db";
 
 describe("escopo dos dados demonstrativos", () => {
   it("mantém o modo operacional apontado apenas para os dois participantes fictícios identificados", () => {
@@ -86,6 +86,39 @@ describe("escopo dos dados demonstrativos", () => {
       await expect(declareValidationProjectInterest({ userId: launcherUserId, projectId: fixtureProject.id })).resolves.toBeNull();
     } finally {
       if (fixtureUserId) await db.delete(users).where(eq(users.id, fixtureUserId));
+    }
+  });
+
+  it("persiste edição e envio do Expert antes de registrar interesse do Lançador demonstrativo", async () => {
+    const db = await getDb();
+    if (!db) throw new Error("Banco indisponível para o fluxo demonstrativo.");
+    const expertUserId = await getValidationParticipantUserId("expert");
+    const launcherUserId = await getValidationParticipantUserId("lancador");
+    const original = await getProjectByExpertUserId(expertUserId);
+    if (!original?.project) throw new Error("Projeto demonstrativo não encontrado.");
+    const originalName = original.project.name;
+    const originalStatus = original.project.status;
+    const originalSubmittedAt = original.project.submittedAt;
+    const editedName = `${originalName} — fluxo operacional`;
+    let createdInterestId: number | null = null;
+
+    try {
+      const updated = await saveProjectDraft({ userId: expertUserId, fields: { name: editedName }, submit: true });
+      expect(updated?.project?.name).toBe(editedName);
+      expect(updated?.project?.status).toBe("submitted");
+
+      await db.update(projects).set({ status: "eligible" }).where(eq(projects.id, original.project.id));
+      const catalogo = await listValidationEligibleProjects();
+      expect(catalogo.some(({ project }) => project.id === original.project!.id && project.name === editedName)).toBe(true);
+
+      const interesse = await declareValidationProjectInterest({ userId: launcherUserId, projectId: original.project.id });
+      expect(interesse?.projectId).toBe(original.project.id);
+      createdInterestId = interesse?.id ?? null;
+      const [persistedInterest] = await db.select().from(projectInterests).where(eq(projectInterests.id, interesse!.id)).limit(1);
+      expect(persistedInterest?.projectId).toBe(original.project.id);
+    } finally {
+      if (createdInterestId) await db.delete(projectInterests).where(eq(projectInterests.id, createdInterestId));
+      await db.update(projects).set({ name: originalName, status: originalStatus, submittedAt: originalSubmittedAt }).where(eq(projects.id, original.project.id));
     }
   });
 });
