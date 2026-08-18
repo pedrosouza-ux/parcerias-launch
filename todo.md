@@ -80,8 +80,15 @@
 - [ ] Definir o provedor e o fluxo de autenticação por e-mail com link mágico
 - [ ] Substituir o bloqueio de cadastro baseado em Manus por acesso próprio do sistema
 - [ ] Configurar a conta Administrador inicial e a recuperação de acesso
-- [ ] Implementar modo de visualização administrativa para Expert e Lançador sem personificação
+- [x] Implementar modo de visualização administrativa para Expert e Lançador sem personificação
 - [ ] Validar sessão, aprovação e privacidade dos três perfis antes da publicação
 
 - [x] Provisionar o proprietário atual como Administrador inicial do sistema
 - [x] Criar visualizações administrativas seguras para Expert e Lançador
+
+- [x] Adicionar Arthur Lobo como Administrador autorizado pendente de primeiro acesso
+- [x] Criar módulo administrativo para listar e adicionar Administradores por nome e e-mail
+- [x] Registrar eventos de inclusão de Administradores em auditoria
+- [x] Validar que somente Administradores podem gerir outros Administradores
+- [x] Adicionar testes de autorização para bloquear inclusão e revogação por usuário não-admin
+- [x] Validar explicitamente adminAccess.add e adminAccess.revoke com usuário autenticado sem papel admin

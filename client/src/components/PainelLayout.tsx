@@ -21,6 +21,7 @@ const navegacao: Record<Papel, NavItem[]> = {
     { id: "lancadores", label: "Lançadores" },
     { id: "triagem", label: "Triagem manual" },
     { id: "agenda", label: "Reuniões" },
+    { id: "administradores", label: "Administradores" },
     { id: "fluxo", label: "Fluxo BPMN" },
   ],
   expert: [

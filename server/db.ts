@@ -1,6 +1,7 @@
 import { and, desc, eq } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
+  adminAccessGrants,
   auditLogs,
   expertProfiles,
   InsertUser,
@@ -49,6 +50,26 @@ export async function ensureOwnerAdmin(): Promise<void> {
     role: "admin",
   }).onDuplicateKeyUpdate({
     set: { role: "admin" },
+  });
+
+  const owner = await getUserByOpenId(ENV.ownerOpenId);
+  if (!owner?.email) return;
+
+  await db.insert(adminAccessGrants).values({
+    userId: owner.id,
+    fullName: owner.name || ENV.ownerName || "Administrador inicial",
+    email: owner.email.trim().toLowerCase(),
+    status: "active",
+    createdByUserId: owner.id,
+    activatedAt: new Date(),
+  }).onDuplicateKeyUpdate({
+    set: {
+      userId: owner.id,
+      fullName: owner.name || ENV.ownerName || "Administrador inicial",
+      status: "active",
+      activatedAt: new Date(),
+      revokedAt: null,
+    },
   });
 }
 
@@ -560,4 +581,82 @@ export async function createAuditLog(input: {
     entityId: input.entityId,
     metadata: input.metadata,
   });
+}
+
+export async function listAdminAccessGrants() {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  return db
+    .select({ grant: adminAccessGrants, user: users })
+    .from(adminAccessGrants)
+    .leftJoin(users, eq(adminAccessGrants.userId, users.id))
+    .orderBy(desc(adminAccessGrants.createdAt));
+}
+
+export async function createAdminAccessGrant(input: {
+  fullName: string;
+  email: string;
+  createdByUserId: number;
+}) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  const email = input.email.trim().toLowerCase();
+  const fullName = input.fullName.trim();
+  const [existing] = await db
+    .select()
+    .from(adminAccessGrants)
+    .where(eq(adminAccessGrants.email, email))
+    .limit(1);
+
+  if (existing) return { grant: existing, created: false };
+
+  await db.insert(adminAccessGrants).values({
+    fullName,
+    email,
+    createdByUserId: input.createdByUserId,
+    status: "pending",
+  });
+
+  const [grant] = await db
+    .select()
+    .from(adminAccessGrants)
+    .where(eq(adminAccessGrants.email, email))
+    .limit(1);
+  if (!grant) throw new Error("Não foi possível registrar o Administrador autorizado.");
+
+  await createAuditLog({
+    actorUserId: input.createdByUserId,
+    action: "admin_access_grant.created",
+    entityType: "adminAccessGrant",
+    entityId: String(grant.id),
+    metadata: { email: grant.email, fullName: grant.fullName, status: grant.status },
+  });
+
+  return { grant, created: true };
+}
+
+export async function revokeAdminAccessGrant(input: { grantId: number; revokedByUserId: number }) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  const [grant] = await db.select().from(adminAccessGrants).where(eq(adminAccessGrants.id, input.grantId)).limit(1);
+  if (!grant) return null;
+
+  await db
+    .update(adminAccessGrants)
+    .set({ status: "revoked", revokedAt: new Date() })
+    .where(eq(adminAccessGrants.id, input.grantId));
+
+  await createAuditLog({
+    actorUserId: input.revokedByUserId,
+    action: "admin_access_grant.revoked",
+    entityType: "adminAccessGrant",
+    entityId: String(input.grantId),
+    metadata: { email: grant.email, fullName: grant.fullName },
+  });
+
+  const [updated] = await db.select().from(adminAccessGrants).where(eq(adminAccessGrants.id, input.grantId)).limit(1);
+  return updated ?? null;
 }

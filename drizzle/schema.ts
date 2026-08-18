@@ -244,6 +244,35 @@ export const auditLogs = mysqlTable(
   table => [index("auditLogs_entity_idx").on(table.entityType, table.entityId)],
 );
 
+/**
+ * Administrators approved to manage the operation. A grant may exist before the
+ * person completes their first authenticated access, which keeps invitations
+ * separate from user identities and avoids pre-creating credentials.
+ */
+export const adminAccessGrants = mysqlTable(
+  "adminAccessGrants",
+  {
+    id: int("id").autoincrement().primaryKey(),
+    userId: int("userId").references(() => users.id, { onDelete: "set null" }),
+    fullName: varchar("fullName", { length: 180 }).notNull(),
+    email: varchar("email", { length: 320 }).notNull(),
+    status: mysqlEnum("status", ["pending", "active", "revoked"])
+      .default("pending")
+      .notNull(),
+    createdByUserId: int("createdByUserId")
+      .notNull()
+      .references(() => users.id, { onDelete: "restrict" }),
+    activatedAt: timestamp("activatedAt"),
+    revokedAt: timestamp("revokedAt"),
+    createdAt: timestamp("createdAt").defaultNow().notNull(),
+    updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+  },
+  table => [
+    uniqueIndex("adminAccessGrants_email_unique").on(table.email),
+    index("adminAccessGrants_status_idx").on(table.status),
+  ],
+);
+
 export type Registration = typeof registrations.$inferSelect;
 export type InsertRegistration = typeof registrations.$inferInsert;
 export type ExpertProfile = typeof expertProfiles.$inferSelect;
@@ -251,3 +280,4 @@ export type Project = typeof projects.$inferSelect;
 export type LauncherProfile = typeof launcherProfiles.$inferSelect;
 export type ProjectInterest = typeof projectInterests.$inferSelect;
 export type Meeting = typeof meetings.$inferSelect;
+export type AdminAccessGrant = typeof adminAccessGrants.$inferSelect;
