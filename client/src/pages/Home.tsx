@@ -41,8 +41,8 @@ export default function Home() {
       {/* Header */}
       <header className="px-5 lg:px-10 py-5 flex items-center justify-between border-b border-border bg-background/80 backdrop-blur-md sticky top-0 z-30">
         <div className="flex items-center gap-3">
-          <img src="/manus-storage/parcerias-logo-v2_7a82460d.png" alt="Parcerias" className="size-10" />
-          <span className="font-display text-2xl font-semibold tracking-tight">Parcerias<span className="text-primary">.</span></span>
+          <img src="/manus-storage/LOGO_INSIDER_BRANCO_98928175.svg" alt="FL Insider" className="h-9 w-auto" />
+          <span className="font-display text-lg font-semibold tracking-tight text-insider-ice">· Parcerias</span>
         </div>
         <span className="label-ed hidden sm:block">Encontro Insider · Protótipo de validação</span>
       </header>
@@ -73,9 +73,9 @@ export default function Home() {
         </div>
         <div className="rise-in" style={{ animationDelay: "80ms" }}>
           <img
-            src="/manus-storage/parcerias-hero-v2_524e06c6.png"
-            alt="Ilustração de rotas convergindo para um destino comum"
-            className="w-full rounded-lg border border-border shadow-lg"
+            src="/manus-storage/parcerias-hero-insider_7cd5c396.png"
+            alt="Ilustração institucional de rotas convergindo para um destino comum"
+            className="w-full rounded-md border border-border shadow-lg"
           />
         </div>
       </section>

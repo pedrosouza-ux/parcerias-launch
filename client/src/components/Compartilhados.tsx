@@ -1,5 +1,5 @@
 /**
- * Parcerias — "Estrada para Roma" (ideas.md v2)
+ * Parcerias — Identidade oficial FL Insider (ideas.md v3)
  * Componentes compartilhados: foto de perfil, indicador de convergência
  * (linhas de rota rumo a Roma), estado de acesso, linhas de dado.
  */
@@ -21,7 +21,7 @@ export function FotoPerfil({ src, alt, size = "md" }: { src: string; alt: string
 /** Indicador de convergência — convergência de rotas rumo à Roma */
 export function SeloAderencia({ score, className }: { score: number; className?: string }) {
   const cor =
-    score >= 80 ? "text-primary" : score >= 60 ? "text-[oklch(0.68_0.09_75)]" : "text-muted-foreground";
+    score >= 80 ? "text-primary" : score >= 60 ? "text-insider-soft" : "text-muted-foreground";
   return (
     <div className={cn("relative flex flex-col items-center justify-center w-16 h-16", cor, className)}>
       {/* Linhas de rota convergindo em Y para o ponto-destino */}
