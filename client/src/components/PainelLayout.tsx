@@ -6,6 +6,8 @@
 import { ReactNode } from "react";
 import { Papel } from "@/lib/mockData";
 import PapelSwitcher from "@/components/PapelSwitcher";
+import { LogoInsider } from "@/components/LogoInsider";
+import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
 
 interface NavItem {
@@ -62,11 +64,7 @@ export default function PainelLayout({
       {/* Sidebar */}
       <aside className="hidden lg:flex w-64 shrink-0 flex-col border-r border-sidebar-border bg-sidebar sticky top-0 h-screen">
         <div className="p-5 flex items-center justify-center">
-          <img
-            src="/manus-storage/LOGO_INSIDER_BRANCO_98928175.svg"
-            alt="FL Insider"
-            className="w-40 h-auto"
-          />
+          <LogoInsider />
         </div>
         <div className="rule-double mx-5" />
         <nav className="flex-1 px-3 py-4 space-y-0.5">
@@ -111,9 +109,12 @@ export default function PainelLayout({
             {subtitulo && <p className="text-xs text-muted-foreground hidden sm:block">{subtitulo}</p>}
           </div>
           <div className="flex items-center gap-2 lg:hidden">
-            <img src="/manus-storage/LOGO_INSIDER_BRANCO_98928175.svg" alt="FL Insider" className="h-8 w-auto" />
+            <LogoInsider compact />
           </div>
-          <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />
+          <div className="flex items-center gap-2">
+            <ThemeToggle />
+            <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />
+          </div>
         </header>
 
         {/* Navegação mobile */}

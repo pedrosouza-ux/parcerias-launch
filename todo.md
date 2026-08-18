@@ -16,4 +16,16 @@
 - [x] Transformar a visão do Lançador em catálogo de projetos elegíveis
 - [x] Restringir a visão do Expert ao próprio projeto e seus pedidos de reunião
 - [x] Atualizar o painel administrativo para validação e triagem qualitativa
-- [ ] Validar as três visões, salvar checkpoint e entregar a revisão
+- [x] Validar as três visões, salvar checkpoint e entregar a revisão
+
+- [x] Consolidar código, documentação e ativos de identidade no pacote de transferência
+- [x] Gerar e conferir o arquivo ZIP de handoff para outra inteligência artificial
+
+- [x] Classificar as funcionalidades pendentes entre validação visual e operação real
+- [x] Definir o roteiro de testes para Administrador, Expert e Lançador
+- [x] Orientar a publicação controlada e o compartilhamento do link de validação
+
+- [x] Definir paleta clara neutra e paleta escura institucional com contraste acessível
+- [x] Criar alternância persistente entre modo claro e escuro
+- [x] Ajustar landing, painéis, navegação e indicadores para ambos os temas
+- [ ] Validar visualmente os dois modos e publicar a atualização
