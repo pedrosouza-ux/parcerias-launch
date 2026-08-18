@@ -55,8 +55,18 @@
   .label-ed { font-family: var(--font-mono); font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase; color: var(--label); }
   .rule-double { border-top: 3px double var(--rule); }
   .font-display { font-family: var(--font-serif); }
-  .insider-wordmark { filter: brightness(0) saturate(100%) invert(13%) sepia(14%) saturate(2859%) hue-rotate(184deg) brightness(92%) contrast(96%); transition: filter 180ms ease; }
-  .dark .insider-wordmark { filter: none; }
+  .insider-wordmark { filter: none; transition: filter 180ms ease; }
+  .bpmn-shell { overflow: hidden; border: 1px solid var(--border); border-radius: var(--radius); background: var(--card); box-shadow: 0 10px 30px oklch(0.2 0.02 265 / 8%); }
+  .bpmn-toolbar { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border); padding: .75rem 1rem; color: var(--muted-foreground); font-family: var(--font-mono); font-size: .6875rem; font-weight: 600; letter-spacing: .06em; text-transform: uppercase; }
+  .bpmn-viewer { height: 460px; width: 100%; background: var(--card); }
+  .bpmn-ampliado .bpmn-viewer { height: 680px; }
+  .bpmn-viewer .djs-container, .bpmn-viewer .djs-container svg { background: transparent !important; }
+  .bpmn-viewer .djs-visual > rect, .bpmn-viewer .djs-visual > polygon { fill: var(--card) !important; stroke: var(--primary) !important; }
+  .bpmn-viewer .djs-visual > circle { fill: var(--card) !important; stroke: var(--primary) !important; }
+  .bpmn-viewer .djs-visual > path { stroke: var(--primary) !important; }
+  .bpmn-viewer .djs-connection .djs-visual > path { stroke: var(--muted-foreground) !important; }
+  .bpmn-viewer .djs-label, .bpmn-viewer text { fill: var(--foreground) !important; font-family: var(--font-sans) !important; font-size: 12px !important; }
+  .bpmn-viewer .djs-outline { stroke: var(--primary) !important; }
   @media (min-width: 640px) { .container { padding-left: 1.5rem; padding-right: 1.5rem; } }
   @media (min-width: 1024px) { .container { padding-left: 2rem; padding-right: 2rem; max-width: 1280px; } }
 }

@@ -28,4 +28,8 @@
 - [x] Definir paleta clara neutra e paleta escura institucional com contraste acessível
 - [x] Criar alternância persistente entre modo claro e escuro
 - [x] Ajustar landing, painéis, navegação e indicadores para ambos os temas
-- [ ] Validar visualmente os dois modos e publicar a atualização
+- [x] Validar visualmente os dois modos e publicar a atualização
+
+- [x] Definir o diagrama BPMN do fluxo validado de parcerias e seus responsáveis
+- [x] Integrar o visualizador BPMN.io ao painel administrativo
+- [ ] Validar o diagrama no sistema e publicar a atualização
