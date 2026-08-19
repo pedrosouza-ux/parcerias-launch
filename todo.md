@@ -120,5 +120,6 @@
 - [x] Adicionar um controle de logout explícito e acessível em todos os painéis autenticados
 - [x] Garantir que o logout encerre a sessão e redirecione de forma segura para a página pública
 - [x] Cobrir o encerramento de sessão com testes e publicar a atualização
-- [ ] Publicar uma versão com o controle de logout incluído
+- [x] Publicar uma versão com o controle de logout incluído
 - [ ] Validar em sessão autenticada que o botão Sair encerra o acesso e retorna à página pública
+- [x] Remover também os dados locais em cache do usuário ao encerrar a sessão
