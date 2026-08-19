@@ -153,3 +153,6 @@
 - [x] Remover o motivo gráfico de rotas convergentes do fundo da landing
 - [x] Verificar visualmente a landing sem o elemento gráfico e publicar a correção
 - [x] Reiniciar e verificar o servidor de desenvolvimento para descartar erros transitórios históricos
+- [x] Documentar o fluxo administrativo de inscrições, triagem, catálogo, interesses e agenda
+- [x] Documentar o uso seguro dos perfis demonstrativos e a troca de perfil administrativa
+- [ ] Revisar e publicar o guia operacional da Administração junto ao código
