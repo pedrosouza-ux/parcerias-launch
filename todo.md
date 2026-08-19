@@ -165,7 +165,7 @@
 - [ ] Implementar autenticação por e-mail com link mágico para participantes sem conta Manus
 - [ ] Homologar ponta a ponta os fluxos reais de Administrador, Expert e Lançador com contas de teste
 - [x] Adicionar limitação de taxa e cabeçalhos HTTP de segurança na publicação
-- [ ] Reduzir a duração da sessão administrativa/OAuth e ajustar a criação do token para expiração compatível com produção
+- [x] Reduzir a duração da sessão administrativa/OAuth e ajustar a criação do token para expiração compatível com produção
 - [ ] Implementar e testar invalidação de sessão após mudança de privilégio e a política de renovação
 - [ ] Evoluir a agenda com duração, recurso físico, prevenção de conflitos e comunicação de reuniões
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
