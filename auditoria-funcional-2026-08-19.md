@@ -9,6 +9,8 @@
 
 Após a emissão inicial desta auditoria, as dependências diretas afetadas foram atualizadas de forma compatível (`axios`, `drizzle-orm`, `express`, `streamdown` e `nanoid`). O componente genérico de gráficos e a dependência `recharts`, que não eram utilizados por nenhuma tela do produto, foram removidos para eliminar a cadeia transitiva vulnerável de `lodash`. A regressão posterior confirmou **34 testes aprovados**, TypeScript sem erros e `pnpm audit --prod` sem vulnerabilidades reportadas. Permanecem como riscos técnicos distintos o peer dependency desatualizado de `vite-plugin-jsx-loc` e quatro subdependências marcadas como obsoletas; elas não geram vulnerabilidade no relatório atual e devem ser acompanhadas em manutenção de rotina.
 
+Em seguida, a aplicação recebeu cabeçalhos HTTP de endurecimento, proteção contra cache em todas as respostas de API, ocultação da assinatura do Express, política de conteúdo em produção e limitação de taxa por origem para a API e o retorno OAuth. A suíte passou a conter **38 testes**, incluindo cobertura para cabeçalhos, cache, limitação de taxa e configuração de analytics inválida. A validação local confirmou os cabeçalhos esperados e as respostas de API com `Cache-Control: no-store` e metadados de limite. O endurecimento do ciclo de sessão, por sua vez, continua pendente: a duração atual e a invalidação após alterações de privilégio ainda devem ser revisadas.
+
 ## Síntese executiva
 
 O sistema já ultrapassou a fase de protótipo visual. Há uma aplicação full stack com persistência para inscrições, projetos, triagens, interesses, reuniões, concessões administrativas e eventos de auditoria. A autorização é aplicada no servidor por tipo de procedimento e por papel, enquanto a aprovação administrativa restringe o uso dos painéis de Expert e Lançador. As visualizações demonstrativas também estão isoladas dos registros reais e permitem que Administradores validem o processo sem contaminar a operação. [1] [2] [3]
@@ -37,7 +39,7 @@ A revisão combinou inspeção de código, esquema de dados, procedimentos de ne
 | `pnpm run check` | TypeScript sem erros. | Não valida comportamento em produção por si só. |
 | Revisão de rotas | Rotas públicas e painéis protegidos apresentam estados de acesso coerentes. | O fluxo público continua dependente de OAuth Manus. |
 | Revisão visual | Landing, cadastro, Admin, Expert e Lançador demonstrativos foram conferidos em desktop e 375 px. | Não equivale a teste assistivo com leitores de tela. |
-| Cabeçalhos da publicação | HTTPS/HSTS, `nosniff` e política de não-cache presentes. | CSP, antiframing e outras políticas não foram observadas. |
+| Cabeçalhos da publicação | HTTPS/HSTS, `nosniff`, antiframing, políticas de referência/permissão, proteção de cache da API e CSP na produção foram implementados. | Revisar CSP ao adicionar integrações de terceiros. |
 | `pnpm audit` | Auditoria inicial encontrou alertas altos; a auditoria posterior à remediação não reporta vulnerabilidades de produção. | Exige manutenção contínua da árvore de dependências. |
 
 ## Inventário das funcionalidades disponíveis
@@ -123,7 +125,7 @@ As prioridades abaixo distinguem bloqueadores de abertura pública de melhorias 
 | **P0** | Jornada ponta a ponta com identidade real de participante não foi executada. | Não há evidência de que convite, login, aprovação, retorno, projeto, interesse e reunião funcionam fora do ambiente de demonstração. | Construir cenários de homologação com contas de teste e evidências de aceite por papel. |
 | **P1** | Não há limitação de taxa para autenticação futura, inscrição e ações mutáveis. | Abertura pública pode sofrer abuso, enumeração e sobrecarga. | Adotar rate limit por rota e IP/identidade, monitorar rejeições e definir respostas de abuso. |
 | **P1** | Sessão OAuth atual pode durar até um ano e não há MFA obrigatório para Administradores. | Janela de exposição maior em equipamentos compartilhados ou comprometidos. | Reduzir prazo, renovar/invalidar após alteração de privilégio e definir MFA para o perfil administrativo. |
-| **P1** | Cabeçalhos de endurecimento são parciais; `X-Powered-By: Express` permanece exposto. | A aplicação não usa CSP, política anti-iframe, `Referrer-Policy` e `Permissions-Policy` observáveis. | Adicionar cabeçalhos de segurança adequados às origens realmente utilizadas e desabilitar a assinatura do Express. [9] |
+| **Concluído** | Cabeçalhos de endurecimento, CSP em produção, proteção contra cache de API e ocultação da assinatura do Express. | Controles implementados e cobertos por testes; revisar CSP ao adicionar novas integrações de terceiros. [9] |
 | **P1** | Reuniões não validam conflito de agenda, duração, mesa/capacidade ou lembretes. | Podem ocorrer sobreposições e falhas de coordenação no evento. | Modelar intervalo, recurso físico, status e verificação de conflito; disparar confirmação e lembrete. |
 | **P1** | O usuário não recebe comunicação automática sobre aprovação, reprovação, interesse ou reunião. | Processo depende de acompanhamento manual do Administrador e pode falhar no dia do evento. | Integrar notificações por e-mail, com modelos revisados e histórico de entrega. |
 | **P1** | O aviso de dados não substitui consentimento e transparência operacional completos. | Risco de comunicação insuficiente ao participante. | Publicar aviso de privacidade, versão do texto aceito e fundamento/finalidade revisados pelo responsável competente. |
@@ -197,7 +199,8 @@ Depois da abertura, a manutenção deve ser orientada por revisão de acessos, c
 | Dados demonstrativos isolados e identificados | **Implementado** |
 | Atualização das dependências de alta severidade | **Implementado — auditoria de produção sem vulnerabilidades** |
 | Política de dados e aviso de privacidade operacional | **Pendente** |
-| Rate limit, proteção de escrita e cabeçalhos completos | **Pendente** |
+| Rate limit e cabeçalhos HTTP de segurança | **Implementado — limite de API, no-store e cabeçalhos endurecidos** |
+| Duração, renovação e invalidação de sessão | **Pendente** |
 | Conflito de agenda e comunicação de reuniões | **Pendente** |
 | Teste de aceitação ponta a ponta | **Pendente** |
 
