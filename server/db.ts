@@ -357,7 +357,7 @@ type ProjectDraft = {
   niche?: string;
   subniche?: string;
   specialties?: string[];
-  maturity?: "structuring" | "validated" | "launched";
+  maturity?: "structuring" | "launched" | "launched_validated";
   avatarDescription?: string;
   pains?: string[];
   ambition?: string;

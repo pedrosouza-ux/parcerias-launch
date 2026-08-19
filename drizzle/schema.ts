@@ -105,7 +105,7 @@ export const projects = mysqlTable(
     niche: varchar("niche", { length: 180 }).notNull(),
     subniche: varchar("subniche", { length: 180 }).notNull(),
     specialties: json("specialties").$type<string[]>().notNull(),
-    maturity: mysqlEnum("maturity", ["structuring", "validated", "launched"]).notNull(),
+    maturity: mysqlEnum("maturity", ["structuring", "validated", "launched", "launched_validated"]).notNull(),
     avatarDescription: text("avatarDescription").notNull(),
     pains: json("pains").$type<string[]>().notNull(),
     ambition: text("ambition").notNull(),

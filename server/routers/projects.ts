@@ -4,12 +4,14 @@ import { createAuditLog, getProjectByExpertUserId, getValidationParticipantUserI
 import { adminProcedure, protectedProcedure, router } from "../_core/trpc";
 import { requireApprovedParticipation } from "./access";
 
-const projectFields = z.object({
+export const PROJECT_MATURITY_VALUES = ["structuring", "launched", "launched_validated"] as const;
+
+export const projectFields = z.object({
   name: z.string().trim().min(3).max(180),
   niche: z.string().trim().min(2).max(180),
   subniche: z.string().trim().min(2).max(180),
   specialties: z.array(z.string().trim().min(2).max(80)).min(1).max(5),
-  maturity: z.enum(["structuring", "validated", "launched"]),
+  maturity: z.enum(PROJECT_MATURITY_VALUES),
   avatarDescription: z.string().trim().min(20).max(3000),
   pains: z.array(z.string().trim().min(2).max(240)).min(2).max(8),
   ambition: z.string().trim().min(10).max(2000),
@@ -26,12 +28,12 @@ const projectFields = z.object({
   exposureAcknowledged: z.literal(true),
 });
 
-const projectDraftFields = z.object({
+export const projectDraftFields = z.object({
   name: z.string().trim().max(180).optional(),
   niche: z.string().trim().max(180).optional(),
   subniche: z.string().trim().max(180).optional(),
   specialties: z.array(z.string().trim().max(80)).max(5).optional(),
-  maturity: z.enum(["structuring", "validated", "launched"]).optional(),
+  maturity: z.enum(PROJECT_MATURITY_VALUES).optional(),
   avatarDescription: z.string().trim().max(3000).optional(),
   pains: z.array(z.string().trim().max(240)).max(8).optional(),
   ambition: z.string().trim().max(2000).optional(),
@@ -87,7 +89,7 @@ export const projectsRouter = router({
 
   submit: protectedProcedure.input(projectFields).mutation(async ({ ctx, input }) => {
     await requireApprovedParticipation(ctx.user.id, "expert");
-    if (input.maturity === "launched" && !input.evidence) {
+    if (["launched", "launched_validated"].includes(input.maturity) && !input.evidence) {
       throw new TRPCError({ code: "BAD_REQUEST", message: "Informe uma evidência para projetos já lançados." });
     }
     const saved = await saveProjectDraft({ userId: ctx.user.id, fields: input, submit: true });
@@ -96,7 +98,7 @@ export const projectsRouter = router({
   }),
 
   validationSubmit: adminProcedure.input(projectFields).mutation(async ({ ctx, input }) => {
-    if (input.maturity === "launched" && !input.evidence) {
+    if (["launched", "launched_validated"].includes(input.maturity) && !input.evidence) {
       throw new TRPCError({ code: "BAD_REQUEST", message: "Informe uma evidência para projetos já lançados." });
     }
     const userId = await getValidationParticipantUserId("expert");

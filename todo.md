@@ -177,3 +177,4 @@
 - [ ] Integrar confirmações, alterações e lembretes de reunião ao fluxo operacional
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
 - [x] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados
+- [x] Atualizar o estágio de maturidade para Em estruturação / Realizei o checkup, Já Lançado e Já lançado com validação
