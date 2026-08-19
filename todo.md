@@ -3,7 +3,7 @@
 - [x] Atualizar tokens visuais globais no tema para a paleta azul-marinho/lavanda da marca
 - [x] Substituir logos, favicon e elementos gráficos atuais pelos ativos oficiais do Insider
 - [x] Ajustar landing e painéis para aderirem à nova identidade visual sem perder legibilidade
-- [ ] Validar visualmente as páginas principais, salvar checkpoint e entregar a nova versão
+- [x] Validar visualmente as páginas principais, salvar checkpoint e entregar a nova versão
 
 - [x] Extrair as regras de negócio, fluxos e critérios de acesso do levantamento preenchido
 - [x] Comparar os requisitos oficiais com o protótipo de parcerias já implementado
@@ -65,7 +65,7 @@
 - [x] Aplicar o schema inicial no banco e confirmar as tabelas de autenticação
 - [ ] Validar login Manus, persistência básica de usuário e rotas existentes
 - [x] Revisar a integração final da infraestrutura sem regressões
-- [ ] Validar as rotas de Administrador, Expert e Lançador após o upgrade full stack
+- [x] Validar as rotas de Administrador, Expert e Lançador após o upgrade full stack
 - [ ] Testar login Manus, sessão e acesso às telas protegidas ponta a ponta
 - [x] Definir inscrição pública na comunidade com aprovação administrativa e Administrador inicial
 - [x] Implementar inscrições públicas pendentes por perfil e o Administrador inicial do projeto
@@ -75,7 +75,7 @@
 - [x] Implementar procedures tRPC protegidas por papel para projetos, triagem, catálogo, interesses e reuniões
 - [ ] Conectar cadastro, triagem, catálogo, interesse e reuniões aos dados reais
 - [ ] Validar regras de segurança e os fluxos completos antes da publicação
-- [ ] Publicar a versão operacional e documentar a administração do sistema
+- [x] Publicar a versão operacional e documentar a administração do sistema
 
 - [ ] Definir o provedor e o fluxo de autenticação por e-mail com link mágico
 - [ ] Substituir o bloqueio de cadastro baseado em Manus por acesso próprio do sistema
@@ -157,3 +157,4 @@
 - [x] Documentar o uso seguro dos perfis demonstrativos e a troca de perfil administrativa
 - [x] Revisar e publicar o guia operacional da Administração junto ao código
 - [x] Sincronizar o guia operacional e as correções recentes no repositório GitHub
+- [x] Estabilizar a verificação automatizada do catálogo demonstrativo em conexões de banco mais lentas

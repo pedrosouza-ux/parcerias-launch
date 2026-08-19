@@ -27,10 +27,13 @@ describe("escopo dos dados demonstrativos", () => {
     expect(canDeclareValidationInterest({ status: "eligible", ownerOpenId: "demo-expert-validacao-01" })).toBe(true);
   });
 
+  // A consulta resolve o participante, a inscrição e o perfil antes de ler o catálogo.
+  // Em conexões remotas de banco isso pode ultrapassar o limite padrão de 5 segundos,
+  // sem alterar a regra de isolamento que está sendo verificada.
   it("consulta o catálogo operacional exclusivamente no escopo do projeto demonstrativo", async () => {
     const catalogo = await listValidationEligibleProjects();
     expect(catalogo.every(({ project }) => project.name.includes("Validação"))).toBe(true);
-  });
+  }, 15_000);
 
   it("consulta interesses e reuniões somente dentro do par demonstrativo", async () => {
     const [interessesDoLancador, interessesDoExpert] = await Promise.all([
