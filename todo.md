@@ -160,7 +160,7 @@
 - [x] Estabilizar a verificação automatizada do catálogo demonstrativo em conexões de banco mais lentas
 - [x] Auditar as funcionalidades disponíveis sob as dimensões de operação, permissões, persistência, experiência e segurança
 - [x] Consolidar lacunas de implantação em um roteiro priorizado de curto, médio e longo prazo
-- [ ] Corrigir os alertas de alta severidade nas dependências e repetir a auditoria de pacotes
+- [x] Corrigir os alertas de alta severidade nas dependências e repetir a auditoria de pacotes
 - [ ] Definir a política operacional de dados pessoais, retenção, exclusão e atendimento a titulares
 - [ ] Implementar autenticação por e-mail com link mágico para participantes sem conta Manus
 - [ ] Homologar ponta a ponta os fluxos reais de Administrador, Expert e Lançador com contas de teste

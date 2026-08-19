@@ -5,6 +5,10 @@
 **Responsável:** Manus AI  
 **Escopo:** funcionalidades disponíveis, regras de acesso, persistência, experiência responsiva, evidências automatizadas, configuração de sessão e dependências de produção.
 
+## Adendo de remediação — 19 de agosto de 2026
+
+Após a emissão inicial desta auditoria, as dependências diretas afetadas foram atualizadas de forma compatível (`axios`, `drizzle-orm`, `express`, `streamdown` e `nanoid`). O componente genérico de gráficos e a dependência `recharts`, que não eram utilizados por nenhuma tela do produto, foram removidos para eliminar a cadeia transitiva vulnerável de `lodash`. A regressão posterior confirmou **34 testes aprovados**, TypeScript sem erros e `pnpm audit --prod` sem vulnerabilidades reportadas. Permanecem como riscos técnicos distintos o peer dependency desatualizado de `vite-plugin-jsx-loc` e quatro subdependências marcadas como obsoletas; elas não geram vulnerabilidade no relatório atual e devem ser acompanhadas em manutenção de rotina.
+
 ## Síntese executiva
 
 O sistema já ultrapassou a fase de protótipo visual. Há uma aplicação full stack com persistência para inscrições, projetos, triagens, interesses, reuniões, concessões administrativas e eventos de auditoria. A autorização é aplicada no servidor por tipo de procedimento e por papel, enquanto a aprovação administrativa restringe o uso dos painéis de Expert e Lançador. As visualizações demonstrativas também estão isoladas dos registros reais e permitem que Administradores validem o processo sem contaminar a operação. [1] [2] [3]
@@ -20,7 +24,7 @@ Os testes e a checagem de tipos concluídos nesta auditoria retornaram **34 test
 | Participante Lançador | Catálogo curado, busca, filtro, interesse e reuniões. | **Disponível após autenticação existente** |
 | Acesso de participantes | A inscrição pública exige sessão Manus; não há identidade própria por e-mail. | **Bloqueador de abertura pública** |
 | Segurança de autorização | Sessão, procedimentos protegidos, controles administrativos e propriedade de recurso no servidor. | **Base funcional implementada** |
-| Segurança de dependências | Foram identificados alertas de alta severidade sem remediação nesta rodada. | **Correção prioritária antes da abertura** |
+| Segurança de dependências | Alertas de alta severidade identificados na auditoria foram corrigidos e a auditoria posterior não reporta vulnerabilidades de produção. | **Correção concluída; acompanhar manutenção de rotina** |
 | Privacidade e governança | Há aviso de uso de dados e trilha de auditoria, mas faltam política operacional de privacidade, retenção e ciclo de direitos do titular. | **Pendente antes de dados reais** |
 
 ## Método e evidências
@@ -34,7 +38,7 @@ A revisão combinou inspeção de código, esquema de dados, procedimentos de ne
 | Revisão de rotas | Rotas públicas e painéis protegidos apresentam estados de acesso coerentes. | O fluxo público continua dependente de OAuth Manus. |
 | Revisão visual | Landing, cadastro, Admin, Expert e Lançador demonstrativos foram conferidos em desktop e 375 px. | Não equivale a teste assistivo com leitores de tela. |
 | Cabeçalhos da publicação | HTTPS/HSTS, `nosniff` e política de não-cache presentes. | CSP, antiframing e outras políticas não foram observadas. |
-| `pnpm audit` | Alertas de alta severidade em dependências diretas e transitivas. | Requer atualização controlada e nova execução do relatório. |
+| `pnpm audit` | Auditoria inicial encontrou alertas altos; a auditoria posterior à remediação não reporta vulnerabilidades de produção. | Exige manutenção contínua da árvore de dependências. |
 
 ## Inventário das funcionalidades disponíveis
 
@@ -114,7 +118,7 @@ As prioridades abaixo distinguem bloqueadores de abertura pública de melhorias 
 | Prioridade | Lacuna confirmada | Impacto | Direção de implementação |
 |---|---|---|---|
 | **P0** | Participantes ainda precisam de conta Manus. | O link público não é utilizável por Experts e Lançadores convidados que não pertencem à plataforma Manus. | Ativar e integrar login próprio por e-mail com link mágico, mantendo OAuth Manus apenas para Administração. |
-| **P0** | Alertas de alta severidade em `drizzle-orm`, `axios`, `express/path-to-regexp`, `lodash` e `lodash-es`. | Componentes vulneráveis podem ampliar risco na cadeia de fornecimento e na aplicação. | Atualizar dependências de forma controlada, revisar mudanças incompatíveis, executar testes e repetir a auditoria até eliminar alertas aplicáveis. |
+| **Concluído** | Alertas de alta severidade em `drizzle-orm`, `axios`, `express/path-to-regexp`, `lodash` e `lodash-es`. | Componentes vulneráveis ampliavam risco na cadeia de fornecimento e na aplicação. | Dependências atualizadas, componente não utilizado removido, regressão executada e auditoria de produção posterior sem vulnerabilidades. |
 | **P0** | Não há política operacional para retenção, eliminação, exportação e resposta a solicitações relativas a dados pessoais. | Telefone, Instagram, identidade e informações de negócio serão processados sem ciclo de vida documentado. | Definir finalidade, prazo, responsáveis, canal de atendimento, descarte e aviso de privacidade antes de coletar dados reais. |
 | **P0** | Jornada ponta a ponta com identidade real de participante não foi executada. | Não há evidência de que convite, login, aprovação, retorno, projeto, interesse e reunião funcionam fora do ambiente de demonstração. | Construir cenários de homologação com contas de teste e evidências de aceite por papel. |
 | **P1** | Não há limitação de taxa para autenticação futura, inscrição e ações mutáveis. | Abertura pública pode sofrer abuso, enumeração e sobrecarga. | Adotar rate limit por rota e IP/identidade, monitorar rejeições e definir respostas de abuso. |
@@ -191,7 +195,7 @@ Depois da abertura, a manutenção deve ser orientada por revisão de acessos, c
 | Dados reais fora do bundle público | **Implementado** |
 | Autorizações por papel e recurso no servidor | **Implementado** |
 | Dados demonstrativos isolados e identificados | **Implementado** |
-| Atualização das dependências de alta severidade | **Pendente** |
+| Atualização das dependências de alta severidade | **Implementado — auditoria de produção sem vulnerabilidades** |
 | Política de dados e aviso de privacidade operacional | **Pendente** |
 | Rate limit, proteção de escrita e cabeçalhos completos | **Pendente** |
 | Conflito de agenda e comunicação de reuniões | **Pendente** |
