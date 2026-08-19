@@ -692,6 +692,54 @@ export async function createAuditLog(input: {
   });
 }
 
+type StatusCount = { status: string; total: number };
+
+export function totalPorStatus(rows: StatusCount[], statuses: readonly string[]) {
+  return Object.fromEntries(statuses.map(status => [status, Number(rows.find(row => row.status === status)?.total ?? 0)]));
+}
+
+/** Retorna somente contagens agregadas para a leitura operacional da Administração. */
+export async function getOperationalMetricsForAdmin() {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  const [registrationRows, projectRows, interestRows, meetingRows, totalEventRows] = await Promise.all([
+    db.select({ status: registrations.status, total: sql<number>`count(*)` }).from(registrations).groupBy(registrations.status),
+    db.select({ status: projects.status, total: sql<number>`count(*)` }).from(projects).groupBy(projects.status),
+    db.select({ status: projectInterests.status, total: sql<number>`count(*)` }).from(projectInterests).groupBy(projectInterests.status),
+    db.select({ status: meetings.status, total: sql<number>`count(*)` }).from(meetings).groupBy(meetings.status),
+    db.select({ total: sql<number>`count(*)` }).from(auditLogs),
+  ]);
+
+  return {
+    registrations: totalPorStatus(registrationRows as StatusCount[], ["pending", "approved", "rejected"]),
+    projects: totalPorStatus(projectRows as StatusCount[], ["draft", "submitted", "under_review", "eligible", "not_eligible"]),
+    interests: totalPorStatus(interestRows as StatusCount[], ["declared", "requested", "confirmed", "closed"]),
+    meetings: totalPorStatus(meetingRows as StatusCount[], ["scheduled", "completed", "cancelled"]),
+    totalAuditEvents: Number(totalEventRows[0]?.total ?? 0),
+  };
+}
+
+/** Não devolve metadados dos eventos para evitar que observações e contatos apareçam no painel de monitoramento. */
+export async function listAuditEventsForAdmin(limit = 50) {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  return db
+    .select({
+      id: auditLogs.id,
+      action: auditLogs.action,
+      entityType: auditLogs.entityType,
+      entityId: auditLogs.entityId,
+      createdAt: auditLogs.createdAt,
+      actorName: users.name,
+    })
+    .from(auditLogs)
+    .leftJoin(users, eq(auditLogs.actorUserId, users.id))
+    .orderBy(desc(auditLogs.createdAt))
+    .limit(limit);
+}
+
 export async function listAdminAccessGrants() {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");

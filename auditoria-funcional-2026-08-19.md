@@ -108,7 +108,7 @@ O diagnóstico anterior, elaborado quando o produto ainda era estático, não re
 | Autorização por participação | Expert/Lançador requerem cadastro aprovado no papel correspondente | Implementada. |
 | Propriedade de recursos | Projeto e reuniões são buscados pelo usuário do contexto | Implementada no domínio revisado. |
 | Validação de entradas | Schemas Zod em inscrições, triagens, projeto, interesse e agenda | Implementada nas rotas revisadas. |
-| Auditoria | Eventos relevantes gravam ator, ação e entidade | Implementada; falta política de retenção e interface de consulta. |
+| Auditoria | Eventos relevantes gravam ator, ação e entidade | Implementada, com consulta protegida, filtro por domínio e sem exposição de contatos ou observações internas. |
 | Isolamento demonstrativo | Consultas e mutações de validação usam participantes fictícios definidos | Implementado e coberto por testes. |
 | Transporte | HSTS e HTTPS observados na publicação | Implementado pelo ambiente de publicação. |
 | Logout | Limpeza de cookie e cache local com cobertura automatizada | Implementado. |
@@ -123,16 +123,16 @@ As prioridades abaixo distinguem bloqueadores de abertura pública de melhorias 
 | **Concluído** | Alertas de alta severidade em `drizzle-orm`, `axios`, `express/path-to-regexp`, `lodash` e `lodash-es`. | Componentes vulneráveis ampliavam risco na cadeia de fornecimento e na aplicação. | Dependências atualizadas, componente não utilizado removido, regressão executada e auditoria de produção posterior sem vulnerabilidades. |
 | **P0** | Não há política operacional para retenção, eliminação, exportação e resposta a solicitações relativas a dados pessoais. | Telefone, Instagram, identidade e informações de negócio serão processados sem ciclo de vida documentado. | Definir finalidade, prazo, responsáveis, canal de atendimento, descarte e aviso de privacidade antes de coletar dados reais. |
 | **P0** | Jornada ponta a ponta com identidade real de participante não foi executada. | Não há evidência de que convite, login, aprovação, retorno, projeto, interesse e reunião funcionam fora do ambiente de demonstração. | Construir cenários de homologação com contas de teste e evidências de aceite por papel. |
-| **P1** | Não há limitação de taxa para autenticação futura, inscrição e ações mutáveis. | Abertura pública pode sofrer abuso, enumeração e sobrecarga. | Adotar rate limit por rota e IP/identidade, monitorar rejeições e definir respostas de abuso. |
+| **Concluído** | Limitação de taxa para API e retorno OAuth. | Abertura pública passou a contar com resposta de excesso, metadados de limite e proteção por origem. | Monitorar rejeições e recalibrar limites antes da abertura pública. |
 | **Parcialmente concluído** | A sessão OAuth passou de um ano para 12 horas e é invalidada após revogação administrativa; não há MFA obrigatório nem renovação controlada. | A janela de exposição foi reduzida e a perda de privilégio revoga a sessão existente, mas ainda falta uma política formal de renovação. | Definir renovação controlada e MFA para o perfil administrativo. |
 | **Concluído** | Cabeçalhos de endurecimento, CSP em produção, proteção contra cache de API e ocultação da assinatura do Express. | Controles implementados e cobertos por testes; revisar CSP ao adicionar novas integrações de terceiros. [9] |
 | **P1** | Reuniões não validam conflito de agenda, duração, mesa/capacidade ou lembretes. | Podem ocorrer sobreposições e falhas de coordenação no evento. | Modelar intervalo, recurso físico, status e verificação de conflito; disparar confirmação e lembrete. |
 | **P1** | O usuário não recebe comunicação automática sobre aprovação, reprovação, interesse ou reunião. | Processo depende de acompanhamento manual do Administrador e pode falhar no dia do evento. | Integrar notificações por e-mail, com modelos revisados e histórico de entrega. |
 | **P1** | O aviso de dados não substitui consentimento e transparência operacional completos. | Risco de comunicação insuficiente ao participante. | Publicar aviso de privacidade, versão do texto aceito e fundamento/finalidade revisados pelo responsável competente. |
 | **P2** | Navegação móvel horizontal dos painéis deixa parte das abas fora do primeiro enquadramento. | A experiência permanece utilizável, mas a descoberta de opções diminui. | Evidenciar rolagem horizontal, priorizar abas ou mover opções secundárias para menu acessível. |
-| **P2** | Log de auditoria é gerado, mas não há módulo administrativo dedicado de consulta, filtro e exportação segura. | A investigação operacional exige acesso direto ao banco ou suporte técnico. | Criar visualização administrativa protegida, com filtros e retenção definida. |
+| **Concluído** | Log de auditoria pesquisável e indicadores operacionais agregados. | A Administração consulta eventos recentes, filtra por domínio e acompanha filas sem expor contatos ou observações internas. | Revisar periodicamente a retenção e a necessidade de exportação segura. |
 | **P2** | Não há pipeline de segurança contínua visível para pull requests. | Correções de dependência e regressões de permissão podem passar despercebidas. | Adicionar CI com testes, tipos, auditoria de dependências e verificação de segredos. |
-| **P2** | Não há métricas operacionais consolidadas. | A equipe não consegue acompanhar conversão, fila, reuniões marcadas ou pendências. | Criar painel administrativo com indicadores agregados, sem expor dados pessoais além do necessário. |
+| **Concluído** | Indicadores operacionais de inscrições, projetos, interesses e reuniões. | A equipe acompanha filas e resultados agregados diretamente no painel administrativo. | Evoluir métricas apenas mediante necessidade operacional e minimização de dados. |
 
 ### Detalhe da auditoria de dependências
 
@@ -180,7 +180,7 @@ Com a identidade pronta, o foco deve migrar para a operação no dia do evento. 
 | Agenda operacional | Horário, duração, mesa, status e conflito de recursos | Uma mesma pessoa ou mesa não é agendada em sobreposição. |
 | Notificações | Confirmações e alterações chegam às pessoas corretas | Histórico de envio e estado de falha disponíveis à operação. |
 | Painel de acompanhamento | Fila e indicadores operacionais agregados | Equipe identifica pendências sem exportar dados excessivos. |
-| Consulta de auditoria | Eventos pesquisáveis por Administradores autorizados | Ação, ator, recurso, data e contexto podem ser investigados. |
+| Consulta de auditoria | Eventos pesquisáveis por Administradores autorizados | Ação, ator, recurso e data podem ser investigados no painel operacional. |
 
 ### Marco 4 — Governança contínua
 
@@ -205,6 +205,7 @@ Depois da abertura, a manutenção deve ser orientada por revisão de acessos, c
 | Renovação controlada de sessão | **Pendente** |
 | Conflito de agenda e comunicação de reuniões | **Pendente** |
 | Teste de aceitação ponta a ponta | **Pendente** |
+| Consulta de auditoria e indicadores operacionais agregados | **Implementado — painel protegido, filtros por domínio e contagens agregadas** |
 
 ## Decisões necessárias do responsável pelo processo
 

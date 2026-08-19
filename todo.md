@@ -170,4 +170,4 @@
 - [ ] Definir e implementar a política de renovação controlada de sessão administrativa
 - [ ] Evoluir a agenda com duração, recurso físico, prevenção de conflitos e comunicação de reuniões
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
-- [ ] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados
+- [x] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados
