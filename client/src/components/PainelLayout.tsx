@@ -9,6 +9,7 @@ import PapelSwitcher from "@/components/PapelSwitcher";
 import { LogoInsider } from "@/components/LogoInsider";
 import { ThemeToggle } from "@/components/ThemeToggle";
 import { cn } from "@/lib/utils";
+import { deveMostrarTrocaPapel } from "@/lib/painelPreview";
 
 interface NavItem {
   id: string;
@@ -51,6 +52,7 @@ interface PainelLayoutProps {
   titulo: string;
   subtitulo?: string;
   modoVisualizacao?: boolean;
+  modoOperacaoAdmin?: boolean;
   mostrarTrocaPapel?: boolean;
 }
 
@@ -64,7 +66,8 @@ export default function PainelLayout({
   titulo,
   subtitulo,
   modoVisualizacao = false,
-  mostrarTrocaPapel = papel === "admin" || modoVisualizacao,
+  modoOperacaoAdmin = false,
+  mostrarTrocaPapel = deveMostrarTrocaPapel(papel, modoVisualizacao, modoOperacaoAdmin),
 }: PainelLayoutProps) {
   const nav = navegacao[papel];
   const { logout } = useAuth();

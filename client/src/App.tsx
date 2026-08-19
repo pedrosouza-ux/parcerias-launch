@@ -10,12 +10,12 @@ import AdminPainel from "./pages/admin/AdminPainel";
 import CadastroParticipacao from "./pages/CadastroParticipacao";
 import ExpertPainel from "./pages/expert/ExpertPainel";
 import LancadorPainel from "./pages/lancador/LancadorPainel";
-import { isModoOperacaoAdmin, isModoVisualizacaoAdmin } from "./lib/painelPreview";
+import { isModoOperacaoAdmin, isModoVisualizacaoAdmin, rotaAdministrativaDoPerfil } from "./lib/painelPreview";
 function Router() {
   const modoVisualizacao = isModoVisualizacaoAdmin(window.location.pathname, window.location.search);
   const modoOperacaoAdmin = isModoOperacaoAdmin(window.location.pathname, window.location.search);
   const navegarComoAdmin = (papel: "admin" | "expert" | "lancador") => {
-    window.location.href = papel === "admin" ? "/painel/admin" : `/painel/${papel}?operacao=admin`;
+    window.location.href = rotaAdministrativaDoPerfil(papel);
   };
 
   // make sure to consider if you need authentication for certain routes

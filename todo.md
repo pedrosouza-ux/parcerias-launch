@@ -144,3 +144,9 @@
 - [x] Adicionar teste reproduzível da regra de acesso das rotas protegidas no roteamento do frontend
 - [x] Montar o portão de acesso em teste de componente e comprovar o bloqueio sem sessão dos três painéis
 - [x] Cobrir no componente a liberação administrativa do modo operacional declarada pela rota
+- [x] Corrigir o seletor de perfil que desaparece no painel de Lançador ou Expert para Administradores
+- [x] Garantir que Administrador, Expert e Lançador permaneçam acessíveis após qualquer troca de perfil
+- [ ] Cobrir a troca de perfil administrativa com teste e publicar a correção
+- [x] Extrair e testar as rotas de destino geradas pelo seletor para Administrador, Expert e Lançador
+- [x] Adicionar teste de componente do seletor cobrindo as transições administrativas entre os três perfis
+- [ ] Validar em sessão autenticada que o seletor permanece funcional após cada troca de perfil

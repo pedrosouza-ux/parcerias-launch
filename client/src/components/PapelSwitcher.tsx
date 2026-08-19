@@ -10,6 +10,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import React from "react";
 import { ShieldCheck, UserRound, Rocket, ChevronDown } from "lucide-react";
 import { cn } from "@/lib/utils";
 
