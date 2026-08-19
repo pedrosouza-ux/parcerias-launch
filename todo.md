@@ -158,3 +158,13 @@
 - [x] Revisar e publicar o guia operacional da Administração junto ao código
 - [x] Sincronizar o guia operacional e as correções recentes no repositório GitHub
 - [x] Estabilizar a verificação automatizada do catálogo demonstrativo em conexões de banco mais lentas
+- [x] Auditar as funcionalidades disponíveis sob as dimensões de operação, permissões, persistência, experiência e segurança
+- [x] Consolidar lacunas de implantação em um roteiro priorizado de curto, médio e longo prazo
+- [ ] Corrigir os alertas de alta severidade nas dependências e repetir a auditoria de pacotes
+- [ ] Definir a política operacional de dados pessoais, retenção, exclusão e atendimento a titulares
+- [ ] Implementar autenticação por e-mail com link mágico para participantes sem conta Manus
+- [ ] Homologar ponta a ponta os fluxos reais de Administrador, Expert e Lançador com contas de teste
+- [ ] Adicionar limitação de taxa, endurecimento de sessão e cabeçalhos HTTP de segurança na publicação
+- [ ] Evoluir a agenda com duração, recurso físico, prevenção de conflitos e comunicação de reuniões
+- [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
+- [ ] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados
