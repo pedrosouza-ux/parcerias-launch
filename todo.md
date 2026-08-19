@@ -166,7 +166,8 @@
 - [ ] Homologar ponta a ponta os fluxos reais de Administrador, Expert e Lançador com contas de teste
 - [x] Adicionar limitação de taxa e cabeçalhos HTTP de segurança na publicação
 - [x] Reduzir a duração da sessão administrativa/OAuth e ajustar a criação do token para expiração compatível com produção
-- [ ] Implementar e testar invalidação de sessão após mudança de privilégio e a política de renovação
+- [x] Implementar e testar invalidação de sessão após mudança de privilégio
+- [ ] Definir e implementar a política de renovação controlada de sessão administrativa
 - [ ] Evoluir a agenda com duração, recurso físico, prevenção de conflitos e comunicação de reuniões
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
 - [ ] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados

@@ -1,4 +1,4 @@
-import { and, desc, eq } from "drizzle-orm";
+import { and, desc, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   adminAccessGrants,
@@ -758,12 +758,22 @@ export async function revokeAdminAccessGrant(input: { grantId: number; revokedBy
     .set({ status: "revoked", revokedAt: new Date() })
     .where(eq(adminAccessGrants.id, input.grantId));
 
+  if (grant.userId) {
+    await db
+      .update(users)
+      .set({
+        role: "user",
+        sessionVersion: sql`${users.sessionVersion} + 1`,
+      })
+      .where(eq(users.id, grant.userId));
+  }
+
   await createAuditLog({
     actorUserId: input.revokedByUserId,
     action: "admin_access_grant.revoked",
     entityType: "adminAccessGrant",
     entityId: String(input.grantId),
-    metadata: { email: grant.email, fullName: grant.fullName },
+    metadata: { email: grant.email, fullName: grant.fullName, sessionInvalidated: Boolean(grant.userId) },
   });
 
   const [updated] = await db.select().from(adminAccessGrants).where(eq(adminAccessGrants.id, input.grantId)).limit(1);

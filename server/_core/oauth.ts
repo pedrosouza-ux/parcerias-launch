@@ -53,9 +53,15 @@ export function registerOAuthRoutes(app: Express) {
         lastSignedIn: new Date(),
       });
 
+      const persistedUser = await db.getUserByOpenId(userInfo.openId);
+      if (!persistedUser) {
+        throw new Error("Não foi possível recuperar o usuário autenticado.");
+      }
+
       const sessionToken = await sdk.createSessionToken(userInfo.openId, {
         name: userInfo.name || "",
         expiresInMs: SESSION_MAX_AGE_MS,
+        sessionVersion: persistedUser.sessionVersion,
       });
 
       const cookieOptions = getSessionCookieOptions(req);
