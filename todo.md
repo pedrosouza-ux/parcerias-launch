@@ -136,4 +136,4 @@
 - [x] Verificar o repositório GitHub criado e confirmar a sincronização inicial do código
 - [x] Associar o repositório recém-criado ao projeto e confirmar a primeira sincronização
 - [ ] Validar pela interface do projeto a reconexão GitHub/Manus após o erro invalid_request
-- [ ] Confirmar se a sincronização ativa é da integração GitHub/Manus ou apenas do remoto Git local
+- [x] Confirmar se a sincronização ativa é da integração GitHub/Manus ou apenas do remoto Git local
