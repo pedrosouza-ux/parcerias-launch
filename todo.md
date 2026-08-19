@@ -70,7 +70,7 @@
 - [x] Definir inscrição pública na comunidade com aprovação administrativa e Administrador inicial
 - [x] Implementar inscrições públicas pendentes por perfil e o Administrador inicial do projeto
 - [x] Implementar o modelo persistente e as permissões de Administrador, Expert e Lançador
-- [ ] Criar perfis operacionais ao aprovar uma inscrição de Expert ou Lançador
+- [x] Criar perfis operacionais ao aprovar uma inscrição de Expert ou Lançador
 - [x] Criar perfis operacionais ao aprovar uma inscrição de Expert ou Lançador
 - [x] Implementar procedures tRPC protegidas por papel para projetos, triagem, catálogo, interesses e reuniões
 - [ ] Conectar cadastro, triagem, catálogo, interesse e reuniões aos dados reais
@@ -146,7 +146,9 @@
 - [x] Cobrir no componente a liberação administrativa do modo operacional declarada pela rota
 - [x] Corrigir o seletor de perfil que desaparece no painel de Lançador ou Expert para Administradores
 - [x] Garantir que Administrador, Expert e Lançador permaneçam acessíveis após qualquer troca de perfil
-- [ ] Cobrir a troca de perfil administrativa com teste e publicar a correção
+- [x] Cobrir a troca de perfil administrativa com teste e publicar a correção
 - [x] Extrair e testar as rotas de destino geradas pelo seletor para Administrador, Expert e Lançador
 - [x] Adicionar teste de componente do seletor cobrindo as transições administrativas entre os três perfis
 - [ ] Validar em sessão autenticada que o seletor permanece funcional após cada troca de perfil
+- [x] Remover o motivo gráfico de rotas convergentes do fundo da landing
+- [ ] Verificar visualmente a landing sem o elemento gráfico e publicar a correção
