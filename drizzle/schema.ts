@@ -220,6 +220,8 @@ export const meetings = mysqlTable(
       .references(() => users.id, { onDelete: "restrict" }),
     scheduledFor: timestamp("scheduledFor").notNull(),
     location: varchar("location", { length: 180 }).notNull(),
+    resource: varchar("resource", { length: 120 }).notNull().default("A definir"),
+    durationMinutes: int("durationMinutes").notNull().default(30),
     status: mysqlEnum("status", ["scheduled", "completed", "cancelled"])
       .default("scheduled")
       .notNull(),
@@ -227,7 +229,10 @@ export const meetings = mysqlTable(
     createdAt: timestamp("createdAt").defaultNow().notNull(),
     updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
   },
-  table => [uniqueIndex("meetings_interestId_unique").on(table.interestId)],
+  table => [
+    uniqueIndex("meetings_interestId_unique").on(table.interestId),
+    index("meetings_resource_schedule_idx").on(table.resource, table.scheduledFor),
+  ],
 );
 
 /** Immutable accountability trail for administrative decisions and sensitive changes. */

@@ -1,5 +1,5 @@
-import { and, desc, eq, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
+import { and, desc, eq, ne, sql } from "drizzle-orm";
 import {
   adminAccessGrants,
   auditLogs,
@@ -649,7 +649,58 @@ export async function listInterestsForAdmin() {
     .orderBy(desc(projectInterests.createdAt));
 }
 
-export async function scheduleMeeting(input: { interestId: number; scheduledByUserId: number; scheduledFor: Date; location: string; operationalNote?: string | null }) {
+export type MeetingConflictKind = "resource" | "launcher" | "expert";
+
+type ScheduledMeetingCandidate = {
+  meeting: { scheduledFor: Date; durationMinutes: number; resource: string };
+  launcherProfileId: number;
+  expertProfileId: number;
+};
+
+export function rangesOverlap(startA: Date, durationA: number, startB: Date, durationB: number) {
+  const endA = startA.getTime() + durationA * 60_000;
+  const endB = startB.getTime() + durationB * 60_000;
+  return startA.getTime() < endB && startB.getTime() < endA;
+}
+
+export function identifyMeetingSchedulingConflict(
+  input: { scheduledFor: Date; durationMinutes: number; resource: string; launcherProfileId: number; expertProfileId: number },
+  scheduled: ScheduledMeetingCandidate[],
+): MeetingConflictKind | null {
+  const normalizedResource = input.resource.trim().toLocaleLowerCase("pt-BR");
+  for (const candidate of scheduled) {
+    if (!rangesOverlap(input.scheduledFor, input.durationMinutes, candidate.meeting.scheduledFor, candidate.meeting.durationMinutes)) continue;
+    if (candidate.meeting.resource.trim().toLocaleLowerCase("pt-BR") === normalizedResource) return "resource";
+    if (candidate.launcherProfileId === input.launcherProfileId) return "launcher";
+    if (candidate.expertProfileId === input.expertProfileId) return "expert";
+  }
+  return null;
+}
+
+/** Retorna o primeiro conflito operacional sem revelar a identidade de outros participantes. */
+export async function findMeetingSchedulingConflict(input: { interestId: number; scheduledFor: Date; durationMinutes: number; resource: string }): Promise<MeetingConflictKind | null> {
+  const db = await getDb();
+  if (!db) throw new Error("Banco de dados indisponível.");
+
+  const [target] = await db
+    .select({ launcherProfileId: projectInterests.launcherProfileId, expertProfileId: projects.expertProfileId })
+    .from(projectInterests)
+    .innerJoin(projects, eq(projectInterests.projectId, projects.id))
+    .where(eq(projectInterests.id, input.interestId))
+    .limit(1);
+  if (!target) return null;
+
+  const scheduled = await db
+    .select({ meeting: meetings, launcherProfileId: projectInterests.launcherProfileId, expertProfileId: projects.expertProfileId })
+    .from(meetings)
+    .innerJoin(projectInterests, eq(meetings.interestId, projectInterests.id))
+    .innerJoin(projects, eq(projectInterests.projectId, projects.id))
+    .where(and(eq(meetings.status, "scheduled"), ne(meetings.interestId, input.interestId)));
+
+  return identifyMeetingSchedulingConflict({ ...input, launcherProfileId: target.launcherProfileId, expertProfileId: target.expertProfileId }, scheduled);
+}
+
+export async function scheduleMeeting(input: { interestId: number; scheduledByUserId: number; scheduledFor: Date; location: string; resource: string; durationMinutes: number; operationalNote?: string | null }) {
   const db = await getDb();
   if (!db) throw new Error("Banco de dados indisponível.");
 
@@ -660,6 +711,8 @@ export async function scheduleMeeting(input: { interestId: number; scheduledByUs
     scheduledByUserId: input.scheduledByUserId,
     scheduledFor: input.scheduledFor,
     location: input.location,
+    resource: input.resource,
+    durationMinutes: input.durationMinutes,
     operationalNote: input.operationalNote ?? null,
     status: "scheduled" as const,
   };

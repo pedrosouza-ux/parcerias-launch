@@ -168,6 +168,7 @@
 - [x] Reduzir a duração da sessão administrativa/OAuth e ajustar a criação do token para expiração compatível com produção
 - [x] Implementar e testar invalidação de sessão após mudança de privilégio
 - [ ] Definir e implementar a política de renovação controlada de sessão administrativa
-- [ ] Evoluir a agenda com duração, recurso físico, prevenção de conflitos e comunicação de reuniões
+- [x] Evoluir a agenda com duração, recurso físico e prevenção de conflitos
+- [ ] Integrar confirmações, alterações e lembretes de reunião ao fluxo operacional
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega
 - [x] Disponibilizar consulta administrativa protegida dos eventos de auditoria e indicadores operacionais agregados

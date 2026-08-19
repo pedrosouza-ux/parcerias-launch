@@ -126,7 +126,7 @@ As prioridades abaixo distinguem bloqueadores de abertura pública de melhorias 
 | **Concluído** | Limitação de taxa para API e retorno OAuth. | Abertura pública passou a contar com resposta de excesso, metadados de limite e proteção por origem. | Monitorar rejeições e recalibrar limites antes da abertura pública. |
 | **Parcialmente concluído** | A sessão OAuth passou de um ano para 12 horas e é invalidada após revogação administrativa; não há MFA obrigatório nem renovação controlada. | A janela de exposição foi reduzida e a perda de privilégio revoga a sessão existente, mas ainda falta uma política formal de renovação. | Definir renovação controlada e MFA para o perfil administrativo. |
 | **Concluído** | Cabeçalhos de endurecimento, CSP em produção, proteção contra cache de API e ocultação da assinatura do Express. | Controles implementados e cobertos por testes; revisar CSP ao adicionar novas integrações de terceiros. [9] |
-| **P1** | Reuniões não validam conflito de agenda, duração, mesa/capacidade ou lembretes. | Podem ocorrer sobreposições e falhas de coordenação no evento. | Modelar intervalo, recurso físico, status e verificação de conflito; disparar confirmação e lembrete. |
+| **Parcialmente concluído** | A agenda passou a registrar duração e recurso físico, bloqueando sobreposição de mesa, Expert ou Lançador. | Sobreposições operacionais são prevenidas; confirmações e lembretes continuam sem automação. | Integrar comunicações de reunião e definir capacidade operacional por recurso, se necessária. |
 | **P1** | O usuário não recebe comunicação automática sobre aprovação, reprovação, interesse ou reunião. | Processo depende de acompanhamento manual do Administrador e pode falhar no dia do evento. | Integrar notificações por e-mail, com modelos revisados e histórico de entrega. |
 | **P1** | O aviso de dados não substitui consentimento e transparência operacional completos. | Risco de comunicação insuficiente ao participante. | Publicar aviso de privacidade, versão do texto aceito e fundamento/finalidade revisados pelo responsável competente. |
 | **P2** | Navegação móvel horizontal dos painéis deixa parte das abas fora do primeiro enquadramento. | A experiência permanece utilizável, mas a descoberta de opções diminui. | Evidenciar rolagem horizontal, priorizar abas ou mover opções secundárias para menu acessível. |
@@ -177,7 +177,7 @@ Com a identidade pronta, o foco deve migrar para a operação no dia do evento. 
 
 | Entrega | Resultado esperado | Critério de aceite |
 |---|---|---|
-| Agenda operacional | Horário, duração, mesa, status e conflito de recursos | Uma mesma pessoa ou mesa não é agendada em sobreposição. |
+| Agenda operacional | Horário, duração, recurso físico, status e conflito de recursos | Uma mesma pessoa ou recurso não é agendado em sobreposição. |
 | Notificações | Confirmações e alterações chegam às pessoas corretas | Histórico de envio e estado de falha disponíveis à operação. |
 | Painel de acompanhamento | Fila e indicadores operacionais agregados | Equipe identifica pendências sem exportar dados excessivos. |
 | Consulta de auditoria | Eventos pesquisáveis por Administradores autorizados | Ação, ator, recurso e data podem ser investigados no painel operacional. |
@@ -203,7 +203,8 @@ Depois da abertura, a manutenção deve ser orientada por revisão de acessos, c
 | Duração de sessão | **Implementado — validade máxima de 12 horas** |
 | Invalidação após alteração de privilégio | **Implementado — rotação da versão de sessão na revogação administrativa** |
 | Renovação controlada de sessão | **Pendente** |
-| Conflito de agenda e comunicação de reuniões | **Pendente** |
+| Conflito de agenda | **Implementado — duração, recurso físico e bloqueio de sobreposição de participantes ou recurso** |
+| Comunicação de reuniões | **Pendente** |
 | Teste de aceitação ponta a ponta | **Pendente** |
 | Consulta de auditoria e indicadores operacionais agregados | **Implementado — painel protegido, filtros por domínio e contagens agregadas** |
 
