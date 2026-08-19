@@ -151,4 +151,5 @@
 - [x] Adicionar teste de componente do seletor cobrindo as transições administrativas entre os três perfis
 - [ ] Validar em sessão autenticada que o seletor permanece funcional após cada troca de perfil
 - [x] Remover o motivo gráfico de rotas convergentes do fundo da landing
-- [ ] Verificar visualmente a landing sem o elemento gráfico e publicar a correção
+- [x] Verificar visualmente a landing sem o elemento gráfico e publicar a correção
+- [x] Reiniciar e verificar o servidor de desenvolvimento para descartar erros transitórios históricos
