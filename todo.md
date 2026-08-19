@@ -167,7 +167,12 @@
 - [x] Adicionar limitação de taxa e cabeçalhos HTTP de segurança na publicação
 - [x] Reduzir a duração da sessão administrativa/OAuth e ajustar a criação do token para expiração compatível com produção
 - [x] Implementar e testar invalidação de sessão após mudança de privilégio
-- [ ] Definir e implementar a política de renovação controlada de sessão administrativa
+- [x] Definir e implementar a política de renovação explícita de sessão administrativa sem extensão silenciosa de privilégios
+- [x] Corrigir a divergência entre a coluna de versão de sessão declarada no esquema e a coluna existente no banco de produção
+- [x] Adicionar evidência automatizada de que a expiração exige nova autenticação e não há renovação silenciosa
+- [ ] Validar em publicação a persistência da versão de sessão e registrar a evidência da política de renovação explícita
+- [x] Reexecutar uma sincronização de usuário com `sessionVersion` após o reinício e registrar evidência objetiva sem `ER_BAD_FIELD_ERROR`
+- [x] Adicionar teste ou instrumentação para confirmar a compatibilidade entre o esquema Drizzle e a persistência atual de `sessionVersion`
 - [x] Evoluir a agenda com duração, recurso físico e prevenção de conflitos
 - [ ] Integrar confirmações, alterações e lembretes de reunião ao fluxo operacional
 - [ ] Criar notificações de inscrição, triagem, interesse e reunião com histórico de entrega

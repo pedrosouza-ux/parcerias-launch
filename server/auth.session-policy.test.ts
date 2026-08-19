@@ -28,4 +28,13 @@ describe("política de sessão", () => {
     expect(isSessionVersionCurrent(4, 4)).toBe(true);
     expect(isSessionVersionCurrent(4, 5)).toBe(false);
   });
+
+  it("exige nova autenticação após expiração, sem renovação silenciosa", async () => {
+    const tokenExpirado = await sdk.createSessionToken("expired-session-test", {
+      name: "Expired session test",
+      expiresInMs: -1_000,
+    });
+
+    await expect(sdk.verifySession(tokenExpirado)).resolves.toBeNull();
+  });
 });

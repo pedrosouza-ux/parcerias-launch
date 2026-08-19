@@ -32,6 +32,16 @@ O Administrador deve acessar **Administrador** no seletor de perfil do cabeçalh
 | Dados demonstrativos | Registros de teste exibem a etiqueta **Validação**. | Não trate registros identificados como demonstração como participantes do evento. |
 | Ambiente operacional | Ao escolher Expert ou Lançador pelo seletor, o cabeçalho mantém o seletor de perfil visível. | Retorne a Administrador; se o seletor não estiver visível, registre a ocorrência e evite usar dados reais para testar. |
 
+### Política de sessão administrativa
+
+A sessão administrativa tem validade máxima de **12 horas**. Não existe renovação silenciosa nem extensão automática da sessão ao permanecer com a tela aberta. Quando a validade expirar, a pessoa deve realizar novamente o acesso autorizado pelo fluxo Manus; essa nova autenticação emite uma sessão nova e permite reavaliar os privilégios vigentes. Uma revogação administrativa também invalida a sessão existente na próxima requisição autenticada.[2]
+
+| Situação | Conduta esperada |
+|---|---|
+| A sessão expira durante a operação | Salve o que estiver em andamento, realize novo acesso autorizado e confirme a seção administrativa antes de continuar. |
+| O acesso administrativo foi revogado | Não tente reutilizar a sessão. A pessoa deve interromper a operação e solicitar uma nova autorização formal se houver necessidade futura. |
+| Estação compartilhada | Use **Sair** ao terminar; não dependa apenas da expiração automática. |
+
 ## Fluxo operacional diário
 
 ### 1. Revisar inscrições
@@ -62,12 +72,12 @@ A seção **Triagem manual** recebe projetos enviados pelo Expert. Para cada pro
 
 ### 4. Acompanhar interesses e organizar reuniões
 
-Quando um Lançador declara interesse, o item aparece em **Reuniões**. A equipe administrativa usa essa seção para transformar o interesse em encontro presencial. Selecione **Agendar**, informe data e hora, local e, quando aplicável, uma nota operacional. O local padrão é “Rodada de Parcerias — Encontro Insider”.[1]
+Quando um Lançador declara interesse, o item aparece em **Reuniões**. A equipe administrativa usa essa seção para transformar o interesse em encontro presencial. Selecione **Agendar**, informe data e hora, duração, recurso físico, local e, quando aplicável, uma nota operacional. O sistema bloqueia sobreposição que envolva o mesmo recurso, Expert ou Lançador. O local padrão é “Rodada de Parcerias — Encontro Insider”.[1]
 
 | Situação apresentada | Leitura operacional recomendada |
 |---|---|
 | **Interesse declarado** | O Lançador selecionou o projeto; ainda não existe agendamento associado. |
-| **Reunião agendada** | A data, o horário, o local e a nota operacional já foram registrados pela Administração. |
+| **Reunião agendada** | A data, o horário, a duração, o recurso físico, o local e a nota operacional já foram registrados pela Administração. |
 
 Registre no campo de nota qualquer contexto necessário para a equipe do evento, sem incluir informações sensíveis que não sejam necessárias à organização da reunião.
 
