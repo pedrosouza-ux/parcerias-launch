@@ -123,3 +123,15 @@
 - [x] Publicar uma versão com o controle de logout incluído
 - [ ] Validar em sessão autenticada que o botão Sair encerra o acesso e retorna à página pública
 - [x] Remover também os dados locais em cache do usuário ao encerrar a sessão
+- [x] Revisar arquivos sensíveis e preparar o repositório para envio ao GitHub
+- [ ] Confirmar conta, organização, nome e visibilidade do repositório GitHub
+- [ ] Publicar o código atual no GitHub e verificar o repositório remoto
+- [ ] Diagnosticar o erro invalid_request na autorização da integração GitHub
+- [ ] Retomar a conexão GitHub somente após corrigir a autorização
+- [ ] Identificar a causa exata do invalid_request no fluxo de autorização GitHub
+- [ ] Validar o procedimento compatível para ativar a integração GitHub neste ambiente
+- [x] Registrar o bloqueio e o próximo passo seguro para concluir a conexão GitHub
+- [ ] Validar pela interface de gerenciamento o fluxo oficial de conexão GitHub
+- [ ] Registrar evidência objetiva da conexão habilitada ou do bloqueio reproduzido pela interface
+- [ ] Verificar o repositório GitHub criado e confirmar a sincronização inicial do código
+- [ ] Associar o repositório recém-criado ao projeto e confirmar a primeira sincronização
