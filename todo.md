@@ -137,3 +137,10 @@
 - [x] Associar o repositório recém-criado ao projeto e confirmar a primeira sincronização
 - [ ] Validar pela interface do projeto a reconexão GitHub/Manus após o erro invalid_request
 - [x] Confirmar se a sincronização ativa é da integração GitHub/Manus ou apenas do remoto Git local
+- [x] Validar em lote as rotas públicas e o redirecionamento de acesso das áreas protegidas
+- [x] Registrar evidências de renderização e bloqueio para os painéis de Administrador, Expert e Lançador
+- [x] Executar validação explícita das rotas protegidas sem sessão e registrar o comportamento observado
+- [x] Salvar evidências objetivas das rotas e seus resultados em uma nota operacional versionada
+- [x] Adicionar teste reproduzível da regra de acesso das rotas protegidas no roteamento do frontend
+- [x] Montar o portão de acesso em teste de componente e comprovar o bloqueio sem sessão dos três painéis
+- [x] Cobrir no componente a liberação administrativa do modo operacional declarada pela rota

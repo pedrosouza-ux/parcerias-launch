@@ -2,8 +2,9 @@ import { useAuth } from "@/_core/hooks/useAuth";
 import { startLogin } from "@/const";
 import { trpc } from "@/lib/trpc";
 import { Button } from "@/components/ui/button";
+import { resolveAccessGateDecision } from "@/lib/accessGateDecision";
 import { Loader2, LockKeyhole, ShieldAlert } from "lucide-react";
-import type { ReactNode } from "react";
+import React, { type ReactNode } from "react";
 
 type RequiredRole = "admin" | "expert" | "lancador";
 
@@ -25,34 +26,39 @@ export function AccessGate({ requiredRole, children, allowAdminPreview = false }
     return <GateState icon={<Loader2 className="size-6 animate-spin" />} title="Verificando seu acesso" text="Aguarde um instante enquanto confirmamos suas permissões." />;
   }
 
-  if (!isAuthenticated) {
+  const current = registration.data;
+  const decision = resolveAccessGateDecision({
+    isAuthenticated,
+    userRole: user?.role,
+    requiredRole,
+    allowAdminPreview,
+    registration: current ? { status: current.status, requestedRole: current.requestedRole } : null,
+  });
+
+  if (decision === "login-required") {
     return <GateState icon={<LockKeyhole className="size-6" />} title="Acesso protegido" text="Entre com sua conta para solicitar participação ou acessar um painel aprovado." action={<Button onClick={startLogin}>Entrar para continuar</Button>} />;
   }
 
-  if (requiredRole === "admin") {
-    if (user?.role === "admin") return <>{children}</>;
+  if (decision === "admin-only") {
     return <GateState icon={<ShieldAlert className="size-6" />} title="Área restrita à operação" text="Este painel é exclusivo para administradores responsáveis pela triagem e agenda do evento." action={<Button variant="outline" onClick={() => window.location.assign("/cadastro")}>Ver meu cadastro</Button>} />;
   }
 
-  if (allowAdminPreview && user?.role === "admin") {
-    return <>{children}</>;
-  }
-
-  const current = registration.data;
-  if (!current) {
+  if (decision === "registration-required") {
     return <GateState icon={<LockKeyhole className="size-6" />} title="Cadastro necessário" text="Antes de acessar o painel, envie seu cadastro para a avaliação da operação." action={<Button onClick={() => window.location.assign("/cadastro")}>Fazer cadastro</Button>} />;
   }
 
-  if (current.status === "pending") {
+  const currentRegistration = current!;
+
+  if (decision === "registration-pending") {
     return <GateState icon={<Loader2 className="size-6" />} title="Cadastro em análise" text="A operação está avaliando sua inscrição. O painel será liberado após a aprovação." action={<Button variant="outline" onClick={() => window.location.assign("/cadastro")}>Ver status</Button>} />;
   }
 
-  if (current.status === "rejected") {
-    return <GateState icon={<ShieldAlert className="size-6" />} title="Cadastro precisa de revisão" text={current.reviewNote || "Revise suas informações e reenvie o cadastro para uma nova análise."} action={<Button onClick={() => window.location.assign("/cadastro")}>Revisar cadastro</Button>} />;
+  if (decision === "registration-rejected") {
+    return <GateState icon={<ShieldAlert className="size-6" />} title="Cadastro precisa de revisão" text={currentRegistration.reviewNote || "Revise suas informações e reenvie o cadastro para uma nova análise."} action={<Button onClick={() => window.location.assign("/cadastro")}>Revisar cadastro</Button>} />;
   }
 
-  if (current.requestedRole !== requiredRole) {
-    return <GateState icon={<ShieldAlert className="size-6" />} title="Perfil sem permissão para este painel" text={`Seu cadastro foi aprovado como ${labelByRole[current.requestedRole]}.`} action={<Button onClick={() => window.location.assign(`/painel/${current.requestedRole}`)}>Ir para meu painel</Button>} />;
+  if (decision === "role-mismatch") {
+    return <GateState icon={<ShieldAlert className="size-6" />} title="Perfil sem permissão para este painel" text={`Seu cadastro foi aprovado como ${labelByRole[currentRegistration.requestedRole]}.`} action={<Button onClick={() => window.location.assign(`/painel/${currentRegistration.requestedRole}`)}>Ir para meu painel</Button>} />;
   }
 
   return <>{children}</>;
