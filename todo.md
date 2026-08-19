@@ -117,3 +117,8 @@
 - [x] Criar e remover automaticamente uma fixture elegível não demonstrativa para testar a rejeição ponta a ponta
 - [x] Executar o fluxo demonstrativo de Expert e Lançador com persistência e registrar os resultados
 - [x] Adicionar teste de integração do fluxo feliz para edição de projeto e declaração de interesse demonstrativos
+- [x] Adicionar um controle de logout explícito e acessível em todos os painéis autenticados
+- [x] Garantir que o logout encerre a sessão e redirecione de forma segura para a página pública
+- [x] Cobrir o encerramento de sessão com testes e publicar a atualização
+- [ ] Publicar uma versão com o controle de logout incluído
+- [ ] Validar em sessão autenticada que o botão Sair encerra o acesso e retorna à página pública

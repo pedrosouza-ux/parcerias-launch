@@ -1,7 +1,9 @@
 /**
  * Parcerias FL Insider — sidebar neutra, alto contraste e hierarquia operacional.
  */
-import { ReactNode } from "react";
+import { ReactNode, useState } from "react";
+import { LogOut } from "lucide-react";
+import { useAuth } from "@/_core/hooks/useAuth";
 import { Papel } from "@/lib/mockData";
 import PapelSwitcher from "@/components/PapelSwitcher";
 import { LogoInsider } from "@/components/LogoInsider";
@@ -65,6 +67,20 @@ export default function PainelLayout({
   mostrarTrocaPapel = papel === "admin" || modoVisualizacao,
 }: PainelLayoutProps) {
   const nav = navegacao[papel];
+  const { logout } = useAuth();
+  const [encerrandoSessao, setEncerrandoSessao] = useState(false);
+
+  const encerrarSessao = async () => {
+    if (encerrandoSessao) return;
+    setEncerrandoSessao(true);
+    try {
+      await logout();
+      window.location.assign("/");
+    } catch {
+      setEncerrandoSessao(false);
+    }
+  };
+
   return (
     <div className="min-h-screen flex bg-background">
       <a className="skip-link" href="#conteudo-principal">Pular para o conteúdo principal</a>
@@ -124,6 +140,16 @@ export default function PainelLayout({
           <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
             {mostrarTrocaPapel && <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />}
+            <button
+              type="button"
+              onClick={encerrarSessao}
+              disabled={encerrandoSessao}
+              aria-label="Encerrar sessão"
+              className="inline-flex min-h-10 items-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              <LogOut className="h-4 w-4" aria-hidden="true" />
+              <span className="hidden sm:inline">{encerrandoSessao ? "Saindo..." : "Sair"}</span>
+            </button>
           </div>
         </header>
 
