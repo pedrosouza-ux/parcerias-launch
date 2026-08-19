@@ -155,4 +155,5 @@
 - [x] Reiniciar e verificar o servidor de desenvolvimento para descartar erros transitórios históricos
 - [x] Documentar o fluxo administrativo de inscrições, triagem, catálogo, interesses e agenda
 - [x] Documentar o uso seguro dos perfis demonstrativos e a troca de perfil administrativa
-- [ ] Revisar e publicar o guia operacional da Administração junto ao código
+- [x] Revisar e publicar o guia operacional da Administração junto ao código
+- [ ] Sincronizar o guia operacional e as correções recentes no repositório GitHub
