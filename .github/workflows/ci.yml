@@ -13,6 +13,10 @@ jobs:
   validar:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      JWT_SECRET: ci-only-test-secret-not-for-production
+      OAUTH_SERVER_URL: https://oauth.invalid
+      VITE_OAUTH_PORTAL_URL: https://portal.invalid
     steps:
       - name: Obter código
         uses: actions/checkout@v5
