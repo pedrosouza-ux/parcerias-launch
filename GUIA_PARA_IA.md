@@ -1,52 +1,37 @@
-# Sistema de Parcerias — Guia de Transferência
+# Guia de Transferência Técnica
 
-## Objetivo
+Este documento orienta pessoas e assistentes que precisem continuar o desenvolvimento do **FL Insider — Rodada de Parcerias**.
 
-Este repositório contém o protótipo web da **Central de Parcerias FL Insider**, concebida para apoiar a Rodada de Parcerias do Encontro Insider. A aplicação é um frontend estático em React 19, TypeScript, Vite e Tailwind CSS 4.
+## Fonte de verdade
 
-## Regra de negócio que orienta a interface
+O projeto deixou de ser um protótipo estático. A implementação atual utiliza React, Express, tRPC, Drizzle ORM e banco MySQL/TiDB, com autenticação Manus OAuth para a sessão administrativa. Antes de alterar qualquer fluxo, consulte:
 
-O produto **não é um sistema de match**. A operação administrativa avalia manualmente os projetos de Experts segundo Nicho, Avatar, ROMA e maturidade. Apenas projetos elegíveis entram no catálogo. Lançadores exploram livremente esse catálogo e registram interesse para que a equipe organize uma conversa presencial na Rodada de Parcerias.
+1. [README.md](README.md), para visão geral, comandos e estrutura;
+2. [docs/ARQUITETURA.md](docs/ARQUITETURA.md), para domínio, autorização e organização de código;
+3. [docs/REVISAO_TECNICA.md](docs/REVISAO_TECNICA.md), para controles e pendências de implantação;
+4. [guia-operacional-administracao.md](guia-operacional-administracao.md), para a operação da Rodada;
+5. [todo.md](todo.md), para o histórico de entregas e itens ainda abertos.
 
-| Papel | Acesso e responsabilidade |
-|---|---|
-| Administrador | Visualiza cadastros, executa triagem qualitativa e organiza reuniões. |
-| Expert | Visualiza somente seu próprio projeto, ROMA, Avatar, status da triagem e agenda. Não visualiza Lançadores. |
-| Lançador | Visualiza todos os projetos elegíveis, aplica filtros, consulta detalhes e declara interesse. |
+## Regras de negócio imutáveis sem validação do responsável
 
-O sistema não calcula score de compatibilidade, não sugere parceiros e não formaliza contratos.
+| Regra | Aplicação esperada |
+| --- | --- |
+| Não há matching automático. | Não criar score, ranking, recomendação nem aceite automático de parceria. |
+| Triagem é manual. | A Administração decide elegibilidade a partir de Nicho, Avatar, ROMA e maturidade. |
+| Catálogo é curado. | Lançadores visualizam somente projetos elegíveis. |
+| Expert vê o próprio projeto. | Não expor dados ou projetos de outros Experts. |
+| Resultado é uma reunião presencial. | Interesse é encaminhado para a agenda administrativa, que previne conflitos. |
+| Dados demonstrativos são isolados. | O modo `?operacao=admin` deve usar exclusivamente os registros fictícios identificados. |
 
-## Como executar localmente
+## Diretrizes para alterações
 
-```bash
-pnpm install
-pnpm dev
-```
+- Preserve a autorização no servidor; nunca dependa apenas de bloqueios visuais no cliente.
+- Para mudanças de modelo, atualize `drizzle/schema.ts`, gere a migração, revise o SQL e aplique a migração de forma controlada.
+- Cubra regras de negócio e permissões em testes Vitest dentro de `server/**/*.test.ts`.
+- Execute `pnpm test`, `pnpm run check` e `pnpm audit --prod` antes de propor publicação.
+- Não versione segredos, dumps de banco, arquivos `.env`, dados reais de participantes ou artefatos de logs.
+- Use os modelos em `.github/` ao registrar bugs, evoluções e pull requests.
 
-Para a checagem de tipos:
+## Identidade visual
 
-```bash
-pnpm run check
-```
-
-## Estrutura importante
-
-| Caminho | Conteúdo |
-|---|---|
-| `client/src/pages/Home.tsx` | Landing e explicação do fluxo validado. |
-| `client/src/pages/admin/AdminPainel.tsx` | Cadastro, triagem manual e agenda administrativa. |
-| `client/src/pages/expert/ExpertPainel.tsx` | Visão restrita do Expert. |
-| `client/src/pages/lancador/LancadorPainel.tsx` | Catálogo curado e interesse em reunião. |
-| `client/src/lib/mockData.ts` | Domínio e dados simulados atuais. |
-| `client/src/components/Compartilhados.tsx` | Badges, checklist e componentes de status. |
-| `client/src/index.css` | Tokens e tema visual oficial Insider. |
-| `ideas.md` | Direção de design adotada. |
-| `todo.md` | Histórico resumido das entregas e tarefas. |
-
-## Identidade visual e ativos
-
-A pasta `identidade-visual/` do pacote contém o manual e os arquivos oficiais enviados pelo usuário. A paleta principal aplicada utiliza azul-marinho `#1E2241`, com as fontes Alexandria (títulos) e Roboto (textos). Alguns ativos de logo são referenciados no código por URLs de armazenamento gerenciado; os originais também acompanham o pacote.
-
-## Documentação complementar
-
-Na pasta `documentacao/` estão a regra de negócio consolidada e a análise de impacto que justificam o fluxo atual. Use esses documentos como fonte de verdade antes de alterar a aplicação.
+A aplicação usa azul-marinho `#1E2241`, Alexandria para títulos e Roboto para textos. A logo branca é usada nas barras laterais. Os ativos são publicados em armazenamento gerenciado e não devem ser copiados para o bundle local sem necessidade.
