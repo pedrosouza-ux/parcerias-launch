@@ -173,7 +173,7 @@
 - [x] Validar em publicação a persistência da versão de sessão e registrar a evidência da política de renovação explícita
 - [x] Homologar em sessão autenticada o seletor de perfil em todas as transições publicadas, incluindo retorno de Lançador para Administrador
 - [x] Homologar a transição direta de Lançador para Administrador pelo seletor publicado, sem logout nem navegação direta
-- [ ] Validar em ambiente controlado a expiração da sessão com `sessionVersion` e a exigência de nova autenticação sem renovação silenciosa
+- [x] Validar em ambiente controlado a expiração da sessão com `sessionVersion` e a exigência de nova autenticação sem renovação silenciosa
 - [x] Reexecutar uma sincronização de usuário com `sessionVersion` após o reinício e registrar evidência objetiva sem `ER_BAD_FIELD_ERROR`
 - [x] Adicionar teste ou instrumentação para confirmar a compatibilidade entre o esquema Drizzle e a persistência atual de `sessionVersion`
 - [x] Evoluir a agenda com duração, recurso físico e prevenção de conflitos
