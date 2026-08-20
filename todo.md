@@ -149,7 +149,7 @@
 - [x] Cobrir a troca de perfil administrativa com teste e publicar a correção
 - [x] Extrair e testar as rotas de destino geradas pelo seletor para Administrador, Expert e Lançador
 - [x] Adicionar teste de componente do seletor cobrindo as transições administrativas entre os três perfis
-- [ ] Validar em sessão autenticada que o seletor permanece funcional após cada troca de perfil
+- [x] Validar em sessão autenticada que o seletor permanece funcional após cada troca de perfil
 - [x] Remover o motivo gráfico de rotas convergentes do fundo da landing
 - [x] Verificar visualmente a landing sem o elemento gráfico e publicar a correção
 - [x] Reiniciar e verificar o servidor de desenvolvimento para descartar erros transitórios históricos
@@ -170,7 +170,10 @@
 - [x] Definir e implementar a política de renovação explícita de sessão administrativa sem extensão silenciosa de privilégios
 - [x] Corrigir a divergência entre a coluna de versão de sessão declarada no esquema e a coluna existente no banco de produção
 - [x] Adicionar evidência automatizada de que a expiração exige nova autenticação e não há renovação silenciosa
-- [ ] Validar em publicação a persistência da versão de sessão e registrar a evidência da política de renovação explícita
+- [x] Validar em publicação a persistência da versão de sessão e registrar a evidência da política de renovação explícita
+- [x] Homologar em sessão autenticada o seletor de perfil em todas as transições publicadas, incluindo retorno de Lançador para Administrador
+- [x] Homologar a transição direta de Lançador para Administrador pelo seletor publicado, sem logout nem navegação direta
+- [ ] Validar em ambiente controlado a expiração da sessão com `sessionVersion` e a exigência de nova autenticação sem renovação silenciosa
 - [x] Reexecutar uma sincronização de usuário com `sessionVersion` após o reinício e registrar evidência objetiva sem `ER_BAD_FIELD_ERROR`
 - [x] Adicionar teste ou instrumentação para confirmar a compatibilidade entre o esquema Drizzle e a persistência atual de `sessionVersion`
 - [x] Evoluir a agenda com duração, recurso físico e prevenção de conflitos

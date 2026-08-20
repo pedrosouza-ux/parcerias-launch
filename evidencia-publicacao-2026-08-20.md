@@ -1,0 +1,19 @@
+# Evidência de publicação — rota protegida
+
+Em 20 de agosto de 2026, foi verificada a rota publicada `https://parcerlaunch-tflfurdr.manus.space/painel/admin` em uma sessão sem autenticação.
+
+O sistema exibiu a tela **“Acesso protegido”**, com o texto orientando o acesso por conta e o controle **“Entrar para continuar”**. Nenhum conteúdo do painel administrativo foi apresentado.
+
+Essa verificação confirma o bloqueio público da rota administrativa sem sessão. Ela não substitui a homologação de login Manus autenticado, de expiração da sessão, de logout e de troca de perfil, que permanecem tarefas dependentes de uma conta real autorizada.
+
+## Homologação com sessão administrativa
+
+Com autorização do responsável e o navegador conectado, o login Manus foi concluído e a rota publicada `/painel/admin` exibiu o painel administrativo, com menu de perfis e controle explícito de saída.
+
+O seletor de perfil exibiu as três visões autorizadas: **Administrador**, **Expert** e **Lançador**. As transições para `/painel/expert?operacao=admin` e `/painel/lancador?operacao=admin` foram concluídas e apresentaram, respectivamente, os registros demonstrativos isolados do Expert e do Lançador. O seletor e o botão **Sair** permaneceram visíveis nos dois painéis.
+
+Após novo login autorizado, o retorno de Lançador para `/painel/admin` foi concluído. O seletor foi aberto novamente no painel Administrativo e manteve as três opções disponíveis. O ciclo **Administrador → Expert → Lançador → Administrador**, incluindo a reabertura do menu no retorno, foi assim homologado na publicação.
+
+Para comprovar a última transição pelo próprio seletor, sem logout nem alteração manual de URL, a sessão autenticada partiu do painel Administrativo para Lançador e, no menu visível desse painel, selecionou **Administrador**. A aplicação retornou para `/painel/admin`, com a sessão ativa identificada como **Administrador** e o menu administrativo disponível. O ciclo completo pelo seletor ficou comprovado em publicação.
+
+O botão **Sair** foi acionado na visão de Lançador. A aplicação retornou imediatamente à tela de **Acesso protegido** na mesma rota, exibindo apenas o botão de autenticação e sem conteúdo operacional. Assim, o acesso autenticado, a troca entre as três visões e o logout explícito foram homologados na publicação. A validação da expiração natural da sessão permanece pendente, pois exige aguardar o prazo operacional de 12 horas ou usar um ambiente de teste controlado.
