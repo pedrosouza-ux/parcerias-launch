@@ -192,4 +192,4 @@
 - [x] Executar em teste de componente as mutações do projeto do Expert e do interesse do Lançador com cenários de sucesso e erro
 - [x] Cobrir de forma reproduzível os estados pendente, sucesso e erro das ações críticas, incluindo desabilitação durante o envio
 - [x] Registrar a evidência objetiva das interações críticas além das capturas estáticas de layout
-- [ ] Avaliar divisão de bundle do frontend para reduzir o aviso de chunk acima de 500 kB no build de produção
+- [x] Avaliar divisão de bundle do frontend para reduzir o aviso de chunk acima de 500 kB no build de produção
