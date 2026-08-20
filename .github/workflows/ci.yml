@@ -15,16 +15,19 @@ jobs:
     timeout-minutes: 15
     steps:
       - name: Obter código
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
+
+      - name: Configurar pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.4.1
+          run_install: false
 
       - name: Configurar Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v5
         with:
           node-version: 22
           cache: pnpm
-
-      - name: Habilitar Corepack
-        run: corepack enable
 
       - name: Instalar dependências
         run: pnpm install --frozen-lockfile
@@ -40,4 +43,3 @@ jobs:
 
       - name: Gerar build
         run: pnpm build
-
