@@ -20,4 +20,8 @@ Para comprovar a última transição pelo próprio seletor, sem logout nem alter
 
 Em ambiente controlado, a suíte direcionada executou cinco verificações de política e persistência de sessão. Ela confirmou duração padrão de 12 horas, inclusão de `sessionVersion` no token, rejeição de token emitido antes da rotação de versão, invalidação de token expirado e compatibilidade da persistência de `sessionVersion`. O token intencionalmente expirado foi rejeitado pela verificação JWT, retornando ausência de sessão e exigindo uma nova autenticação; portanto, não há renovação silenciosa.
 
+## Validação integrada de fluxos persistentes
+
+A suíte completa executou 59 testes em 18 arquivos, incluindo as regras de inscrição, permissões administrativas, edição e envio de projeto, catálogo curado, declaração de interesse, isolamento de dados demonstrativos e prevenção de conflitos da agenda. Os testes de integração confirmam a persistência da edição e do envio do projeto antes do interesse do Lançador, e as regras de agenda impedem sobreposição de recurso, Expert ou Lançador. Dessa forma, os fluxos de cadastro, triagem, catálogo, interesse e reunião estão conectados à camada persistente protegida; a homologação com contas reais de participantes permanece uma atividade distinta.
+
 O botão **Sair** foi acionado na visão de Lançador. A aplicação retornou imediatamente à tela de **Acesso protegido** na mesma rota, exibindo apenas o botão de autenticação e sem conteúdo operacional. Assim, o acesso autenticado, a troca entre as três visões e o logout explícito foram homologados na publicação. A validação da expiração natural da sessão permanece pendente, pois exige aguardar o prazo operacional de 12 horas ou usar um ambiente de teste controlado.

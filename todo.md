@@ -73,7 +73,7 @@
 - [x] Criar perfis operacionais ao aprovar uma inscrição de Expert ou Lançador
 - [x] Criar perfis operacionais ao aprovar uma inscrição de Expert ou Lançador
 - [x] Implementar procedures tRPC protegidas por papel para projetos, triagem, catálogo, interesses e reuniões
-- [ ] Conectar cadastro, triagem, catálogo, interesse e reuniões aos dados reais
+- [x] Conectar cadastro, triagem, catálogo, interesse e reuniões aos dados reais
 - [ ] Validar regras de segurança e os fluxos completos antes da publicação
 - [x] Publicar a versão operacional e documentar a administração do sistema
 
