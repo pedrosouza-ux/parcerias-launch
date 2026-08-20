@@ -63,10 +63,10 @@
 - [x] Confirmar as decisões de identidade, convite e gestão de acesso
 - [x] Habilitar a infraestrutura full stack com autenticação e banco de dados
 - [x] Aplicar o schema inicial no banco e confirmar as tabelas de autenticação
-- [ ] Validar login Manus, persistência básica de usuário e rotas existentes
+- [x] Validar login Manus, persistência básica de usuário e rotas existentes
 - [x] Revisar a integração final da infraestrutura sem regressões
 - [x] Validar as rotas de Administrador, Expert e Lançador após o upgrade full stack
-- [ ] Testar login Manus, sessão e acesso às telas protegidas ponta a ponta
+- [x] Testar login Manus, sessão e acesso às telas protegidas ponta a ponta
 - [x] Definir inscrição pública na comunidade com aprovação administrativa e Administrador inicial
 - [x] Implementar inscrições públicas pendentes por perfil e o Administrador inicial do projeto
 - [x] Implementar o modelo persistente e as permissões de Administrador, Expert e Lançador
@@ -121,7 +121,7 @@
 - [x] Garantir que o logout encerre a sessão e redirecione de forma segura para a página pública
 - [x] Cobrir o encerramento de sessão com testes e publicar a atualização
 - [x] Publicar uma versão com o controle de logout incluído
-- [ ] Validar em sessão autenticada que o botão Sair encerra o acesso e retorna à página pública
+- [x] Validar em sessão autenticada que o botão Sair encerra o acesso e retorna à página pública
 - [x] Remover também os dados locais em cache do usuário ao encerrar a sessão
 - [x] Revisar arquivos sensíveis e preparar o repositório para envio ao GitHub
 - [x] Confirmar conta, organização, nome e visibilidade do repositório GitHub
