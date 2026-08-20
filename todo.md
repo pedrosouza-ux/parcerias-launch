@@ -200,3 +200,6 @@
 - [x] Avaliar divisão de bundle do frontend para reduzir o aviso de chunk acima de 500 kB no build de produção
 - [x] Melhorar a hierarquia visual, legibilidade e ação principal do pop-up de detalhes do projeto
 - [x] Validar o pop-up de projeto aprimorado em desktop e celular
+- [x] Atualizar os dados de compatibilidade do navegador para eliminar o aviso do servidor de desenvolvimento
+- [ ] Avaliar a atualização ou substituição de `@builder.io/vite-plugin-jsx-loc` para compatibilidade declarada com Vite 7
+- [ ] Mapear e tratar as dependências transitivas descontinuadas reportadas pelo pnpm sem introduzir regressões
