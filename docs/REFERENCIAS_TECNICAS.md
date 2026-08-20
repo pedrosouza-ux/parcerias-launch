@@ -10,3 +10,9 @@ Em agosto de 2026, a integração contínua foi atualizada para `pnpm/action-set
 | [GitHub Actions: depreciação do Node 20](https://github.blog/changelog/2025-09-19-deprecation-of-node-20-on-github-actions-runners/) | Fundamenta a atualização das ações para compatibilidade com Node 24. |
 
 > A atualização deve ser comprovada na próxima execução remota da CI. O workflow mantém Node 22 para o projeto e atualiza somente a ação responsável por disponibilizar o pnpm.
+
+## Evidência de execução
+
+A execução `32404920949` da branch `main`, associada ao commit `2b9b664`, concluiu com sucesso após a atualização para `pnpm/action-setup@v6`. A verificação remota executou testes, TypeScript, auditoria de dependências e build sem emitir o aviso anterior de runtime Node 20.
+
+As anotações do job `96541628450` foram consultadas pela API do GitHub após a execução e retornaram uma lista vazia (`[]`). Essa inspeção confirma objetivamente que o aviso de descontinuação do runtime Node 20 não voltou a ser emitido nessa versão.
