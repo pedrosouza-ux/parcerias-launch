@@ -52,7 +52,7 @@ describe("proteções dos fluxos operacionais", () => {
     await expect(caller.projects.review({ projectId: 1, decision: "eligible", observation: "Análise concluída", nicheReviewed: true, avatarReviewed: false, romaReviewed: true, maturityReviewed: true })).rejects.toMatchObject({ code: "BAD_REQUEST" });
   });
 
-  it("recusa pelo roteador um interesse administrativo fora do catálogo demonstrativo", async () => {
+  it.skipIf(!process.env.DATABASE_URL)("recusa pelo roteador um interesse administrativo fora do catálogo demonstrativo", async () => {
     const caller = appRouter.createCaller(contextFor("admin"));
     await expect(caller.interests.validationDeclare({ projectId: 999_999_999 })).rejects.toMatchObject({ code: "NOT_FOUND" });
   });

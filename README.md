@@ -71,13 +71,15 @@ Para uso local, solicite os valores pelos canais internos autorizados. Nunca os 
 ## Qualidade e validação
 
 ```bash
-pnpm test              # suíte Vitest
+pnpm test              # suíte Vitest completa; requer acesso ao banco gerenciado
+pnpm test:ci           # testes reproduzíveis sem credenciais de banco
+pnpm test:integration  # isolamento e persistência; requer DATABASE_URL autorizado
 pnpm run check         # TypeScript sem emissão de arquivos
 pnpm audit --prod      # dependências de produção
 pnpm build             # build de cliente e servidor
 ```
 
-O repositório inclui uma automação de integração contínua que executa estas verificações em pull requests e atualizações da branch `main`.
+O repositório inclui uma automação de integração contínua que executa `test:ci`, a checagem de tipos, a auditoria de dependências de produção e o build em pull requests e atualizações da branch `main`. Os testes de integração que tocam o banco gerenciado permanecem no comando explícito `test:integration`, para não expor credenciais no GitHub.
 
 ## Documentação
 

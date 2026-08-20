@@ -10,6 +10,8 @@
     "check": "tsc --noEmit",
     "format": "prettier --write .",
     "test": "vitest run",
+    "test:ci": "vitest run --exclude '**/validation-isolation.test.ts' --exclude '**/session-version-persistence.test.ts'",
+    "test:integration": "vitest run server/validation-isolation.test.ts server/session-version-persistence.test.ts",
     "db:push": "drizzle-kit generate && drizzle-kit migrate"
   },
   "dependencies": {
