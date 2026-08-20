@@ -1,5 +1,6 @@
 import { useAuth } from "@/_core/hooks/useAuth";
 import { startLogin } from "@/const";
+import { BotaoCarregando } from "@/components/BotaoCarregando";
 import { Button } from "@/components/ui/button";
 import { trpc } from "@/lib/trpc";
 import { CheckCircle2, Loader2, ShieldCheck, UserRound, UsersRound } from "lucide-react";
@@ -61,7 +62,7 @@ export default function CadastroParticipacao() {
           <label className="block"><span className="label-ed text-foreground">Nome completo <span className="text-primary">*</span></span><input required maxLength={180} value={fullName} onChange={event => setFullName(event.target.value)} className="mt-2 min-h-11 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/60" placeholder="Como a operação deve identificar você" /></label>
           <div className="grid gap-5 sm:grid-cols-2"><label className="block"><span className="label-ed text-foreground">Telefone</span><input value={phone} maxLength={32} onChange={event => setPhone(event.target.value)} className="mt-2 min-h-11 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/60" placeholder="(00) 00000-0000" /></label><label className="block"><span className="label-ed text-foreground">Instagram</span><input value={instagram} maxLength={120} onChange={event => setInstagram(event.target.value)} className="mt-2 min-h-11 w-full rounded-md border border-input bg-background px-3 text-sm outline-none focus-visible:ring-2 focus-visible:ring-ring/60" placeholder="@seuperfil" /></label></div>
           <div className="rounded-md border border-primary/20 bg-primary/5 p-4 text-sm leading-relaxed text-muted-foreground"><ShieldCheck className="mr-2 inline size-4 text-primary" />Seus dados serão usados exclusivamente para identificar sua participação e viabilizar a operação da Rodada de Parcerias.</div>
-          <Button type="submit" size="lg" className="w-full" disabled={submit.isPending}>{submit.isPending ? <><Loader2 className="size-4 animate-spin" />Enviando cadastro</> : <>Enviar para aprovação <CheckCircle2 className="size-4" /></>}</Button>
+          <BotaoCarregando type="submit" size="lg" className="w-full" carregando={submit.isPending} textoCarregando="Enviando cadastro…"><>Enviar para aprovação <CheckCircle2 className="size-4" /></></BotaoCarregando>
         </form></div></section></main>;
 }
 

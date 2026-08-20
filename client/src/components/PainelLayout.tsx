@@ -5,6 +5,7 @@ import { ReactNode, useState } from "react";
 import { LogOut } from "lucide-react";
 import { useAuth } from "@/_core/hooks/useAuth";
 import { Papel } from "@/lib/mockData";
+import { BotaoCarregando } from "@/components/BotaoCarregando";
 import PapelSwitcher from "@/components/PapelSwitcher";
 import { LogoInsider } from "@/components/LogoInsider";
 import { ThemeToggle } from "@/components/ThemeToggle";
@@ -144,16 +145,16 @@ export default function PainelLayout({
           <div className="flex shrink-0 items-center gap-2">
             <ThemeToggle />
             {mostrarTrocaPapel && <PapelSwitcher papel={papel} onTrocar={onTrocarPapel} nomeUsuario={nomeUsuario} />}
-            <button
+            <BotaoCarregando
               type="button"
               onClick={encerrarSessao}
-              disabled={encerrandoSessao}
+              carregando={encerrandoSessao}
+              textoCarregando="Saindo…"
               aria-label="Encerrar sessão"
               className="inline-flex min-h-10 items-center gap-2 rounded-md border border-border bg-background px-3 text-sm font-medium text-muted-foreground transition-colors hover:bg-accent hover:text-foreground disabled:cursor-not-allowed disabled:opacity-60"
             >
-              <LogOut className="h-4 w-4" aria-hidden="true" />
-              <span className="hidden sm:inline">{encerrandoSessao ? "Saindo..." : "Sair"}</span>
-            </button>
+              <><LogOut className="h-4 w-4" aria-hidden="true" /><span className="hidden sm:inline">Sair</span></>
+            </BotaoCarregando>
           </div>
         </header>
 

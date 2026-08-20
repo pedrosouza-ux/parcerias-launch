@@ -183,3 +183,13 @@
 - [x] Registrar evidência remota de README, documentação, modelos de colaboração e CI disponíveis no GitHub
 - [x] Confirmar a árvore Git limpa após a sincronização da organização do repositório
 - [x] Registrar o estado limpo da árvore Git após sincronizar o histórico final da organização
+- [x] Padronizar animações suaves e acessíveis de carregamento nas operações de dados
+- [x] Exibir mensagens claras de sucesso e erro ao salvar cadastros, triagens, interesses, agenda e administradores
+- [x] Validar visualmente e por testes os estados de carregamento e feedback das operações críticas
+- [x] Padronizar também os estados de carregamento das ações administrativas de adicionar e revogar Administrador
+- [x] Comprovar em testes os toasts de sucesso e erro de interesse do Lançador e de salvar ou enviar o projeto do Expert
+- [x] Registrar evidência reproduzível de estados pendente, sucesso e erro nas operações críticas
+- [x] Executar em teste de componente as mutações do projeto do Expert e do interesse do Lançador com cenários de sucesso e erro
+- [x] Cobrir de forma reproduzível os estados pendente, sucesso e erro das ações críticas, incluindo desabilitação durante o envio
+- [x] Registrar a evidência objetiva das interações críticas além das capturas estáticas de layout
+- [ ] Avaliar divisão de bundle do frontend para reduzir o aviso de chunk acima de 500 kB no build de produção
