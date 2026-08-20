@@ -198,3 +198,5 @@
 - [x] Cobrir de forma reproduzível os estados pendente, sucesso e erro das ações críticas, incluindo desabilitação durante o envio
 - [x] Registrar a evidência objetiva das interações críticas além das capturas estáticas de layout
 - [x] Avaliar divisão de bundle do frontend para reduzir o aviso de chunk acima de 500 kB no build de produção
+- [x] Melhorar a hierarquia visual, legibilidade e ação principal do pop-up de detalhes do projeto
+- [x] Validar o pop-up de projeto aprimorado em desktop e celular

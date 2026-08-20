@@ -1,6 +1,6 @@
 /* @vitest-environment jsdom */
 import React from "react";
-import { cleanup, render } from "@testing-library/react";
+import { cleanup, render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { afterEach, describe, expect, it, vi } from "vitest";
 
@@ -102,5 +102,19 @@ describe("feedback de operações persistentes", () => {
     const botaoCarregando = tela.getByRole("button", { name: /registrando interesse/i });
     expect(botaoCarregando).toHaveProperty("disabled", true);
     expect(botaoCarregando.getAttribute("aria-busy")).toBe("true");
+  });
+
+  it("organiza as informações do projeto em blocos claros ao abrir o detalhe", async () => {
+    const usuario = userEvent.setup();
+    render(<LancadorPainel onTrocarPapel={vi.fn()} />);
+
+    await usuario.click(screen.getByRole("button", { name: /ver projeto/i }));
+
+    expect(screen.getByText("Transformação proposta · ROMA")).toBeTruthy();
+    expect(screen.getByText("Contexto do Avatar")).toBeTruthy();
+    expect(screen.getByText("Principais dores")).toBeTruthy();
+    expect(screen.getByText("Ambição")).toBeTruthy();
+    expect(screen.getByText("Ao registrar interesse, a organização receberá seu pedido e conduzirá o próximo passo da Rodada.")).toBeTruthy();
+    expect(screen.getByText("Gestão")).toBeTruthy();
   });
 });
